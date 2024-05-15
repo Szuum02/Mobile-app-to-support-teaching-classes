@@ -23,16 +23,14 @@ import java.util.HashMap;
 
 import com.example.teaching_app.DatabaseClasses.Student;
 import com.example.teaching_app.Teacher.CheckActivity;
-import com.example.teaching_app.Teacher.ChooseGroup;
-import com.example.teaching_app.Teacher.PresenceOrActivity;
 
-public class StudentsListTask extends AsyncTask<Integer, Void, ArrayList<Student>> {
+public class StudentsActivityTask extends AsyncTask<Integer, Void, ArrayList<Student>> {
 
 
     private final CheckActivity activity;
     private final int id;
     private HashMap<String, Student> studentHashMap;
-    public StudentsListTask(CheckActivity activity, int id) {
+    public StudentsActivityTask(CheckActivity activity, int id) {
         this.activity = activity;
         this.id = id;
         this.studentHashMap = new HashMap<>();
