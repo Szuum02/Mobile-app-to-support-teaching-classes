@@ -95,9 +95,10 @@ public class GroupsTask extends AsyncTask<Integer, Void, List<String>>{
         }
     }
 
-    private void goToChosenGroup(int group){
+    private void goToChosenGroup(Integer group){
         Intent intent = new Intent(activity, PresenceOrActivity.class);
         intent.putExtra("group", group);
+        Log.d("GRUPAID", String.valueOf(group));
         activity.startActivity(intent);
     }
 }
