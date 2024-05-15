@@ -35,25 +35,10 @@ public class MainActivity extends AppCompatActivity {
     public void checkLoginData(View view){
         String login = loginText.getText().toString();
         String password = passwordText.getText().toString();
-        String type = "teacher";
+        int type = 3;
 
-        //Todo zrobić połączenie z bazą danych jak będzie gotowa
-
-        try{
-            if(type == null){
-                throw new NullPointerException("Cannot find your login data in our dataBase");
-            } else if (type.equals("teacher")) {
-                Intent intent = new Intent(this, ChooseGroup.class);
-                startActivity(intent);
-            } else if (type.equals("student")) {
-                Intent intent = new Intent(this, TmpStudentDefaultView.class);
-                startActivity(intent);
-            }
-        } catch (NullPointerException e){
-            Toast errorToast = Toast.makeText(MainActivity.this,
-                    "Cannot find your login data in our dataBase", Toast.LENGTH_SHORT);
-            errorToast.show();
-            Log.v("errorLog", "working");
-        }
+        // Execute AsyncTask to fetch user data from database
+        DatabaseTask databaseTask = new DatabaseTask(this, login, password);
+        databaseTask.execute();
     }
 }
