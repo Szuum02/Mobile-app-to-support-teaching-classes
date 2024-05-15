@@ -21,11 +21,11 @@ public class CheckPresence extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_check_presence);
-        String group;
+        Integer group;
 
         Intent intent = getIntent();
         if (intent != null) {
-            group = intent.getStringExtra("group");  //Todo dodać obsługę wyjątku na brak grupy
+            group = intent.getIntExtra("group", 0);  //Todo dodać obsługę wyjątku na brak grupy
             Toast errorToast = Toast.makeText(CheckPresence.this,
                     "wita obecność: " + group, Toast.LENGTH_SHORT);
             errorToast.show();

@@ -15,15 +15,14 @@ import com.example.teaching_app.R;
 import java.util.ArrayList;
 
 public class CheckActivity extends AppCompatActivity {
-    String group = null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_check);
-
+        Integer group;
         Intent intent = getIntent();
         if (intent != null) {
-            String group = intent.getStringExtra("group");  //Todo dodać obsługę wyjątku na brak grupy
+            group = intent.getIntExtra("group",0);  //Todo dodać obsługę wyjątku na brak grupy
             Toast errorToast = Toast.makeText(CheckActivity.this,
                     "wita aktywność: " + group, Toast.LENGTH_SHORT);                               // dla ułatwienia, usunąć przed pokazaniem
             errorToast.show();

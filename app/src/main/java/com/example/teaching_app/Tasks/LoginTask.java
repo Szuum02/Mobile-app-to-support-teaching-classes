@@ -1,11 +1,12 @@
-package com.example.teaching_app;
+package com.example.teaching_app.Tasks;
 import android.os.AsyncTask;
 import android.widget.Toast;
 import android.util.Log;
 import android.content.Intent;
-import android.widget.EditText;
 
 import com.example.teaching_app.DatabaseClasses.User;
+import com.example.teaching_app.DatabaseConnection;
+import com.example.teaching_app.MainActivity;
 import com.example.teaching_app.Student.TmpStudentDefaultView;
 import com.example.teaching_app.Teacher.ChooseGroup;
 
@@ -14,16 +15,16 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class DatabaseTask extends AsyncTask<String, Void, User> {
+public class LoginTask extends AsyncTask<String, Void, User> {
 
-    private static final String TAG = "DatabaseTask";
-    private static final String ERROR_MESSAGE = "Cannot connect to database";
+    private static final String TAG = "LoginTask";
+    private static final String ERROR_MESSAGE = "Cannot connect to database - wrong data";
 
     private MainActivity activity;
     private String email;
     private String password;
 
-    public DatabaseTask(MainActivity activity, String email, String password) {
+    public LoginTask(MainActivity activity, String email, String password) {
         this.activity = activity;
         this.email = email;
         this.password = password;
@@ -37,10 +38,8 @@ public class DatabaseTask extends AsyncTask<String, Void, User> {
         User user = null;
 
         try {
-            // Establishing database connection
             connection = DatabaseConnection.getConnection();
             if (connection != null) {
-                // Query to fetch user data based on email and password
                 String query = "SELECT * FROM Users WHERE mail = ? AND password = ?";
                 statement = connection.prepareStatement(query);
                 statement.setString(1, email);
@@ -48,7 +47,6 @@ public class DatabaseTask extends AsyncTask<String, Void, User> {
 
                 resultSet = statement.executeQuery();
 
-                // If user found, create User object
                 if (resultSet.next()) {
                     int userId = resultSet.getInt("user_id");
                     String userEmail = resultSet.getString("mail");
@@ -60,11 +58,9 @@ public class DatabaseTask extends AsyncTask<String, Void, User> {
         } catch (SQLException e) {
             Log.e(TAG, "SQLException: " + e.getMessage());
         } finally {
-            // Closing database resources
             try {
                 if (resultSet != null) resultSet.close();
                 if (statement != null) statement.close();
-                if (connection != null) connection.close();
             } catch (SQLException e) {
                 Log.e(TAG, "SQLException: " + e.getMessage());
             }
@@ -76,16 +72,15 @@ public class DatabaseTask extends AsyncTask<String, Void, User> {
     @Override
     protected void onPostExecute(User user) {
         if (user != null) {
-            // User found, redirect to appropriate activity based on user type
             if (user.getIs_student() == 0) {
                 Intent intent = new Intent(activity, ChooseGroup.class);
+                intent.putExtra("teacher_id", user.getUser_id());
                 activity.startActivity(intent);
             } else if (user.getIs_student() == 1) {
                 Intent intent = new Intent(activity, TmpStudentDefaultView.class);
                 activity.startActivity(intent);
             }
         } else {
-            // User not found, display error message
             Toast.makeText(activity, ERROR_MESSAGE, Toast.LENGTH_SHORT).show();
             Log.v("errorLog", "working");
         }

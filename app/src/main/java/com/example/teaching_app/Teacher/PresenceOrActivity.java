@@ -11,7 +11,7 @@ import android.widget.Toast;
 import com.example.teaching_app.R;
 
 public class PresenceOrActivity extends AppCompatActivity {
-    String group;
+    Integer group;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -19,7 +19,7 @@ public class PresenceOrActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         if (intent != null) {
-            group = intent.getStringExtra("group");  //Todo dodać obsługę wyjątku na brak grupy
+            group = intent.getIntExtra("group", 0);  //Todo dodać obsługę wyjątku na brak grupy
             Toast errorToast = Toast.makeText(PresenceOrActivity.this,
                     group, Toast.LENGTH_SHORT);                               // dla ułatwienia, usunąć przed pokazaniem
             errorToast.show();
@@ -43,13 +43,13 @@ public class PresenceOrActivity extends AppCompatActivity {
         });
     }
 
-    public void goToPresence(View view, String group){
+    public void goToPresence(View view, int group){
         Intent intent = new Intent(this, CheckPresence.class);
         intent.putExtra("group", group);
         startActivity(intent);
     }
 
-    public void goToActivity(View view, String group){
+    public void goToActivity(View view, int group){
         Intent intent = new Intent(this, CheckActivity.class);
         intent.putExtra("group", group);
         startActivity(intent);

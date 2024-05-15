@@ -2,16 +2,12 @@ package com.example.teaching_app;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
-import com.example.teaching_app.Student.TmpStudentDefaultView;
-import com.example.teaching_app.Teacher.ChooseGroup;
+import com.example.teaching_app.Tasks.LoginTask;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -35,10 +31,9 @@ public class MainActivity extends AppCompatActivity {
     public void checkLoginData(View view){
         String login = loginText.getText().toString();
         String password = passwordText.getText().toString();
-        int type = 3;
 
         // Execute AsyncTask to fetch user data from database
-        DatabaseTask databaseTask = new DatabaseTask(this, login, password);
-        databaseTask.execute();
+        LoginTask loginTask = new LoginTask(this, login, password);
+        loginTask.execute();
     }
 }
