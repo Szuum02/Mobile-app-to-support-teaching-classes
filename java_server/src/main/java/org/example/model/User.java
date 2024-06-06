@@ -11,20 +11,20 @@ import javax.validation.constraints.NotNull;
 public class User {
     @Id
     @Email
-    String mail;
+    private String mail;
 
     @NotNull
     @NotBlank
-    String password;
+    private String password;
 
     @NotNull
     @Column(name = "user_id", unique = true)
 //    @GeneratedValue(strategy = GenerationType.AUTO)
-    Long userId;
+    private Long userId;
 
     @NotNull
     @Column(name = "is_student")
-    boolean isStudent;
+    private boolean isStudent;
 
     public String getMail() {
         return mail;
