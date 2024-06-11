@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import java.util.Set;
 
 @Entity
 @Table(name = "teachers")
@@ -24,6 +25,10 @@ public class Teacher {
     @MapsId
     @JoinColumn(name = "teacher_id")
     private User user;
+
+    @OneToMany(mappedBy = "teacher")
+    private Set<Group> groups;
+
 
     public Long getId() {
         return id;
@@ -55,5 +60,13 @@ public class Teacher {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public Set<Group> getGroups() {
+        return groups;
+    }
+
+    public void setGroups(Set<Group> groups) {
+        this.groups = groups;
     }
 }

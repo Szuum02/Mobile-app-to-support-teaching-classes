@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import java.util.Set;
 
 @Entity
 @Table(name = "students")
@@ -32,6 +33,9 @@ public class Student {
     @MapsId
     @JoinColumn(name = "student_id")
     private User user;
+
+    @ManyToMany(mappedBy = "students")
+    private Set<Group> groups;
 
     public Long getId() {
         return id;
@@ -79,5 +83,13 @@ public class Student {
 
     public void setNick(String nick) {
         this.nick = nick;
+    }
+
+    public Set<Group> getGroups() {
+        return groups;
+    }
+
+    public void setGroups(Set<Group> groups) {
+        this.groups = groups;
     }
 }
