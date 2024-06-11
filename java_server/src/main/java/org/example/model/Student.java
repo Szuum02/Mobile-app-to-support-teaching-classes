@@ -40,6 +40,9 @@ public class Student {
     @OneToMany(mappedBy = "student")
     private Set<Activity> activities;
 
+    @OneToMany(mappedBy = "student")
+    private Set<Presence> presences;
+
     public Long getId() {
         return id;
     }
@@ -102,5 +105,13 @@ public class Student {
 
     public void setActivities(Set<Activity> activities) {
         this.activities = activities;
+    }
+
+    public Set<Presence> getPresences() {
+        return presences;
+    }
+
+    public void setPresences(Set<Presence> presences) {
+        this.presences = presences;
     }
 }

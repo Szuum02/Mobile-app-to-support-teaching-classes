@@ -32,6 +32,9 @@ public class Lesson {
     @OneToMany(mappedBy = "lesson")
     private Set<Activity> activities;
 
+    @OneToMany(mappedBy = "lesson")
+    private Set<Presence> presences;
+
     public Long getId() {
         return id;
     }
@@ -78,5 +81,13 @@ public class Lesson {
 
     public void setActivities(Set<Activity> activities) {
         this.activities = activities;
+    }
+
+    public Set<Presence> getPresences() {
+        return presences;
+    }
+
+    public void setPresences(Set<Presence> presences) {
+        this.presences = presences;
     }
 }
