@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
+import java.util.Set;
 
 @Entity
 @Table(name = "lessons")
@@ -27,6 +28,9 @@ public class Lesson {
     @ManyToOne
     @JoinColumn(name = "group_id")
     private Group group;
+
+    @OneToMany(mappedBy = "lesson")
+    private Set<Activity> activities;
 
     public Long getId() {
         return id;
@@ -66,5 +70,13 @@ public class Lesson {
 
     public void setGroup(Group group) {
         this.group = group;
+    }
+
+    public Set<Activity> getActivities() {
+        return activities;
+    }
+
+    public void setActivities(Set<Activity> activities) {
+        this.activities = activities;
     }
 }

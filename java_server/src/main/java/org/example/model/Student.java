@@ -37,6 +37,9 @@ public class Student {
     @ManyToMany(mappedBy = "students")
     private Set<Group> groups;
 
+    @OneToMany(mappedBy = "student")
+    private Set<Activity> activities;
+
     public Long getId() {
         return id;
     }
@@ -91,5 +94,13 @@ public class Student {
 
     public void setGroups(Set<Group> groups) {
         this.groups = groups;
+    }
+
+    public Set<Activity> getActivities() {
+        return activities;
+    }
+
+    public void setActivities(Set<Activity> activities) {
+        this.activities = activities;
     }
 }
