@@ -7,10 +7,16 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 @Entity
-@Table(name = "Users")
+@Table(name = "users")
 public class User {
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "user_id")
+    private Long id;
+
+    @NotNull
     @Email
+    @Column(name = "mail", unique = true)
     private String mail;
 
     @NotNull
@@ -18,13 +24,16 @@ public class User {
     private String password;
 
     @NotNull
-    @Column(name = "user_id", unique = true)
-//    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long userId;
-
-    @NotNull
     @Column(name = "is_student")
     private boolean isStudent;
+
+    @OneToOne(mappedBy = "user")
+    @PrimaryKeyJoinColumn
+    private transient Teacher teacher;
+
+    @OneToOne(mappedBy = "user")
+    @PrimaryKeyJoinColumn
+    private transient Student student;
 
     public String getMail() {
         return mail;
@@ -42,12 +51,12 @@ public class User {
         this.password = password;
     }
 
-    public Long getUserId() {
-        return userId;
+    public Long getId() {
+        return id;
     }
 
-    public void setUserId(Long id) {
-        this.userId = id;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public boolean isStudent() {
@@ -56,5 +65,21 @@ public class User {
 
     public void setStudent(boolean student) {
         isStudent = student;
+    }
+
+    public Teacher getTeacher() {
+        return teacher;
+    }
+
+    public void setTeacher(Teacher teacher) {
+        this.teacher = teacher;
+    }
+
+    public Student getStudent() {
+        return student;
+    }
+
+    public void setStudent(Student student) {
+        this.student = student;
     }
 }
