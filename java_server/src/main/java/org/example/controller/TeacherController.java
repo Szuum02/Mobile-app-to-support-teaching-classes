@@ -1,5 +1,6 @@
 package org.example.controller;
 
+import org.example.model.Group;
 import org.example.model.Teacher;
 import org.example.model.User;
 import org.example.reopsitory.TeacherRepository;
@@ -9,8 +10,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
-@Controller
+import java.util.List;
+
+@RestController
 @RequestMapping("/teacher")
 public class TeacherController {
 
@@ -33,5 +37,11 @@ public class TeacherController {
         teacher.setUser(user);
         teacherRepository.save(teacher);
         return ResponseEntity.ok(teacher);
+    }
+
+    @GetMapping("/showGroups")
+    public List<Object[]> showGroups(@RequestParam long teacherId) {
+//        List<Object[]> groups = teacherRepository.getTeachersGroups(teacherId);
+        return teacherRepository.getTeachersGroups(teacherId);
     }
 }

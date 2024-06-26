@@ -23,10 +23,10 @@ public class ChooseGroup extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_choose_group);
-        int group;
+        long group;
         Intent intent = getIntent();
         if (intent != null) {
-            group = intent.getIntExtra("teacher_id", 0);
+            group = intent.getLongExtra("teacher_id", 0);
             Toast errorToast = Toast.makeText(ChooseGroup.this,
                     "wita obecność: " + group, Toast.LENGTH_SHORT);
             errorToast.show();
@@ -34,7 +34,7 @@ public class ChooseGroup extends AppCompatActivity {
             LinearLayout layout = findViewById(R.id.linearLayout);
 
             GroupsTask groupsTask = new GroupsTask(this, group);
-            groupsTask.execute();
+            groupsTask.findAndShowGroups();
 
 
         }

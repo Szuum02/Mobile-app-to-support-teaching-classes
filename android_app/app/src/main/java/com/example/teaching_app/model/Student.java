@@ -1,51 +1,24 @@
-package org.example.model;
+package com.example.teaching_app.model;
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
-import jakarta.persistence.*;
-
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import java.util.Set;
 
-@Entity
-@Table(name = "students")
-@JsonIdentityInfo(
-        generator = ObjectIdGenerators.PropertyGenerator.class,
-        property = "id")
 public class Student {
-    @Id
-    @Column(name = "student_id")
     private Long id;
 
-    @NotNull
-    @NotBlank
     private String name;
 
-    @NotNull
-    @NotBlank
     private String lastname;
 
-    @NotNull
-    @Column(name = "index_number", unique = true)
     private Integer index;
 
-    @NotNull
-    @Column(unique = true)
     private String nick;
 
-    @OneToOne
-    @MapsId
-    @JoinColumn(name = "student_id")
     private User user;
 
-    @ManyToMany(mappedBy = "students")
     private Set<Group> groups;
 
-    @OneToMany(mappedBy = "student")
     private Set<Activity> activities;
 
-    @OneToMany(mappedBy = "student")
     private Set<Presence> presences;
 
     public Long getId() {

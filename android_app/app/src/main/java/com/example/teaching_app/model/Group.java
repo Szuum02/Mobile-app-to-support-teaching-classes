@@ -1,35 +1,16 @@
-package org.example.model;
+package com.example.teaching_app.model;
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
-import jakarta.persistence.*;
-
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import java.util.Set;
 
-@Entity
-@Table(name = "groups")
 public class Group {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "group_id")
     private Long id;
 
-    @NotNull
-    @NotBlank
     private String subject;
 
-    @ManyToOne
-    @JoinColumn(name = "teacher_id")
-    @NotNull
     private Teacher teacher;
 
-    @OneToMany(mappedBy = "group")
     private Set<Lesson> lessons;
 
-    @ManyToMany
-    @NotNull
     private Set<Student> students;
 
     public Long getId() {

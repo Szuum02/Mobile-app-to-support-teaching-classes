@@ -1,36 +1,17 @@
-package org.example.model;
+package com.example.teaching_app.model;
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
-import jakarta.persistence.*;
-
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import java.util.Set;
 
-@Entity
-@Table(name = "teachers")
 public class Teacher {
-    @Id
-    @Column(name = "teacher_id")
     private Long id;
 
-    @NotNull
-    @NotBlank
     private String name;
 
-    @NotNull
-    @NotBlank
     private String lastname;
 
-    @OneToOne
-    @MapsId
-    @JoinColumn(name = "teacher_id")
     private User user;
 
-    @OneToMany(mappedBy = "teacher")
     private Set<Group> groups;
-
 
     public Long getId() {
         return id;
