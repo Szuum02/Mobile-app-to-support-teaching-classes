@@ -3,14 +3,11 @@ package org.example.controller;
 import org.example.model.User;
 import org.example.reopsitory.UserRepository;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@Controller
+@RestController
 @RequestMapping("/user")
 public class UserController {
     private final UserRepository userRepository;
@@ -20,19 +17,26 @@ public class UserController {
     }
 
     @GetMapping("/showAll")
-    public ResponseEntity<List<User>> getAllUsers() {
-        List<User> users = userRepository.findAll();
-        return ResponseEntity.ok(users);
+    public List<User> getAllUsers() {
+//        List<User> users = userRepository.findAll();
+        return userRepository.findAll();
+    }
+
+    @PostMapping("/mail")
+    public User findUserByMail(@RequestParam String mail, @RequestParam String password) {
+        User user = userRepository.findUserByMail(mail);
+        System.out.println(user.getMail() + " " + user.getPassword() + " " + user.getId());
+        return user;
     }
 
     @GetMapping("/add/test")
-    public ResponseEntity<User> test(@RequestParam String mail, @RequestParam String password, @RequestParam boolean isStudent) {
+    public User test(@RequestParam String mail, @RequestParam String password, @RequestParam boolean isStudent) {
         User user = new User();
         user.setMail(mail);
         user.setPassword(password);
         user.setStudent(isStudent);
         userRepository.save(user);
-        return ResponseEntity.ok(user);
+        return user;
     }
 
 //    @GetMapping("/{mail}")
@@ -42,14 +46,14 @@ public class UserController {
 //    }
 
     @GetMapping("/teacher/showAll")
-    public ResponseEntity<List<User>> findTeachers() {
-        List<User> users = userRepository.findAllTeacher();
-        return ResponseEntity.ok(users);
+    public List<User> findTeachers() {
+//        List<User> users = userRepository.findAllTeacher();
+        return userRepository.findAllTeacher();
     }
 
     @GetMapping("/students/showAll")
-    public ResponseEntity<List<User>> findStudents() {
-        List<User> users = userRepository.findAllStudents();
-        return ResponseEntity.ok(users);
+    public List<User> findStudents() {
+//        List<User> users = userRepository.findAllStudents();
+        return userRepository.findAllStudents();
     }
 }

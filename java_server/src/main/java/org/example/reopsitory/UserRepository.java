@@ -14,4 +14,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     @Query("SELECT u from User u JOIN Student s ON u.id = s.id")
     public List<User> findAllStudents();
+
+    public User findUserByMail(String mail);
 }
