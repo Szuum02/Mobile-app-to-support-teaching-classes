@@ -1,10 +1,9 @@
 package org.example.model;
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 
 import javax.validation.constraints.NotNull;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Entity
@@ -17,7 +16,7 @@ public class Presence {
 
     @NotNull
     @Temporal(TemporalType.TIMESTAMP)
-    private Date date;
+    private LocalDateTime date;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "presence_type", columnDefinition = "VARCHAR(1)")
@@ -40,11 +39,11 @@ public class Presence {
         this.id = id;
     }
 
-    public Date getDate() {
+    public LocalDateTime getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(LocalDateTime date) {
         this.date = date;
     }
 
@@ -70,5 +69,18 @@ public class Presence {
 
     public void setLesson(Lesson lesson) {
         this.lesson = lesson;
+    }
+
+    public static PresenceType getById(int id) {
+        switch (id) {
+            case 1:
+                return PresenceType.O;
+            case 2:
+                return PresenceType.N;
+            case 3:
+                return PresenceType.S;
+            default:
+                return PresenceType.U;
+        }
     }
 }
