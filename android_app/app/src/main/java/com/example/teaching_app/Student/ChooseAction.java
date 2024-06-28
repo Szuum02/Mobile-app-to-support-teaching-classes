@@ -57,8 +57,9 @@ public class ChooseAction extends AppCompatActivity {
     }
 
     public void goToActivity(View view, long groupId, long studentId){
-        Intent intent = new Intent(this, CheckActivity.class);
-        intent.putExtra("lesson", groupId);
+        Intent intent = new Intent(this, ShowActivityRanking.class);
+        intent.putExtra("group", groupId);
+        intent.putExtra("student", studentId);
         startActivity(intent);
     }
 }
