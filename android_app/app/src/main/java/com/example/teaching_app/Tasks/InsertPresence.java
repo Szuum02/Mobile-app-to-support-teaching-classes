@@ -75,7 +75,7 @@ public class InsertPresence extends AsyncTask<Void, Void, Void>{
 
                     @Override
                     public void onFailure(Call<Void> call, Throwable t) {
-                        Log.e("SQLException", "Server error while adding");
+                        Log.e("SQLException", "Server error while adding presence");
                     }
                 });
         return null;
