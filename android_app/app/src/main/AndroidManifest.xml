@@ -46,6 +46,9 @@
             android:name=".Student.ChooseAction"
             android:exported="false" />
         <activity
+            android:name=".Student.ShowPresence"
+            android:exported="false" />
+        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>

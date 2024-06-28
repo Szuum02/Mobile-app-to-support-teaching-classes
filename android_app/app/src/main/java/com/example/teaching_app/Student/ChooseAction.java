@@ -50,8 +50,9 @@ public class ChooseAction extends AppCompatActivity {
     }
 
     public void goToPresence(View view, long groupId, long studentId){
-        Intent intent = new Intent(this, CheckPresence.class);
-        intent.putExtra("lesson", groupId);
+        Intent intent = new Intent(this, ShowPresence.class);
+        intent.putExtra("group", groupId);
+        intent.putExtra("student", studentId);
         startActivity(intent);
     }
 

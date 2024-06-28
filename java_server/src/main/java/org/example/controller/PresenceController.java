@@ -9,9 +9,8 @@ import org.example.reopsitory.StudentRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Date;
+import java.util.List;
 
 @RestController
 @RequestMapping("/presence")
@@ -54,5 +53,10 @@ public class PresenceController {
         presence.setPresenceType(Presence.getById(Integer.parseInt(presenceType)));
         presenceRepository.save(presence);
         System.out.println("success");
+    }
+
+    @GetMapping("/student/getPresences")
+    public List<Object[]> getStudentsPresences(@RequestParam("studentId") long studentId, @RequestParam("groupId") long groupId) {
+        return presenceRepository.getStudentPresence(studentId, groupId);
     }
 }
