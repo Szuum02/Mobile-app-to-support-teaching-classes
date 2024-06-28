@@ -61,11 +61,11 @@ public class User {
         this.id = id;
     }
 
-    public boolean isStudent() {
+    public boolean getIsStudent() {
         return isStudent;
     }
 
-    public void setStudent(boolean student) {
+    public void setIsStudent(boolean student) {
         isStudent = student;
     }
 

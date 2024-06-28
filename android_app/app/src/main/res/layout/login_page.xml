@@ -15,7 +15,7 @@
         android:layout_marginBottom="126dp"
         android:ems="10"
         android:inputType="textPassword"
-        android:text="haslo26"
+        android:text="haslo1"
         app:layout_constraintBottom_toTopOf="@+id/button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
@@ -30,7 +30,7 @@
         android:layout_marginBottom="103dp"
         android:ems="10"
         android:inputType="text"
-        android:text="nauczyciel1@example.com"
+        android:text="student1@example.com"
         app:layout_constraintBottom_toTopOf="@+id/PasswordText"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

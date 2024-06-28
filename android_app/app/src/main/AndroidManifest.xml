@@ -40,6 +40,12 @@
             android:name=".Teacher.ChooseLesson"
             android:exported="false" />
         <activity
+            android:name=".Student.ChooseSubject"
+            android:exported="false" />
+        <activity
+            android:name=".Student.ChooseAction"
+            android:exported="false" />
+        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>

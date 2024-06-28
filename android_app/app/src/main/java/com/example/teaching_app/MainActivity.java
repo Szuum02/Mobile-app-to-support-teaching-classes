@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.teaching_app.Student.ChooseSubject;
 import com.example.teaching_app.Student.TmpStudentDefaultView;
 import com.example.teaching_app.Tasks.LoginTask;
 import com.example.teaching_app.Teacher.ChooseGroup;
@@ -82,8 +83,9 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
 
-        if (user.isStudent()) {
-            Intent intent = new Intent(this, TmpStudentDefaultView.class);
+        if (user.getIsStudent()) {
+            Intent intent = new Intent(this, ChooseSubject.class);
+            intent.putExtra("student_id", user.getId());
             this.startActivity(intent);
             return;
         }

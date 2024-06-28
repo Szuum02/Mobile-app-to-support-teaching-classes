@@ -34,7 +34,7 @@ public class UserController {
         User user = new User();
         user.setMail(mail);
         user.setPassword(password);
-        user.setStudent(isStudent);
+        user.setIsStudent(isStudent);
         userRepository.save(user);
         return user;
     }
