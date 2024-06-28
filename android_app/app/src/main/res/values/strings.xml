@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">teaching-app</string>
+    <string name="title_activity_choose_lesson">activity_choose_lesson</string>
+</resources>
