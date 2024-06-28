@@ -49,6 +49,9 @@
             android:name=".Student.ShowPresence"
             android:exported="false" />
         <activity
+            android:name=".Student.ShowActivityRanking"
+            android:exported="false" />
+        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
