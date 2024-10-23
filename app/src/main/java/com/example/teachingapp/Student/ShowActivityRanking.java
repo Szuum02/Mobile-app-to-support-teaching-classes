@@ -8,7 +8,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.teachingapp.R;
-import com.example.teachingapp.Tasks.ShowRankingTask;
+import com.example.teachingapp.Tasks.RankingActivityTask;
 
 public class ShowActivityRanking extends AppCompatActivity {
     @Override
@@ -27,8 +27,8 @@ public class ShowActivityRanking extends AppCompatActivity {
 
             LinearLayout layout = findViewById(R.id.linearLayout);
 
-            ShowRankingTask rankingTask = new ShowRankingTask(this, groupId, studentId);
-            rankingTask.showRanking();
+            RankingActivityTask rankingTask = new RankingActivityTask(this, groupId, studentId);
+            rankingTask.getRanking();
         }
 
     }

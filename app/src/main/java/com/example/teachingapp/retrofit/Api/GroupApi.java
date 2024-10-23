@@ -1,8 +1,5 @@
 package com.example.teachingapp.retrofit.Api;
 
-import com.example.teachingapp.models.Lesson;
-import com.example.teachingapp.models.Student;
-
 import java.util.List;
 
 import retrofit2.Call;

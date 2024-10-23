@@ -82,4 +82,11 @@ public class MainActivity extends AppCompatActivity {
         intent.putExtra("teacher_id", 27);
         startActivity(intent);
     }
+
+    private void forceGoToNextActivity() {
+        Intent intent = new Intent(this, ChooseSubject.class);
+        intent.putExtra("student_id", 1);
+        this.startActivity(intent);
+        return;
+    }
 }
