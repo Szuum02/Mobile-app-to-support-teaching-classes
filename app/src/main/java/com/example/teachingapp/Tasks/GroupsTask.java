@@ -53,69 +53,6 @@ public class GroupsTask {
                 });
     }
 
-//    @Override
-//    protected List<String> doInBackground(Integer... teacherIds) {
-//        Connection connection = null;
-//        PreparedStatement statement = null;
-//        ResultSet resultSet = null;
-//        List<String> groups = new ArrayList<>();
-//
-//        try {
-//            connection = DatabaseConnection.getConnection();
-//            if (connection != null) {
-//                String query = "SELECT group_id, subject FROM Groups WHERE teacher_id = ?";
-//                statement = connection.prepareStatement(query);
-//                statement.setInt(1, id);
-//
-//                resultSet = statement.executeQuery();
-//
-//                while (resultSet.next()) {
-//                    int groupId = resultSet.getInt("group_id");
-//                    String groupName = resultSet.getString("subject");
-//
-//                    groups.add(Integer.toString(groupId));
-//                    groups.add(groupName);
-//                }
-//            }
-//        } catch (SQLException e) {
-//            Log.e("TAG1", "SQLException: " + e.getMessage());
-//        } finally {
-//            // Closing database resources
-//            try {
-//                if (resultSet != null) resultSet.close();
-//                if (statement != null) statement.close();
-//                if (connection != null) connection.close();
-//            } catch (SQLException e) {
-//                Log.e("TAG2", "SQLException: " + e.getMessage());
-//            }
-//        }
-
-//        return groups;
-//    }
-//
-//    @Override
-//    protected void onPostExecute(List<String> groups) {
-//        super.onPostExecute(groups);
-//        if (groups != null && groups.size() > 0) {
-//            LinearLayout layout = activity.findViewById(R.id.linearLayout);
-//            layout.removeAllViews();
-//            for (int i = 0; i < groups.size(); i += 2) {
-//                Button button = new Button(activity);
-//                button.setText(groups.get(i + 1));
-//                final int groupId = Integer.parseInt(groups.get(i));
-//                button.setOnClickListener(new View.OnClickListener() {
-//                    @Override
-//                    public void onClick(View v) {
-//                        goToChosenGroup(groupId);
-//                    }
-//                });
-//                layout.addView(button);
-//            }
-//        } else {
-//            Toast.makeText(activity, "Brak grup do wyświetlenia", Toast.LENGTH_SHORT).show();
-//        }
-//    }
-
     private void showGroup(List<Object[]> groups) {
         if (groups != null && !groups.isEmpty()) {
             LinearLayout layout = activity.findViewById(R.id.linearLayout);
@@ -134,19 +71,6 @@ public class GroupsTask {
                 });
                 layout.addView(button);
             }
-//
-//            for (int i = 0; i < groups.size(); i += 2) {
-//                Button button = new Button(activity);
-//                button.setText(groups.get(i + 1));
-//                final int groupId = Integer.parseInt(groups.get(i));
-//                button.setOnClickListener(new View.OnClickListener() {
-//                    @Override
-//                    public void onClick(View v) {
-//                        goToChosenGroup(groupId);
-//                    }
-//                });
-//                layout.addView(button);
-//            }
         } else {
             Toast.makeText(activity, "Brak grup do wyświetlenia", Toast.LENGTH_SHORT).show();
         }
