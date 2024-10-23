@@ -71,12 +71,12 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
 
-        if (user.isStudent()) {
-            Intent intent = new Intent(this, ChooseSubject.class);
-            intent.putExtra("student_id", user.getId());
-            this.startActivity(intent);
-            return;
-        }
+//        if (user.isStudent()) {
+//            Intent intent = new Intent(this, ChooseSubject.class);
+//            intent.putExtra("student_id", user.getId());
+//            this.startActivity(intent);
+//            return;
+//        }
 
         Intent intent = new Intent(this, ChooseGroup.class);
         intent.putExtra("teacher_id", 27);
