@@ -8,11 +8,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
 import com.example.teachingapp.Student.ChooseSubject;
 import com.example.teachingapp.Teacher.ChooseGroup;
@@ -29,9 +25,6 @@ import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity {
 
-    //    private EditText loginText;
-//    private  EditText passwordText;
-//    private Button loginButton;
     private String type;
 
     @Override
@@ -53,15 +46,10 @@ public class MainActivity extends AppCompatActivity {
         String password = passwordText.getText().toString();
         Log.d("info", login + " " + password);
 
-
-
         userApi.getUserByMail(login, password)
                 .enqueue(new Callback<User>() {
                     @Override
                     public void onResponse(Call<User> call, Response<User> response) {
-//                        Log.d("info", "start");
-//                        Toast.makeText(MainActivity.this, "succesc", Toast.LENGTH_SHORT).show();
-//                        Log.d("info", "end");
                         tryLogin(response.body(), password);
                     }
 
@@ -71,9 +59,6 @@ public class MainActivity extends AppCompatActivity {
                         Logger.getLogger(MainActivity.class.getName()).log(Level.SEVERE, "Error occurred", t);
                     }
                 });
-//        // Execute AsyncTask to fetch user data from database
-//        LoginTask loginTask = new LoginTask(this, login, password);
-//        loginTask.execute();
     }
 
     private void tryLogin(User user, String password) {
@@ -86,10 +71,11 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
 
-        if (user.getIsStudent()) {
+        if (user.isStudent()) {
             Intent intent = new Intent(this, ChooseSubject.class);
             intent.putExtra("student_id", user.getId());
             this.startActivity(intent);
+            return;
         }
 
         Intent intent = new Intent(this, ChooseGroup.class);

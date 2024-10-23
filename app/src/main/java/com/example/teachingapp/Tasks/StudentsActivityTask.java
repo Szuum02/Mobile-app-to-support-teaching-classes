@@ -96,90 +96,6 @@ public class StudentsActivityTask {
         }
     }
 
-//    @Override
-//    protected ArrayList<Student> doInBackground(Integer... groupIds) {
-//        Connection connection = null;
-//        PreparedStatement statement = null;
-//        ResultSet resultSet = null;
-//        ArrayList<Student> students = new ArrayList<>();
-//        Log.d("czek1", "czek1");
-//        try {
-//            connection = DatabaseConnection.getConnection();
-//            Log.d("czek2", "czek2");
-//
-//            if (connection != null) {
-//                String query = "SELECT gr.student_id, st.name, st.lastname, st.index_number " +
-//                        "FROM StudentsGroups AS gr " +
-//                        "INNER JOIN Students AS st " +
-//                        "ON gr.student_id = st.student_id " +
-//                        "WHERE group_id = ?";
-//
-//                statement = connection.prepareStatement(query);
-//                statement.setInt(1, lessonId);
-//                resultSet = statement.executeQuery();
-//                Log.d("czek3", "czek2");
-//
-//                while (resultSet.next()) {
-//                    int id = resultSet.getInt("student_id");
-//                    String name = resultSet.getString("name");
-//                    String lastname = resultSet.getString("lastname");
-//                    int index = resultSet.getInt("index_number");
-//                    Student student = new Student(id,name, lastname, index);
-//                    students.add(student);
-//                    studentHashMap.put(student.getName() + " " + student.getLastname(),student);
-//                }
-//            }
-//        } catch (SQLException e) {
-//            Toast errorToast = Toast.makeText(activity,
-//                    "coś nie pykło ", Toast.LENGTH_SHORT);                               // dla ułatwienia, usunąć przed pokazaniem
-//            errorToast.show();
-//        } finally {
-//            // Closing database resources
-//            try {
-//                if (resultSet != null) resultSet.close();
-//                if (statement != null) statement.close();
-//                if (connection != null) connection.close();
-//            } catch (SQLException e) {
-//                Toast errorToast = Toast.makeText(activity,
-//                        "coś nie pykło 2", Toast.LENGTH_SHORT);                               // dla ułatwienia, usunąć przed pokazaniem
-//                errorToast.show();
-//            }
-//        }
-//
-//        return students;
-//    }
-
-//    @Override
-//    protected void onPostExecute(ArrayList<Student> students) {
-//        super.onPostExecute(students);
-//
-//        if (students != null && !students.isEmpty()) {
-//            LinearLayout dynamicLayout = activity.findViewById(R.id.dynamic_layout);
-//            dynamicLayout.removeAllViews();
-//
-//            for (Student student : students) {
-//                LinearLayout layout = new LinearLayout(activity);
-//                layout.setLayoutParams(new LinearLayout.LayoutParams(
-//                        LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-//                layout.setOrientation(LinearLayout.HORIZONTAL);
-//                layout.setPadding(0, 10, 0, 10);
-//
-//                TextView textView = new TextView(activity);
-//                textView.setLayoutParams(new LinearLayout.LayoutParams(
-//                        0, LinearLayout.LayoutParams.WRAP_CONTENT, 1.0f));
-//                textView.setText(student.getName() + " " + student.getLastname());
-//                layout.addView(textView);
-//
-//                addPointsButton(layout, "+1", student);
-//                addPointsButton(layout, "-1", student);
-//
-//                dynamicLayout.addView(layout);
-//            }
-//        } else {
-//            Toast.makeText(activity, "Brak studentów do wyświetlenia", Toast.LENGTH_SHORT).show();
-//        }
-//    }
-
 
     private void addPointsButton(LinearLayout layout, String buttonText, long studentId, String fullName, TextView textView) {
         Button button = new Button(activity);
@@ -194,19 +110,8 @@ public class StudentsActivityTask {
                 int points = (buttonText.equals("+1")) ? 1: -1;
 
                 if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-//                    LocalDateTime currentDateTime = LocalDateTime.now();
-//                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-//                    String formattedDateTime = currentDateTime.format(formatter);
-//                    Log.d("dataT", String.valueOf(tmp.getId()));
-//
-//                    Log.d("dataT", formattedDateTime);
-//
-//                    Log.d("dataT", String.valueOf(points));
-//
-//                    InsertActivity task = new InsertActivity(tmp.getId(),formattedDateTime, points);
-//                    task.execute();
                     InsertActivity task = new InsertActivity(studentId, lessonId, points, fullName, textView);
-                    task.execute();
+                    task.addActivity();
                 }
             }
         });

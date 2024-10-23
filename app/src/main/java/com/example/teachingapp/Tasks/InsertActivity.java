@@ -1,10 +1,10 @@
 package com.example.teachingapp.Tasks;
 
-import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.TextView;
 
-import com.example.teachingapp.models.Activity;
+import androidx.annotation.NonNull;
+
 import com.example.teachingapp.retrofit.Api.ActivityApi;
 import com.example.teachingapp.retrofit.RetrofitService;
 
@@ -14,7 +14,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class InsertActivity extends AsyncTask<Void, Void, Void>{
+public class InsertActivity {
 
     private final long studentId;
     private final long lessonId;
@@ -30,60 +30,25 @@ public class InsertActivity extends AsyncTask<Void, Void, Void>{
         this.textView = textView;
     }
 
-    // todo -> zmienić na bardziej aktualny sposób
-    @Override
-    protected Void doInBackground(Void... voids) {
+    public void addActivity(){
         RetrofitService retrofitService = new RetrofitService();
         ActivityApi activityApi = retrofitService.getRetrofit().create(ActivityApi.class);
+        activityApi.addActivity(lessonId, studentId, LocalDateTime.now(), points).enqueue(new Callback<Integer>() {
+            @Override
+            public void onResponse(@NonNull Call<Integer> call, @NonNull Response<Integer> response) {
+                updateText(response.body());
+                Log.e("Working", response.body().toString());
+            }
 
-        LocalDateTime currentDate = LocalDateTime.now();
-
-        activityApi.addActivity(lessonId, studentId, currentDate, points)
-                .enqueue(new Callback<Integer>() {
-                    @Override
-                    public void onResponse(Call<Integer> call, Response<Integer> response) {
-                        updateText(response.body());
-                    }
-
-                    @Override
-                    public void onFailure(Call<Integer> call, Throwable t) {
-                        Log.e("SQLException", "Server error while adding activity");
-                    }
-                });
-
-
-//        Connection connection = null;
-//        PreparedStatement statement = null;
-//
-//        try {
-//            connection = DatabaseConnection.getConnection();
-//            if (connection != null) {
-//                String query = "INSERT INTO Activities (student_id, date, points) VALUES (?, ?, ?)";
-//                statement = connection.prepareStatement(query);
-//                statement.setInt(1, studentId);
-//                statement.setString(2, date);
-//                statement.setInt(3, points);
-//                Log.d("SQLSTAT", statement.toString());
-//                statement.executeUpdate();
-//            } else {
-//                Log.d("polonczenie", "Brak połączenia z bazą danych");
-//            }
-//        } catch (SQLException e) {
-//            Log.e("SQLException", "Błąd podczas wykonywania zapytania SQL", e);
-//        } finally {
-//            try {
-//                if (statement != null) statement.close();
-//                if (connection != null) connection.close();
-//            } catch (SQLException e) {
-//                Log.e("SQLException", "Błąd podczas zamykania połączenia", e);
-//            }
-//        }
-//
-        return null;
+            @Override
+            public void onFailure(@NonNull Call<Integer> call, @NonNull Throwable t) {
+                Log.e("SQLException", "Server error while adding activity");
+            }
+        });
     }
 
     private void updateText(int points) {
         String pointsText = (points < 0) ? String.valueOf(points) : String.format("+%d", points);
-        textView.setText(fullName + " " + pointsText);
+        textView.setText(String.format("%s %s", fullName, pointsText));
     }
 }

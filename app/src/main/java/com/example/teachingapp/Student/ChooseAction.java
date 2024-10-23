@@ -15,6 +15,7 @@ public class ChooseAction extends AppCompatActivity {
     private long groupId;
     private long studentId;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,7 +43,7 @@ public class ChooseAction extends AppCompatActivity {
         presenceButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                goToPresence(v, groupId, studentId);
+                goToPresence(v, groupId, 26);
             }
         });
     }

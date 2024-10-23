@@ -24,12 +24,10 @@ import retrofit2.Response;
 public class StudentsPresenceTask {
     private final CheckPresence activity;
     private final long lessonId;
-//    private HashMap<String, Student> studentHashMap;
 
     public StudentsPresenceTask(CheckPresence activity, long lessonId) {
         this.activity = activity;
         this.lessonId = lessonId;
-//        this.studentHashMap = new HashMap<>();
     }
 
     public void findAndShowStudents() {
@@ -95,48 +93,44 @@ public class StudentsPresenceTask {
     }
 
 
-    public void addPresenceButton(LinearLayout layout, long studentId, Button button, List<Button> otherButtons) {
-//        Button button = new Button(activity);
+    public void addPresenceButton(LinearLayout layout, long studentId, Button button, List<Button> unpressedButtons) {
         button.setLayoutParams(new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
         button.setText("O");
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                InsertPresence insertPresence = new InsertPresence(studentId, 1, lessonId, button, otherButtons);
-                insertPresence.execute();
+                InsertPresence insertPresence = new InsertPresence(studentId, 1, lessonId, button, unpressedButtons);
+                insertPresence.removeAndAddPresence();
             }
         });
         layout.addView(button);
     }
 
-    public void addAbsenceButton(LinearLayout layout, long studentId, Button button, List<Button> otherButtons){
-//        Button button = new Button(activity);
+    public void addAbsenceButton(LinearLayout layout, long studentId, Button button, List<Button> unpressedButtons){
         button.setLayoutParams(new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
         button.setText("N");
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                InsertPresence insertPresence = new InsertPresence(studentId, 2, lessonId, button, otherButtons);
-                insertPresence.execute();
+                InsertPresence insertPresence = new InsertPresence(studentId, 2, lessonId, button, unpressedButtons);
+                insertPresence.removeAndAddPresence();
 
             }
         });
         layout.addView(button);
     }
 
-    public void addLateButton(LinearLayout layout, long studentId, Button button, List<Button> otherButtons){
-//        Button button = new Button(activity);
+    public void addLateButton(LinearLayout layout, long studentId, Button button, List<Button> unpressedButtons){
         button.setLayoutParams(new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
         button.setText("S");
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                InsertPresence insertPresence = new InsertPresence(studentId, 3, lessonId, button, otherButtons);
-                insertPresence.execute();
-
+                InsertPresence insertPresence = new InsertPresence(studentId, 3, lessonId, button, unpressedButtons);
+                insertPresence.removeAndAddPresence();
             }
         });
         layout.addView(button);

@@ -1,8 +1,9 @@
 package com.example.teachingapp.Tasks;
 
-import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.Button;
+
+import androidx.annotation.NonNull;
 
 import com.example.teachingapp.retrofit.Api.PresenceApi;
 import com.example.teachingapp.retrofit.RetrofitService;
@@ -14,62 +15,43 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class InsertPresence extends AsyncTask<Void, Void, Void>{
+public class InsertPresence {
 
     private final long studentId;
     private final int presenceTypeId;
     private final long lessonId;
     private final Button button;
-    private final List<Button> otherButtons;
+    private final List<Button> unpressedButtons;
 
-    public InsertPresence(long studentId, int presenceTypeId, long lessonId, Button button, List<Button> otherButtons) {
+    public InsertPresence(long studentId, int presenceTypeId, long lessonId,
+                          Button button, List<Button> unpressedButtons) {
         this.studentId = studentId;
         this.presenceTypeId = presenceTypeId;
         this.lessonId = lessonId;
         this.button = button;
-        this.otherButtons = otherButtons;
+        this.unpressedButtons = unpressedButtons;
     }
 
-
-    // todo -> zmienić na bardziej aktualne metody (zachowując wywołanie asynchroniczne)
-    @Override
-
-    protected Void doInBackground(Void... voids) {
+    protected void removeAndAddPresence() {
         RetrofitService retrofitService = new RetrofitService();
         PresenceApi presenceApi = retrofitService.getRetrofit().create(PresenceApi.class);
 
-        LocalDateTime currentDate = LocalDateTime.now();
-
-//        presenceApi.removePresence(studentId, lessonId)
-//                .enqueue(new Callback<Presence>() {
-//                    @Override
-//                    public void onResponse(Call<Presence> call, Response<Presence> response) {
-//                        Log.d("remove", "Success");
-//                    }
-//
-//                    @Override
-//                    public void onFailure(Call<Presence> call, Throwable t) {
-//                        Log.e("SQLException", "Server error while removing");
-//                    }
-//                });
-
-        presenceApi.removeAndAddPresence(studentId, lessonId, currentDate, presenceTypeId)
-                .enqueue(new Callback<Void>() {
+        presenceApi.removeAndAddPresence(studentId, lessonId, LocalDateTime.now(), presenceTypeId)
+                .enqueue(new Callback<>() {
                     @Override
-                    public void onResponse(Call<Void> call, Response<Void> response) {
+                    public void onResponse(@NonNull Call<Void> call, @NonNull Response<Void> response) {
                         Log.d("add", "Success");
-                        changeColour();
+                        changeButtonColour();
                     }
 
                     @Override
-                    public void onFailure(Call<Void> call, Throwable t) {
+                    public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) {
                         Log.e("SQLException", "Server error while adding presence");
                     }
                 });
-        return null;
     }
 
-    private void changeColour() {
+    private void changeButtonColour() {
         switch (presenceTypeId) {
             case 1:
                 button.setBackgroundColor(0xFF00FF00);
@@ -81,7 +63,7 @@ public class InsertPresence extends AsyncTask<Void, Void, Void>{
                 button.setBackgroundColor(0xFFFFFF00);
                 break;
         }
-        for (Button otherButton : otherButtons) {
+        for (Button otherButton : unpressedButtons) {
             otherButton.setBackgroundColor(0xFF808080);
         }
     }

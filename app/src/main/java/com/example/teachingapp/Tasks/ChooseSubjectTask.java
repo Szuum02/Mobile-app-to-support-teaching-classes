@@ -7,11 +7,12 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+
 import com.example.teachingapp.R;
 import com.example.teachingapp.Student.ChooseAction;
 import com.example.teachingapp.Student.ChooseSubject;
 import com.example.teachingapp.Teacher.ChooseGroup;
-import com.example.teachingapp.models.Group;
 import com.example.teachingapp.retrofit.Api.StudentApi;
 import com.example.teachingapp.retrofit.RetrofitService;
 
@@ -23,9 +24,10 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+
 public class ChooseSubjectTask {
-    private ChooseSubject activity;
-    private long studentId;
+    private final ChooseSubject activity;
+    private final long studentId;
 
     public ChooseSubjectTask(ChooseSubject activity, long studentId) {
         this.activity = activity;
@@ -36,19 +38,20 @@ public class ChooseSubjectTask {
         RetrofitService retrofitService = new RetrofitService();
         StudentApi studentApi = retrofitService.getRetrofit().create(StudentApi.class);
 
-        studentApi.findAllGroups(studentId)
-                .enqueue(new Callback<List<Object[]>>() {
-                    @Override
-                    public void onResponse(Call<List<Object[]>> call, Response<List<Object[]>> response) {
-                        showGroup(response.body());
-                    }
+        studentApi.findAllGroups(studentId).enqueue(new Callback<>() {
+            @Override
+            public void onResponse(@NonNull Call<List<Object[]>> call,
+                                   @NonNull Response<List<Object[]>> response) {
+                showGroup(response.body());
+            }
 
-                    @Override
-                    public void onFailure(Call<List<Object[]>> call, Throwable t) {
-                        Toast.makeText(activity, "Server error", Toast.LENGTH_SHORT).show();
-                        Logger.getLogger(ChooseGroup.class.getName()).log(Level.SEVERE, "Error occurred", t);
-                    }
-                });
+            @Override
+            public void onFailure(@NonNull Call<List<Object[]>> call, @NonNull Throwable t) {
+                Toast.makeText(activity, "Server error", Toast.LENGTH_SHORT).show();
+                Logger.getLogger(ChooseGroup.class.getName())
+                        .log(Level.SEVERE, "Error occurred", t);
+            }
+        });
     }
 
     private void showGroup(List<Object[]> groups) {
@@ -56,15 +59,12 @@ public class ChooseSubjectTask {
             LinearLayout layout = activity.findViewById(R.id.linearLayout);
             layout.removeAllViews();
             for (Object[] group : groups) {
-                Long groupId = ((Double) group[0]).longValue();
-                String subject = (String) group[1];
-
                 Button button = new Button(activity);
-                button.setText(subject);
+                button.setText(group[1].toString());
                 button.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        showActions(groupId);
+                        showActions((Long) group[0]);
                     }
                 });
                 layout.addView(button);
@@ -75,9 +75,10 @@ public class ChooseSubjectTask {
     }
 
     private void showActions(Long groupId){
-        Intent intent = new Intent(activity, ChooseAction.class);
-        intent.putExtra("group", groupId);
-        intent.putExtra("student", studentId);
+        Intent intent = new Intent(activity, ChooseAction.class)
+                .putExtra("group", groupId)
+                .putExtra("student", studentId);
+
         Log.d("GRUPAID", String.valueOf(groupId));
         activity.startActivity(intent);
     }
