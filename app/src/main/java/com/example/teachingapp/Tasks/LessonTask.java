@@ -7,6 +7,8 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+
 import com.example.teachingapp.R;
 import com.example.teachingapp.Teacher.ChooseGroup;
 import com.example.teachingapp.Teacher.ChooseLesson;
@@ -40,80 +42,20 @@ public class LessonTask {
         groupApi.getLessons(groupId)
                 .enqueue(new Callback<List<Object[]>>() {
                     @Override
-                    public void onResponse(Call<List<Object[]>> call, Response<List<Object[]>> response) {
+                    public void onResponse(@NonNull Call<List<Object[]>> call,
+                                           @NonNull Response<List<Object[]>> response) {
                         showLessons(response.body());
                     }
 
                     @Override
-                    public void onFailure(Call<List<Object[]>> call, Throwable t) {
+                    public void onFailure(@NonNull Call<List<Object[]>> call,
+                                          @NonNull Throwable t) {
                         Toast.makeText(activity, "Server error", Toast.LENGTH_SHORT).show();
-                        Logger.getLogger(ChooseGroup.class.getName()).log(Level.SEVERE, "Error occurred", t);
+                        Logger.getLogger(
+                                ChooseGroup.class.getName()).log(Level.SEVERE, "Error occurred", t);
                     }
                 });
     }
-
-//    @Override
-//    protected List<String> doInBackground(Integer... teacherIds) {
-//        Connection connection = null;
-//        PreparedStatement statement = null;
-//        ResultSet resultSet = null;
-//        List<String> groups = new ArrayList<>();
-//
-//        try {
-//            connection = DatabaseConnection.getConnection();
-//            if (connection != null) {
-//                String query = "SELECT group_id, subject FROM Groups WHERE teacher_id = ?";
-//                statement = connection.prepareStatement(query);
-//                statement.setInt(1, id);
-//
-//                resultSet = statement.executeQuery();
-//
-//                while (resultSet.next()) {
-//                    int groupId = resultSet.getInt("group_id");
-//                    String groupName = resultSet.getString("subject");
-//
-//                    groups.add(Integer.toString(groupId));
-//                    groups.add(groupName);
-//                }
-//            }
-//        } catch (SQLException e) {
-//            Log.e("TAG1", "SQLException: " + e.getMessage());
-//        } finally {
-//            // Closing database resources
-//            try {
-//                if (resultSet != null) resultSet.close();
-//                if (statement != null) statement.close();
-//                if (connection != null) connection.close();
-//            } catch (SQLException e) {
-//                Log.e("TAG2", "SQLException: " + e.getMessage());
-//            }
-//        }
-
-//        return groups;
-//    }
-//
-//    @Override
-//    protected void onPostExecute(List<String> groups) {
-//        super.onPostExecute(groups);
-//        if (groups != null && groups.size() > 0) {
-//            LinearLayout layout = activity.findViewById(R.id.linearLayout);
-//            layout.removeAllViews();
-//            for (int i = 0; i < groups.size(); i += 2) {
-//                Button button = new Button(activity);
-//                button.setText(groups.get(i + 1));
-//                final int groupId = Integer.parseInt(groups.get(i));
-//                button.setOnClickListener(new View.OnClickListener() {
-//                    @Override
-//                    public void onClick(View v) {
-//                        goToChosenGroup(groupId);
-//                    }
-//                });
-//                layout.addView(button);
-//            }
-//        } else {
-//            Toast.makeText(activity, "Brak grup do wyświetlenia", Toast.LENGTH_SHORT).show();
-//        }
-//    }
 
     private void showLessons(List<Object[]> lessons) {
         if (lessons != null && !lessons.isEmpty()) {
@@ -133,19 +75,6 @@ public class LessonTask {
                 });
                 layout.addView(button);
             }
-//
-//            for (int i = 0; i < groups.size(); i += 2) {
-//                Button button = new Button(activity);
-//                button.setText(groups.get(i + 1));
-//                final int groupId = Integer.parseInt(groups.get(i));
-//                button.setOnClickListener(new View.OnClickListener() {
-//                    @Override
-//                    public void onClick(View v) {
-//                        goToChosenGroup(groupId);
-//                    }
-//                });
-//                layout.addView(button);
-//            }
         } else {
             Toast.makeText(activity, "Brak grup do wyświetlenia", Toast.LENGTH_SHORT).show();
         }

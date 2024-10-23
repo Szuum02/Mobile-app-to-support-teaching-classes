@@ -23,7 +23,7 @@ public class PresenceOrActivity extends AppCompatActivity {
         if (intent != null) {
             lessonId = intent.getLongExtra("lesson", 0);  //Todo dodać obsługę wyjątku na brak grupy
             Toast errorToast = Toast.makeText(PresenceOrActivity.this,
-                    String.valueOf(lessonId), Toast.LENGTH_SHORT);                               // dla ułatwienia, usunąć przed pokazaniem
+                    String.valueOf(lessonId), Toast.LENGTH_SHORT); // dla ułatwienia, usunąć przed pokazaniem
             errorToast.show();
         }
 

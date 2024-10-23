@@ -64,7 +64,7 @@ public class ChooseSubjectTask {
                 button.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        showActions((Long) group[0]);
+                        showActions(((Double) group[0]).longValue());
                     }
                 });
                 layout.addView(button);
@@ -75,9 +75,9 @@ public class ChooseSubjectTask {
     }
 
     private void showActions(Long groupId){
-        Intent intent = new Intent(activity, ChooseAction.class)
-                .putExtra("group", groupId)
-                .putExtra("student", studentId);
+        Intent intent = new Intent(activity, ChooseAction.class);
+        intent.putExtra("group", groupId);
+        intent.putExtra("student", studentId);
 
         Log.d("GRUPAID", String.valueOf(groupId));
         activity.startActivity(intent);

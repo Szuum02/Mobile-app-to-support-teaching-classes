@@ -4,6 +4,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 import java.util.List;
@@ -38,12 +39,14 @@ public class ShowRankingTask {
         activityApi.getRanking(groupId)
                 .enqueue(new Callback<List<Object[]>>() {
                     @Override
-                    public void onResponse(Call<List<Object[]>> call, Response<List<Object[]>> response) {
+                    public void onResponse(@NonNull Call<List<Object[]>> call,
+                                           @NonNull Response<List<Object[]>> response) {
                         createRanking(response.body());
                     }
 
                     @Override
-                    public void onFailure(Call<List<Object[]>> call, Throwable t) {
+                    public void onFailure(@NonNull Call<List<Object[]>> call,
+                                          @NonNull Throwable t) {
                         Toast.makeText(activity, "Server error", Toast.LENGTH_SHORT).show();
                         Logger.getLogger(ChooseGroup.class.getName()).log(Level.SEVERE, "Error occurred", t);
                     }

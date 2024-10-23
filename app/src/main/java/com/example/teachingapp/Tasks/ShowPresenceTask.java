@@ -1,11 +1,10 @@
 package com.example.teachingapp.Tasks;
 
-import android.view.View;
-import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.example.teachingapp.R;
@@ -14,10 +13,6 @@ import com.example.teachingapp.Teacher.ChooseGroup;
 import com.example.teachingapp.retrofit.Api.PresenceApi;
 import com.example.teachingapp.retrofit.RetrofitService;
 
-import org.w3c.dom.Text;
-
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -44,12 +39,14 @@ public class ShowPresenceTask {
         presenceApi.getPresences(studentId, groupId)
                 .enqueue(new Callback<List<Object[]>>() {
                     @Override
-                    public void onResponse(Call<List<Object[]>> call, Response<List<Object[]>> response) {
+                    public void onResponse(@NonNull Call<List<Object[]>> call,
+                                           @NonNull Response<List<Object[]>> response) {
                         showPresences(response.body());
                     }
 
                     @Override
-                    public void onFailure(Call<List<Object[]>> call, Throwable t) {
+                    public void onFailure(@NonNull Call<List<Object[]>> call,
+                                          @NonNull Throwable t) {
                         Toast.makeText(activity, "Server error", Toast.LENGTH_SHORT).show();
                         Logger.getLogger(ChooseGroup.class.getName()).log(Level.SEVERE, "Error occurred", t);
                     }
@@ -67,10 +64,7 @@ public class ShowPresenceTask {
                 String presenceType = (String) presence[1];
 
                 TextView textView = getTextView(date + " " + presenceType);
-//                TextView presenceTextView = getPresenceTextView(presenceType);
-
                 layout.addView(textView);
-//                layout.addView(presenceTextView);
             }
         } else {
             Toast.makeText(activity, "Brak grup do wyświetlenia", Toast.LENGTH_SHORT).show();

@@ -43,7 +43,7 @@ public class ChooseAction extends AppCompatActivity {
         presenceButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                goToPresence(v, groupId, 26);
+                goToPresence(v, groupId, studentId);
             }
         });
     }
