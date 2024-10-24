@@ -1,5 +1,6 @@
 package com.example.teachingapp.Tasks;
 
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.text.TextUtils;
@@ -28,10 +29,15 @@ import retrofit2.Response;
 public class StudentsPresenceTask {
     private final CheckPresence activity;
     private final long lessonId;
+    private static int VERTICAL = 1;
+    private static int HORIZONTAL = 0;
+    private SharedPreferences sharedPreferences;
+    String leftHandTribe;
 
-    public StudentsPresenceTask(CheckPresence activity, long lessonId) {
+    public StudentsPresenceTask(CheckPresence activity, long lessonId, SharedPreferences sharedPreferences) {
         this.activity = activity;
         this.lessonId = lessonId;
+        this.sharedPreferences = sharedPreferences;
     }
 
     public void findAndShowStudents() {
@@ -42,6 +48,7 @@ public class StudentsPresenceTask {
                 .enqueue(new Callback<List<Object[]>>() {
                     @Override
                     public void onResponse(Call<List<Object[]>> call, Response<List<Object[]>> response) {
+                        leftHandTribe = sharedPreferences.getString("left_hand", "off");
                         showStudents(response.body());
                     }
 
@@ -61,62 +68,97 @@ public class StudentsPresenceTask {
                 long studentId = ((Double) student[0]).longValue();
                 String name = (String) student[1];
                 String lastName = (String) student[2];
+                TextView textView = prepareTextView(name, lastName);
 
-                LinearLayout layout = new LinearLayout(activity);
-                layout.setLayoutParams(new LinearLayout.LayoutParams(
-                        LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-                layout.setOrientation(LinearLayout.HORIZONTAL);
-                layout.setPadding(0, 10, 0, 10);
+                LinearLayout layout = prepareMainLinearLayout();
 
-                LinearLayout leftLayout = new LinearLayout(activity);
-                leftLayout.setLayoutParams(new LinearLayout.LayoutParams(
-                        0, LinearLayout.LayoutParams.WRAP_CONTENT, 1.0f));
-                leftLayout.setOrientation(LinearLayout.VERTICAL);
-
-                TextView textView = new TextView(activity);
-                textView.setLayoutParams(new LinearLayout.LayoutParams(
-                        LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-                textView.setText(name + " " + lastName);
-                textView.setBackgroundResource(R.drawable.basic_texview);
-                textView.setTextSize(17);
-                textView.setTextColor(Color.BLACK);
-                textView.setTypeface(null, Typeface.BOLD);
-                textView.setPadding(16, 8, 16, 8);
-                textView.setSingleLine(false);
-                textView.setMaxLines(2);
-                textView.setEllipsize(TextUtils.TruncateAt.END);
-                textView.setGravity(Gravity.CENTER_VERTICAL | Gravity.START);
-
-                leftLayout.addView(textView);
-
-                LinearLayout rightLayout = new LinearLayout(activity);
-                rightLayout.setLayoutParams(new LinearLayout.LayoutParams(
-                        0, LinearLayout.LayoutParams.WRAP_CONTENT, 1.0f));
-                rightLayout.setOrientation(LinearLayout.HORIZONTAL);
-
-                Button presenceButton = new Button(activity);
-                Button absenceButton = new Button(activity);
-                Button lateButton = new Button(activity);
-
-                addPresenceButton(rightLayout, studentId, presenceButton, List.of(absenceButton, lateButton), textView);
-                addAbsenceButton(rightLayout, studentId, absenceButton, List.of(presenceButton, lateButton), textView);
-                addLateButton(rightLayout, studentId, lateButton, List.of(presenceButton, absenceButton), textView);
-
-                LinearLayout.LayoutParams buttonParams = new LinearLayout.LayoutParams(
-                        0, LinearLayout.LayoutParams.WRAP_CONTENT, 1.0f);
-                presenceButton.setLayoutParams(buttonParams);
-                absenceButton.setLayoutParams(buttonParams);
-                lateButton.setLayoutParams(buttonParams);
-
-                layout.addView(leftLayout);
-                layout.addView(rightLayout);
-                dynamicLayout.addView(layout);
+                if(leftHandTribe.equals("on")) {
+                    layout.addView(setUpLayoutWithButtons(textView, studentId));
+                    layout.addView(setUpLayoutWithTexView(textView));
+                    dynamicLayout.addView(layout);
+                }
+                else {
+                    layout.addView(setUpLayoutWithTexView(textView));
+                    layout.addView(setUpLayoutWithButtons(textView, studentId));
+                    dynamicLayout.addView(layout);
+                }
             }
         } else {
             Toast.makeText(activity, "Brak studentów do wyświetlenia", Toast.LENGTH_SHORT).show();
         }
     }
 
+
+    public TextView prepareTextView(String name, String lastName) {
+        TextView textView = new TextView(activity);
+        textView.setLayoutParams(new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+        textView.setText(name + " " + lastName);
+        textView.setBackgroundResource(R.drawable.basic_texview);
+        textView.setTextSize(17);
+        textView.setTextColor(Color.BLACK);
+        textView.setTypeface(null, Typeface.BOLD);
+        textView.setPadding(16, 8, 16, 8);
+        textView.setSingleLine(false);
+        textView.setMaxLines(2);
+        textView.setEllipsize(TextUtils.TruncateAt.END);
+        textView.setGravity(Gravity.CENTER_VERTICAL | Gravity.START);
+
+        return textView;
+    }
+
+    public LinearLayout setUpLayoutWithTexView(TextView textView) {
+        LinearLayout layout = prepareSideLinearLayout(VERTICAL);
+        layout.addView(textView);
+
+        return layout;
+    }
+
+    public LinearLayout setUpLayoutWithButtons(TextView textView, Long studentId) {
+        LinearLayout layout = prepareSideLinearLayout(HORIZONTAL);
+
+
+        Button presenceButton = new Button(activity);
+        Button absenceButton = new Button(activity);
+        Button lateButton = new Button(activity);
+
+        addPresenceButton(layout, studentId, presenceButton, List.of(absenceButton, lateButton), textView);
+        addAbsenceButton(layout, studentId, absenceButton, List.of(presenceButton, lateButton), textView);
+        addLateButton(layout, studentId, lateButton, List.of(presenceButton, absenceButton), textView);
+
+        LinearLayout.LayoutParams buttonParams = new LinearLayout.LayoutParams(
+                0, LinearLayout.LayoutParams.WRAP_CONTENT, 1.0f);
+        presenceButton.setLayoutParams(buttonParams);
+        absenceButton.setLayoutParams(buttonParams);
+        lateButton.setLayoutParams(buttonParams);
+
+        return layout;
+    }
+
+    public LinearLayout prepareSideLinearLayout(Integer orientation) {
+        LinearLayout layout = new LinearLayout(activity);
+        layout.setLayoutParams(new LinearLayout.LayoutParams(
+                0, LinearLayout.LayoutParams.WRAP_CONTENT, 1.0f));
+
+        if (orientation == LinearLayout.VERTICAL) {
+            layout.setOrientation(LinearLayout.VERTICAL);
+        } else if (orientation == LinearLayout.HORIZONTAL) {
+            layout.setOrientation(LinearLayout.HORIZONTAL);
+        }
+
+        return layout;
+    }
+
+
+    public LinearLayout prepareMainLinearLayout() {
+        LinearLayout layout = new LinearLayout(activity);
+        layout.setLayoutParams(new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+        layout.setOrientation(LinearLayout.HORIZONTAL);
+        layout.setPadding(0, 10, 0, 10);
+
+        return layout;
+    }
 
     public void addPresenceButton(LinearLayout layout, long studentId, Button button, List<Button> unpressedButtons, TextView textView) {
         button.setLayoutParams(new LinearLayout.LayoutParams(
@@ -126,7 +168,7 @@ public class StudentsPresenceTask {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                InsertPresence insertPresence = new InsertPresence(studentId, 1, lessonId, button, unpressedButtons, textView);
+                InsertPresence insertPresence = new InsertPresence(studentId, 1, lessonId, button, unpressedButtons, textView, leftHandTribe);
                 insertPresence.removeAndAddPresence();
             }
         });
@@ -141,7 +183,7 @@ public class StudentsPresenceTask {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                InsertPresence insertPresence = new InsertPresence(studentId, 2, lessonId, button, unpressedButtons, textView);
+                InsertPresence insertPresence = new InsertPresence(studentId, 2, lessonId, button, unpressedButtons, textView, leftHandTribe);
                 insertPresence.removeAndAddPresence();
             }
         });
@@ -156,7 +198,7 @@ public class StudentsPresenceTask {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                InsertPresence insertPresence = new InsertPresence(studentId, 3, lessonId, button, unpressedButtons, textView);
+                InsertPresence insertPresence = new InsertPresence(studentId, 3, lessonId, button, unpressedButtons, textView, leftHandTribe);
                 insertPresence.removeAndAddPresence();
             }
         });

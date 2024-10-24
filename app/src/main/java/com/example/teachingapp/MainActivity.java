@@ -1,11 +1,14 @@
 package com.example.teachingapp;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.Switch;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -26,11 +29,18 @@ import retrofit2.Response;
 public class MainActivity extends AppCompatActivity {
 
     private String type;
+    Settings settings;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login_page);
+        LinearLayout settingsBar = findViewById(R.id.settingsBar);
+        SharedPreferences sharedPreferences = getSharedPreferences("Settings", MODE_PRIVATE);
+        Button settingsButton = findViewById(R.id.settings_buttton);
+        Switch leftHandSwitch = findViewById(R.id.lef_hand_switch);
+        settings = new Settings(settingsButton, settingsBar, sharedPreferences, leftHandSwitch);
     }
 
 

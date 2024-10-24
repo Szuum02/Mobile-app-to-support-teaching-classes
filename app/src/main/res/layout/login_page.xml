@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -12,10 +11,10 @@
         android:layout_width="299dp"
         android:layout_height="220dp"
         android:layout_margin="16dp"
-        android:layout_marginStart="103dp"
-        android:layout_marginTop="162dp"
-        android:layout_marginEnd="60dp"
-        android:layout_marginBottom="16dp"
+        android:layout_marginStart="96dp"
+        android:layout_marginTop="277dp"
+        android:layout_marginEnd="57dp"
+        android:layout_marginBottom="102dp"
         android:src="@drawable/book_symbol"
         app:layout_constraintBottom_toTopOf="@+id/LoginText"
         app:layout_constraintEnd_toEndOf="parent"
@@ -66,9 +65,57 @@
         android:text="Zaloguj się"
         android:textAppearance="@style/TextAppearance.AppCompat.Display2"
         android:textColor="#FFFFFF"
-        android:textSize="20sp"
+        android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/settings_buttton"
+        android:layout_width="39dp"
+        android:layout_height="36dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="356dp"
+        android:layout_marginBottom="461dp"
+        android:background="@drawable/setting_button"
+        app:layout_constraintBottom_toTopOf="@+id/LoginText"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <LinearLayout
+        android:id="@+id/settingsBar"
+        android:layout_width="390dp"
+        android:layout_height="111dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="11dp"
+        android:background="#AA7A51"
+        android:orientation="vertical"
+        android:visibility="gone"
+        android:padding="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/settings_buttton">
+
+
+        <TextView
+            android:id="@+id/settings_text"
+            android:layout_width="wrap_content"
+            android:layout_height="36dp"
+            android:layout_marginTop="8dp"
+            android:text="Tryb leworęczny"
+            android:textColor="@android:color/black"
+            android:textSize="16sp"></TextView>
+
+        <Switch
+            android:id="@+id/lef_hand_switch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Wyłączony"
+            tools:ignore="UseSwitchCompatOrMaterialXml" />
+    </LinearLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

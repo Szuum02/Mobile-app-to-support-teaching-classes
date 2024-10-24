@@ -25,15 +25,17 @@ public class InsertPresence {
     private final Button button;
     private final List<Button> unpressedButtons;
     private TextView textView;
+    private String leftHandTribe;
 
     public InsertPresence(long studentId, int presenceTypeId, long lessonId,
-                          Button button, List<Button> unpressedButtons, TextView textView) {
+                          Button button, List<Button> unpressedButtons, TextView textView, String leftHandTribe) {
         this.studentId = studentId;
         this.presenceTypeId = presenceTypeId;
         this.lessonId = lessonId;
         this.button = button;
         this.unpressedButtons = unpressedButtons;
         this.textView = textView;
+        this.leftHandTribe = leftHandTribe;
     }
 
     protected void removeAndAddPresence() {
@@ -59,15 +61,30 @@ public class InsertPresence {
         switch (presenceTypeId) {
             case 1:
                 button.setBackgroundResource(R.drawable.o_button);
-                textView.setBackgroundResource(R.drawable.green_textview);
+                if(leftHandTribe.equals("on")){
+                    textView.setBackgroundResource(R.drawable.green_textview_left_hand);
+                }
+                else {
+                    textView.setBackgroundResource(R.drawable.green_textview_right_hand);
+                }
                 break;
             case 2:
                 button.setBackgroundResource(R.drawable.n_button);
-                textView.setBackgroundResource(R.drawable.red_textview);
+                if(leftHandTribe.equals("on")){
+                    textView.setBackgroundResource(R.drawable.red_textview_left_hand);
+                }
+                else {
+                    textView.setBackgroundResource(R.drawable.red_textview_right_hand);
+                }
                 break;
             case 3:
                 button.setBackgroundResource(R.drawable.s_button);
-                textView.setBackgroundResource(R.drawable.yellow_textview);
+                if(leftHandTribe.equals("on")){
+                    textView.setBackgroundResource(R.drawable.yellow_textview_left_hand);
+                }
+                else {
+                    textView.setBackgroundResource(R.drawable.yellow_textview_right_hand);
+                }
                 break;
         }
         for (Button otherButton : unpressedButtons) {
