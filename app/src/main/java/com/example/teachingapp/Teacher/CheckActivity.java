@@ -21,14 +21,6 @@ public class CheckActivity extends AppCompatActivity {
         Long lessonId;
         Intent intent = getIntent();
 
-        Button refreshLeft = findViewById(R.id.odswiez_left);
-        Button presenceLeft = findViewById(R.id.obecnosc_left);
-        Button planLeft = findViewById(R.id.plan_left);
-
-        Button refreshRight = findViewById(R.id.odswiez_right);
-        Button presenceRight = findViewById(R.id.obecnosc_right);
-        Button planRight = findViewById(R.id.plan_right);
-
         if (intent != null) {
             lessonId = intent.getLongExtra("lesson", 0);  //Todo dodać obsługę wyjątku na brak grupy
             Toast errorToast = Toast.makeText(CheckActivity.this,
