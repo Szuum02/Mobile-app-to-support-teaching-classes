@@ -17,7 +17,6 @@ import com.example.teachingapp.Teacher.ChooseGroup;
 import com.example.teachingapp.retrofit.Api.LessonApi;
 import com.example.teachingapp.retrofit.RetrofitService;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -75,13 +74,12 @@ public class StudentsPresenceTask {
                 if(leftHandTribe.equals("on")) {
                     layout.addView(setUpLayoutWithButtons(textView, studentId));
                     layout.addView(setUpLayoutWithTexView(textView));
-                    dynamicLayout.addView(layout);
                 }
                 else {
                     layout.addView(setUpLayoutWithTexView(textView));
                     layout.addView(setUpLayoutWithButtons(textView, studentId));
-                    dynamicLayout.addView(layout);
                 }
+                dynamicLayout.addView(layout);
             }
         } else {
             Toast.makeText(activity, "Brak studentów do wyświetlenia", Toast.LENGTH_SHORT).show();
@@ -95,9 +93,8 @@ public class StudentsPresenceTask {
                 LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
         textView.setText(name + " " + lastName);
         textView.setBackgroundResource(R.drawable.basic_texview);
-        textView.setTextSize(17);
+        textView.setTextSize(15);
         textView.setTextColor(Color.BLACK);
-        textView.setTypeface(null, Typeface.BOLD);
         textView.setPadding(16, 8, 16, 8);
         textView.setSingleLine(false);
         textView.setMaxLines(2);
@@ -164,7 +161,7 @@ public class StudentsPresenceTask {
         button.setLayoutParams(new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
         button.setText("O");
-        button.setBackgroundResource(R.drawable.o_button);
+        button.setBackgroundResource(R.drawable.green_button);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -179,7 +176,7 @@ public class StudentsPresenceTask {
         button.setLayoutParams(new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
         button.setText("N");
-        button.setBackgroundResource(R.drawable.n_button);
+        button.setBackgroundResource(R.drawable.red_button);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -194,7 +191,7 @@ public class StudentsPresenceTask {
         button.setLayoutParams(new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
         button.setText("S");
-        button.setBackgroundResource(R.drawable.s_button);
+        button.setBackgroundResource(R.drawable.yellow_button);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

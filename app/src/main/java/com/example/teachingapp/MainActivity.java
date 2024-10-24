@@ -57,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
         Log.d("info", login + " " + password);
 
         userApi.getUserByMail(login, password)
-                .enqueue(new Callback<User>() {
+                .enqueue(new Callback<>() {
                     @Override
                     public void onResponse(Call<User> call, Response<User> response) {
                         tryLogin(response.body(), password);

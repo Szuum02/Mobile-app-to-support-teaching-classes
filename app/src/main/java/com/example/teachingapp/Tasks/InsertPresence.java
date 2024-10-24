@@ -60,7 +60,7 @@ public class InsertPresence {
     private void changeButtonAndTextViewColours() {
         switch (presenceTypeId) {
             case 1:
-                button.setBackgroundResource(R.drawable.o_button);
+                button.setBackgroundResource(R.drawable.green_button);
                 if(leftHandTribe.equals("on")){
                     textView.setBackgroundResource(R.drawable.green_textview_left_hand);
                 }
@@ -69,7 +69,7 @@ public class InsertPresence {
                 }
                 break;
             case 2:
-                button.setBackgroundResource(R.drawable.n_button);
+                button.setBackgroundResource(R.drawable.red_button);
                 if(leftHandTribe.equals("on")){
                     textView.setBackgroundResource(R.drawable.red_textview_left_hand);
                 }
@@ -78,7 +78,7 @@ public class InsertPresence {
                 }
                 break;
             case 3:
-                button.setBackgroundResource(R.drawable.s_button);
+                button.setBackgroundResource(R.drawable.yellow_button);
                 if(leftHandTribe.equals("on")){
                     textView.setBackgroundResource(R.drawable.yellow_textview_left_hand);
                 }
