@@ -1,6 +1,7 @@
 package com.example.teachingapp.Teacher;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.Toast;
 
@@ -24,7 +25,9 @@ public class CheckPresence extends AppCompatActivity {
                     "wita obecność: " + lessonId, Toast.LENGTH_SHORT);
             errorToast.show();
 
-            StudentsPresenceTask studentsPresenceTask = new StudentsPresenceTask(CheckPresence.this, lessonId);
+            SharedPreferences sharedPreferences = getSharedPreferences("Settings", MODE_PRIVATE);
+
+            StudentsPresenceTask studentsPresenceTask = new StudentsPresenceTask(CheckPresence.this, lessonId, sharedPreferences);
             studentsPresenceTask.findAndShowStudents();
         }
 

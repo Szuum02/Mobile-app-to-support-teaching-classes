@@ -2,9 +2,11 @@ package com.example.teachingapp.Tasks;
 
 import android.util.Log;
 import android.widget.Button;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 
+import com.example.teachingapp.R;
 import com.example.teachingapp.retrofit.Api.PresenceApi;
 import com.example.teachingapp.retrofit.RetrofitService;
 
@@ -22,14 +24,18 @@ public class InsertPresence {
     private final long lessonId;
     private final Button button;
     private final List<Button> unpressedButtons;
+    private TextView textView;
+    private String leftHandTribe;
 
     public InsertPresence(long studentId, int presenceTypeId, long lessonId,
-                          Button button, List<Button> unpressedButtons) {
+                          Button button, List<Button> unpressedButtons, TextView textView, String leftHandTribe) {
         this.studentId = studentId;
         this.presenceTypeId = presenceTypeId;
         this.lessonId = lessonId;
         this.button = button;
         this.unpressedButtons = unpressedButtons;
+        this.textView = textView;
+        this.leftHandTribe = leftHandTribe;
     }
 
     protected void removeAndAddPresence() {
@@ -41,7 +47,7 @@ public class InsertPresence {
                     @Override
                     public void onResponse(@NonNull Call<Void> call, @NonNull Response<Void> response) {
                         Log.d("add", "Success");
-                        changeButtonColour();
+                        changeButtonAndTextViewColours();
                     }
 
                     @Override
@@ -51,20 +57,38 @@ public class InsertPresence {
                 });
     }
 
-    private void changeButtonColour() {
+    private void changeButtonAndTextViewColours() {
         switch (presenceTypeId) {
             case 1:
-                button.setBackgroundColor(0xFF00FF00);
+                button.setBackgroundResource(R.drawable.green_button);
+                if(leftHandTribe.equals("on")){
+                    textView.setBackgroundResource(R.drawable.green_textview_left_hand);
+                }
+                else {
+                    textView.setBackgroundResource(R.drawable.green_textview_right_hand);
+                }
                 break;
             case 2:
-                button.setBackgroundColor(0xFFFF0000);
+                button.setBackgroundResource(R.drawable.red_button);
+                if(leftHandTribe.equals("on")){
+                    textView.setBackgroundResource(R.drawable.red_textview_left_hand);
+                }
+                else {
+                    textView.setBackgroundResource(R.drawable.red_textview_right_hand);
+                }
                 break;
             case 3:
-                button.setBackgroundColor(0xFFFFFF00);
+                button.setBackgroundResource(R.drawable.yellow_button);
+                if(leftHandTribe.equals("on")){
+                    textView.setBackgroundResource(R.drawable.yellow_textview_left_hand);
+                }
+                else {
+                    textView.setBackgroundResource(R.drawable.yellow_textview_right_hand);
+                }
                 break;
         }
         for (Button otherButton : unpressedButtons) {
-            otherButton.setBackgroundColor(0xFF808080);
+            otherButton.setBackgroundResource(R.drawable.gray_button);
         }
     }
 }

@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#EFEAC2"
     tools:context=".Teacher.PresenceOrActivity">
 
     <Button
@@ -15,6 +16,9 @@
         android:layout_marginEnd="87dp"
         android:layout_marginBottom="82dp"
         android:text="Activity"
+        android:textColor="#FFFFFF"
+        android:textSize="20sp"
+        android:background="@drawable/button_background"
         app:layout_constraintBottom_toTopOf="@+id/presenceButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -28,6 +32,9 @@
         android:layout_marginEnd="87dp"
         android:layout_marginBottom="253dp"
         android:text="Presence"
+        android:background="@drawable/button_background"
+        android:textColor="#FFFFFF"
+        android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

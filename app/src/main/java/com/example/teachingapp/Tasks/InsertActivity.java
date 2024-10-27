@@ -20,14 +20,16 @@ public class InsertActivity {
     private final long lessonId;
     private final int points;
     private final String fullName;
-    private final TextView textView;
+    private final TextView nameView;
+    private TextView pointsView;
 
-    public InsertActivity(long studentId, long lessonId, int points, String fullName, TextView textView) {
+    public InsertActivity(long studentId, long lessonId, int points, String fullName, TextView nameView, TextView pointsView) {
         this.studentId = studentId;
         this.lessonId = lessonId;
         this.points = points;
         this.fullName = fullName;
-        this.textView = textView;
+        this.nameView = nameView;
+        this.pointsView = pointsView;
     }
 
     public void addActivity(){
@@ -49,6 +51,7 @@ public class InsertActivity {
 
     private void updateText(int points) {
         String pointsText = (points < 0) ? String.valueOf(points) : String.format("+%d", points);
-        textView.setText(String.format("%s %s", fullName, pointsText));
+        nameView.setText(String.format("%s ", fullName));
+        pointsView.setText(pointsText);
     }
 }
