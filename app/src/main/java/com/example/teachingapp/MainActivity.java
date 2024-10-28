@@ -46,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
         sharedPreferences = getSharedPreferences("Settings", MODE_PRIVATE);
         Button settingsButton = findViewById(R.id.settings_buttton);
         Switch leftHandSwitch = findViewById(R.id.lef_hand_switch);
-        settings = new Settings(settingsButton, settingsBar, sharedPreferences, leftHandSwitch);
+        settings = new Settings(settingsButton, settingsBar, sharedPreferences, leftHandSwitch, this);
     }
 
 

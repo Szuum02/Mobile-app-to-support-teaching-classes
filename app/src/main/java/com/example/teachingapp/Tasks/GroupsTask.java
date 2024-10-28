@@ -2,8 +2,10 @@ package com.example.teachingapp.Tasks;
 
 import static androidx.core.content.ContextCompat.startActivity;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
@@ -14,6 +16,7 @@ import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -44,6 +47,7 @@ public class GroupsTask {
     private SharedPreferences sharedPreferences;
     private String lastDate;
     private TextView textView;
+    AlertDialog dialog;
 
     public GroupsTask(ChooseGroup activity, long id, SharedPreferences sharedPreferences) {
         this.activity = activity;
@@ -223,6 +227,20 @@ public class GroupsTask {
         leftDates.setBackgroundResource(R.drawable.button_background);
         rightDates.setBackgroundResource(R.drawable.button_background);
 
+        leftDates.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showDatesDialog(dates);
+            }
+        });
+
+        rightDates.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showDatesDialog(dates);
+            }
+        });
+
         nextButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -254,5 +272,33 @@ public class GroupsTask {
         });
         prevButton.setBackgroundResource(R.drawable.button_background);
     }
+    public void showDatesDialog(Set<String> dates) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(activity);
 
+        ScrollView scrollView = new ScrollView(activity);
+        LinearLayout layout = new LinearLayout(activity);
+        layout.setOrientation(LinearLayout.VERTICAL);
+
+        for (String date : dates) {
+            Button dateButton = new Button(activity);
+            dateButton.setText(date);
+            dateButton.setBackgroundResource(R.drawable.button_background);
+
+            dateButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    lastDate = date;
+                    showGroup(dates, getLessons());
+                    dialog.dismiss();
+                }
+            });
+
+            layout.addView(dateButton);
+        }
+
+        scrollView.addView(layout);
+        builder.setView(scrollView);
+        dialog = builder.create();
+        dialog.show();
+    }
 }

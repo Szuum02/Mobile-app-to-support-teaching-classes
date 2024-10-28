@@ -8,6 +8,8 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.Switch;
 
+import com.example.teachingapp.models.Activity;
+
 public class Settings {
     private Button button;
     private LinearLayout settingsBar;
@@ -15,7 +17,8 @@ public class Settings {
     private Switch leftHandSwitch;
     private String savedLefHandTribe;
 
-    public Settings(Button button, LinearLayout settingsBar, SharedPreferences sharedPreferences, Switch leftHandSwitch) {
+    public Settings(Button button, LinearLayout settingsBar,
+                    SharedPreferences sharedPreferences, Switch leftHandSwitch, MainActivity activity) {
         this.button = button;
         this.settingsBar = settingsBar;
         this.sharedPreferences = sharedPreferences;
