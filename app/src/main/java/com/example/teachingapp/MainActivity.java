@@ -15,6 +15,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.teachingapp.Student.ChooseSubject;
 import com.example.teachingapp.Teacher.ChooseGroup;
+import com.example.teachingapp.dtos.StudentHistoryDTO;
 import com.example.teachingapp.dtos.TeacherDTO;
 import com.example.teachingapp.dtos.UserDTO;
 import com.example.teachingapp.retrofit.Api.StudentApi;
@@ -22,7 +23,9 @@ import com.example.teachingapp.retrofit.Api.TeacherApi;
 import com.example.teachingapp.retrofit.Api.UserApi;
 import com.example.teachingapp.retrofit.RetrofitService;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
+import java.lang.reflect.Type;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 

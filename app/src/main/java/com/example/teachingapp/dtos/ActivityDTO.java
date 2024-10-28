@@ -8,11 +8,13 @@ import lombok.Setter;
 @Getter
 @Setter
 public class ActivityDTO {
-    private final LocalDateTime date;
+    private final String date;
     private final int points;
 
-    public ActivityDTO(LocalDateTime date, int points) {
+    public ActivityDTO(String date, int points) {
         this.date = date;
         this.points = points;
     }
+
+
 }

@@ -42,7 +42,7 @@ public class InsertPresence {
         RetrofitService retrofitService = new RetrofitService();
         PresenceApi presenceApi = retrofitService.getRetrofit().create(PresenceApi.class);
 
-        presenceApi.removeAndAddPresence(studentId, lessonId, LocalDateTime.now(), presenceTypeId)
+        presenceApi.removeAndAddPresence(studentId, lessonId, LocalDateTime.now().plusHours(1), presenceTypeId)
                 .enqueue(new Callback<>() {
                     @Override
                     public void onResponse(@NonNull Call<Void> call, @NonNull Response<Void> response) {

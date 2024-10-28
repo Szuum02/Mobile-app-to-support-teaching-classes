@@ -25,6 +25,7 @@ import com.example.teachingapp.R;
 import com.example.teachingapp.Teacher.CheckActivity;
 import com.example.teachingapp.Teacher.ChooseGroup;
 import com.example.teachingapp.Teacher.ChooseLesson;
+import com.example.teachingapp.Teacher.PresenceOrActivity;
 import com.example.teachingapp.dtos.LessonDTO;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -111,7 +112,7 @@ public class GroupsTask {
     }
 
     private void showLessons(Long groupId){
-        Intent intent = new Intent(activity, CheckActivity.class);
+        Intent intent = new Intent(activity, PresenceOrActivity.class);
         intent.putExtra("lesson", groupId);
         activity.startActivity(intent);
     }

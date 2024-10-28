@@ -1,5 +1,8 @@
 package com.example.teachingapp.Tasks;
 
+import static androidx.core.content.ContextCompat.startActivity;
+
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -14,6 +17,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 
 import com.example.teachingapp.R;
+import com.example.teachingapp.Teacher.ActivityHistory;
 import com.example.teachingapp.Teacher.CheckActivity;
 import com.example.teachingapp.Teacher.ChooseGroup;
 import com.example.teachingapp.retrofit.Api.LessonApi;
@@ -226,9 +230,18 @@ public class StudentsActivityTask {
                                 long studentId, String fullName, TextView nameView, TextView pointsView) {
         button.setText(buttonText);
         button.setBackgroundResource(R.drawable.blue_button);
+
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(activity, ActivityHistory.class);
+                intent.putExtra("studentId", studentId);
+                intent.putExtra("groupId", lessonId);
+                activity.startActivity(intent);
+            }
+        });
+
         layout.addView(button);
     }
-
-
 
 }

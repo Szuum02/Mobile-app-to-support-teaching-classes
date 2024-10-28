@@ -35,7 +35,7 @@ public class InsertActivity {
     public void addActivity(){
         RetrofitService retrofitService = new RetrofitService();
         ActivityApi activityApi = retrofitService.getRetrofit().create(ActivityApi.class);
-        activityApi.addActivity(lessonId, studentId, LocalDateTime.now(), points).enqueue(new Callback<Integer>() {
+        activityApi.addActivity(lessonId, studentId, LocalDateTime.now().plusHours(1), points).enqueue(new Callback<Integer>() {
             @Override
             public void onResponse(@NonNull Call<Integer> call, @NonNull Response<Integer> response) {
                 updateText(response.body());

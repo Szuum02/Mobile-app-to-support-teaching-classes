@@ -57,27 +57,27 @@ public class RankingActivityTask {
 
     }
 
-    public void getStudentHistory() {
-        RetrofitService retrofitService = new RetrofitService();
-        ActivityApi activityApi = retrofitService.getRetrofit().create(ActivityApi.class);
-
-        activityApi.getStudentHistory(studentId, groupId)
-                .enqueue(new Callback<>() {
-                    @Override
-                    public void onResponse(@NonNull Call<List<ActivityDTO>> call,
-                                           @NonNull Response<List<ActivityDTO>> response) {
-                        createStudentHistoryInformation(response.body());
-                    }
-
-                    @Override
-                    public void onFailure(@NonNull Call<List<ActivityDTO>> call,
-                                          @NonNull Throwable t) {
-                        Toast.makeText(activity, "Server error", Toast.LENGTH_SHORT).show();
-                        Logger.getLogger(ChooseGroup.class.getName()).log(Level.SEVERE, "Error occurred", t);
-                    }
-                });
-
-    }
+//    public void getStudentHistory() {
+//        RetrofitService retrofitService = new RetrofitService();
+//        ActivityApi activityApi = retrofitService.getRetrofit().create(ActivityApi.class);
+//
+//        activityApi.getStudentHistory(studentId, groupId)
+//                .enqueue(new Callback<>() {
+//                    @Override
+//                    public void onResponse(@NonNull Call<List<ActivityDTO>> call,
+//                                           @NonNull Response<List<ActivityDTO>> response) {
+//                        createStudentHistoryInformation(response.body());
+//                    }
+//
+//                    @Override
+//                    public void onFailure(@NonNull Call<List<ActivityDTO>> call,
+//                                          @NonNull Throwable t) {
+//                        Toast.makeText(activity, "Server error", Toast.LENGTH_SHORT).show();
+//                        Logger.getLogger(ChooseGroup.class.getName()).log(Level.SEVERE, "Error occurred", t);
+//                    }
+//                });
+//
+//    }
 
     public void getGroupRanking() {
         RetrofitService retrofitService = new RetrofitService();
