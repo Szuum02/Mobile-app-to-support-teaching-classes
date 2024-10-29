@@ -17,16 +17,11 @@ public class ChooseGroup extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_choose_group);
-        long group;
         Intent intent = getIntent();
         if (intent != null) {
-            group = intent.getLongExtra("teacher_id", 0);
-            Toast errorToast = Toast.makeText(ChooseGroup.this,
-                    "wita obecność: " + group, Toast.LENGTH_SHORT);
-            errorToast.show();
 
             SharedPreferences sharedPreferences = getSharedPreferences("Settings", MODE_PRIVATE);
-            GroupsTask groupsTask = new GroupsTask(this, group, sharedPreferences);
+            GroupsTask groupsTask = new GroupsTask(this, sharedPreferences);
             groupsTask.findAndShowGroups();
         }
     }

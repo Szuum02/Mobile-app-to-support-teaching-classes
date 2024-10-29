@@ -8,18 +8,93 @@
     tools:context=".Teacher.CheckPresence">
 
 
-    <ScrollView
-        android:id="@+id/scrollView2"
-        android:layout_width="407dp"
-        android:layout_height="660dp"
-        android:layout_marginStart="26dp"
-        android:layout_marginEnd="34dp"
-        android:layout_marginBottom="329dp"
+    <Button
+        android:id="@+id/refresh_button"
+        android:layout_width="106dp"
+        android:layout_height="29dp"
+        android:layout_marginTop="7dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="15dp"
+        android:background="@drawable/button_background"
+        android:text="Odśwież"
+        android:textColor="@color/white"
+        app:layout_constraintBottom_toTopOf="@+id/nfc_button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/scrollView2" />
+
+    <Button
+        android:id="@+id/nfc_button"
+        android:layout_width="118dp"
+        android:layout_height="58dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginEnd="64dp"
+        android:layout_marginBottom="2dp"
+        android:background="@drawable/button_background"
+        android:text="NFC"
+        android:textColor="@color/white"
+        app:layout_constraintBottom_toTopOf="@+id/timetable_button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/refresh_button" />
+
+    <Button
+        android:id="@+id/acitivty_button"
+        android:layout_width="118dp"
+        android:layout_height="58dp"
+        android:layout_marginStart="66dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginEnd="43dp"
+        android:layout_marginBottom="12dp"
+        android:background="@drawable/button_background"
+        android:text="Aktywność"
+        android:textColor="@color/white"
+        app:layout_constraintBottom_toTopOf="@+id/timetable_button"
+        app:layout_constraintEnd_toStartOf="@+id/nfc_button"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/data_button" />
+
+    <Button
+        android:id="@+id/timetable_button"
+        android:layout_width="118dp"
+        android:layout_height="58dp"
+        android:layout_marginStart="146dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="147dp"
+        android:layout_marginBottom="20dp"
+        android:background="@drawable/button_background"
+        android:text="Plan"
+        android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.086">
+        app:layout_constraintTop_toBottomOf="@+id/nfc_button" />
+
+    <Button
+        android:id="@+id/data_button"
+        android:layout_width="106dp"
+        android:layout_height="29dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="7dp"
+        android:layout_marginEnd="167dp"
+        android:layout_marginBottom="15dp"
+        android:background="@drawable/button_background"
+        android:text="Data"
+        android:textColor="@color/white"
+        app:layout_constraintBottom_toTopOf="@+id/acitivty_button"
+        app:layout_constraintEnd_toStartOf="@+id/refresh_button"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/scrollView2" />
+
+    <ScrollView
+        android:id="@+id/scrollView2"
+        android:layout_width="401dp"
+        android:layout_height="532dp"
+        android:layout_marginStart="26dp"
+        android:layout_marginEnd="38dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.388"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <LinearLayout
             android:id="@+id/dynamic_layout"
@@ -30,7 +105,6 @@
 
 
     </ScrollView>
-
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

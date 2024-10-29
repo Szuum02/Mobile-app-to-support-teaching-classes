@@ -24,17 +24,17 @@ public class InsertPresence {
     private final long lessonId;
     private final Button button;
     private final List<Button> unpressedButtons;
-    private TextView textView;
+    private Button studentButton;
     private String leftHandTribe;
 
     public InsertPresence(long studentId, int presenceTypeId, long lessonId,
-                          Button button, List<Button> unpressedButtons, TextView textView, String leftHandTribe) {
+                          Button button, List<Button> unpressedButtons, Button studentButton, String leftHandTribe) {
         this.studentId = studentId;
         this.presenceTypeId = presenceTypeId;
         this.lessonId = lessonId;
         this.button = button;
         this.unpressedButtons = unpressedButtons;
-        this.textView = textView;
+        this.studentButton = studentButton;
         this.leftHandTribe = leftHandTribe;
     }
 
@@ -62,28 +62,28 @@ public class InsertPresence {
             case 1:
                 button.setBackgroundResource(R.drawable.green_button);
                 if(leftHandTribe.equals("on")){
-                    textView.setBackgroundResource(R.drawable.green_textview_left_hand);
+                    studentButton.setBackgroundResource(R.drawable.green_textview_left_hand);
                 }
                 else {
-                    textView.setBackgroundResource(R.drawable.green_textview_right_hand);
+                    studentButton.setBackgroundResource(R.drawable.green_textview_right_hand);
                 }
                 break;
             case 2:
                 button.setBackgroundResource(R.drawable.red_button);
                 if(leftHandTribe.equals("on")){
-                    textView.setBackgroundResource(R.drawable.red_textview_left_hand);
+                    studentButton.setBackgroundResource(R.drawable.red_textview_left_hand);
                 }
                 else {
-                    textView.setBackgroundResource(R.drawable.red_textview_right_hand);
+                    studentButton.setBackgroundResource(R.drawable.red_textview_right_hand);
                 }
                 break;
             case 3:
                 button.setBackgroundResource(R.drawable.yellow_button);
                 if(leftHandTribe.equals("on")){
-                    textView.setBackgroundResource(R.drawable.yellow_textview_left_hand);
+                    studentButton.setBackgroundResource(R.drawable.yellow_textview_left_hand);
                 }
                 else {
-                    textView.setBackgroundResource(R.drawable.yellow_textview_right_hand);
+                    studentButton.setBackgroundResource(R.drawable.yellow_textview_right_hand);
                 }
                 break;
         }

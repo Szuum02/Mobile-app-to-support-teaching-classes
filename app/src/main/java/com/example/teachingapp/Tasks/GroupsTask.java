@@ -1,17 +1,13 @@
 package com.example.teachingapp.Tasks;
 
-import static androidx.core.content.ContextCompat.startActivity;
-
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.graphics.Typeface;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.text.style.RelativeSizeSpan;
 import android.text.style.StyleSpan;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
@@ -22,9 +18,7 @@ import android.widget.Toast;
 
 import com.example.teachingapp.DayOfWeekMapper;
 import com.example.teachingapp.R;
-import com.example.teachingapp.Teacher.CheckActivity;
 import com.example.teachingapp.Teacher.ChooseGroup;
-import com.example.teachingapp.Teacher.ChooseLesson;
 import com.example.teachingapp.Teacher.PresenceOrActivity;
 import com.example.teachingapp.dtos.LessonDTO;
 import com.google.gson.Gson;
@@ -44,15 +38,13 @@ public class GroupsTask {
     private static final String ERROR_MESSAGE = "Cannot fetch groups";
 
     private ChooseGroup activity;
-    private long id;
     private SharedPreferences sharedPreferences;
     private String lastDate;
     private TextView textView;
     AlertDialog dialog;
 
-    public GroupsTask(ChooseGroup activity, long id, SharedPreferences sharedPreferences) {
+    public GroupsTask(ChooseGroup activity, SharedPreferences sharedPreferences) {
         this.activity = activity;
-        this.id = id;
         this.sharedPreferences = sharedPreferences;
         LocalDate today = LocalDate.now();
         this.lastDate = today.minusDays(1).toString();
@@ -113,7 +105,7 @@ public class GroupsTask {
 
     private void showLessons(Long groupId){
         Intent intent = new Intent(activity, PresenceOrActivity.class);
-        intent.putExtra("lesson", groupId);
+        intent.putExtra("group_id", groupId);
         activity.startActivity(intent);
     }
 

@@ -16,18 +16,15 @@ public class CheckPresence extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_check_presence);
-        Long lessonId;
+        Long groupId;
 
         Intent intent = getIntent();
         if (intent != null) {
-            lessonId = intent.getLongExtra("lesson", 0);  //Todo dodać obsługę wyjątku na brak grupy
-            Toast errorToast = Toast.makeText(CheckPresence.this,
-                    "wita obecność: " + lessonId, Toast.LENGTH_SHORT);
-            errorToast.show();
+            groupId = intent.getLongExtra("group_id", 0);  //Todo dodać obsługę wyjątku na brak grupy
 
             SharedPreferences sharedPreferences = getSharedPreferences("Settings", MODE_PRIVATE);
 
-            StudentsPresenceTask studentsPresenceTask = new StudentsPresenceTask(CheckPresence.this, lessonId, sharedPreferences);
+            StudentsPresenceTask studentsPresenceTask = new StudentsPresenceTask(CheckPresence.this, groupId, sharedPreferences);
             studentsPresenceTask.findAndShowStudents();
         }
 

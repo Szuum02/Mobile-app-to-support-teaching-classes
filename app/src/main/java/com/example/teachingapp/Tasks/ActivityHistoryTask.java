@@ -1,8 +1,11 @@
 package com.example.teachingapp.Tasks;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
 import android.view.Gravity;
+import android.view.View;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.TableLayout;
@@ -43,6 +46,8 @@ public class ActivityHistoryTask {
         isToColorMap.put(1, false);
         isToColorMap.put(2, false);
         isToColorMap.put(3, true);
+
+        setUpLayoutButtons();
     }
 
     public void showHistory() {
@@ -142,6 +147,18 @@ public class ActivityHistoryTask {
         textView.setText(text);
         textView.setTextSize(20);
         textView.setGravity(Gravity.CENTER_HORIZONTAL);
+    }
+
+    public void setUpLayoutButtons() {
+        Button timeTableButton = activity.findViewById(R.id.timetable_button);
+
+        timeTableButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(activity, ChooseGroup.class);
+                activity.startActivity(intent);
+            }
+        });
     }
 
 }

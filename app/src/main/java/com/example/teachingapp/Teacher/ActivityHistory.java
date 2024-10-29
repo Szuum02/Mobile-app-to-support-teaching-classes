@@ -22,11 +22,7 @@ public class ActivityHistory extends AppCompatActivity {
 
         if (intent != null) {
             studentId = intent.getLongExtra("studentId", 0);  //Todo dodać obsługę wyjątku na brak grupy
-            groupId = intent.getLongExtra("groupId", 0);  //Todo dodać obsługę wyjątku na brak grupy
-
-            Toast errorToast = Toast.makeText(ActivityHistory.this,
-                    "wita aktywność: " + studentId, Toast.LENGTH_SHORT);
-            errorToast.show();
+            groupId = intent.getLongExtra("group_id", 0);  //Todo dodać obsługę wyjątku na brak grupy
 
             ActivityHistoryTask activityHistoryTask = new ActivityHistoryTask(ActivityHistory.this, studentId, groupId);
             activityHistoryTask.showHistory();
