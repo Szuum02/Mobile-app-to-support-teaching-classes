@@ -150,7 +150,7 @@ public class ActivityHistoryTask {
     }
 
     public void setUpLayoutButtons() {
-        Button timeTableButton = activity.findViewById(R.id.timetable_button);
+        Button timeTableButton = activity.findViewById(R.id.timeTable_button);
 
         timeTableButton.setOnClickListener(new View.OnClickListener() {
             @Override
