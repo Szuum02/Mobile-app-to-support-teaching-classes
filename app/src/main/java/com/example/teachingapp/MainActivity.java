@@ -15,6 +15,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.teachingapp.Student.ChooseSubject;
 import com.example.teachingapp.Teacher.ChooseGroup;
+import com.example.teachingapp.dtos.StudentDTO;
 import com.example.teachingapp.dtos.StudentHistoryDTO;
 import com.example.teachingapp.dtos.TeacherDTO;
 import com.example.teachingapp.dtos.UserDTO;
@@ -37,7 +38,6 @@ public class MainActivity extends AppCompatActivity {
 
     private String type;
     private Settings settings;
-    private StudentApi studentApi;
     private RetrofitService retrofitService;
     SharedPreferences sharedPreferences;
 
@@ -86,12 +86,21 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
         if (user.isStudent()) {
-            studentApi = retrofitService.getRetrofit().create(StudentApi.class);
+            StudentApi studentApi = retrofitService.getRetrofit().create(StudentApi.class);
 
-            Intent intent = new Intent(this, ChooseSubject.class);
-            intent.putExtra("student_id", user.getId());
-            this.startActivity(intent);
-            return;
+            studentApi.studentLogin(user.getId()).enqueue(new Callback<StudentDTO>() {
+                @Override
+                public void onResponse(Call<StudentDTO> call, Response<StudentDTO> response) {
+                    goToStudentChooseSubject(response.body());
+                }
+
+                @Override
+                public void onFailure(Call<StudentDTO> call, Throwable t) {
+                    Toast.makeText(MainActivity.this, "Nie znaleziono Id użytkownika",
+                            Toast.LENGTH_SHORT).show();
+                    Log.e("StudentApiError", "Error occurred: " + t.getMessage(), t);
+                }
+            });
 
         } else if (!user.isStudent()) {
 
@@ -125,6 +134,18 @@ public class MainActivity extends AppCompatActivity {
         Gson gson = new Gson();
 
         editor.putString("lessons", gson.toJson(teacherDTO.getLessons()));
+        editor.apply();
+        startActivity(intent);
+    }
+
+    private void goToStudentChooseSubject(StudentDTO studentDTO) {
+        Intent intent = new Intent(this, ChooseSubject.class);
+        intent.putExtra("student_id", studentDTO.getId());
+
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        Gson gson = new Gson();
+
+        editor.putString("groups", gson.toJson(studentDTO.getGroups()));
         editor.apply();
         startActivity(intent);
     }
