@@ -1,19 +1,39 @@
 package com.example.teachingapp.Tasks;
 
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.res.Resources;
+import android.text.Layout;
+import android.view.Gravity;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.TableLayout;
+import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.content.ContextCompat;
 
 import com.example.teachingapp.R;
+import com.example.teachingapp.Student.ChooseAction;
 import com.example.teachingapp.Student.ShowPresence;
+import com.example.teachingapp.Teacher.CheckActivity;
 import com.example.teachingapp.Teacher.ChooseGroup;
+import com.example.teachingapp.dtos.PresenceDTO;
+import com.example.teachingapp.dtos.StudentPresenceHistoryDTO;
+import com.example.teachingapp.enums.PresenceType;
 import com.example.teachingapp.retrofit.Api.PresenceApi;
 import com.example.teachingapp.retrofit.RetrofitService;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.ListIterator;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -25,63 +45,123 @@ public class ShowPresenceTask {
     private ShowPresence activity;
     private long groupId;
     private long studentId;
+    private String subject;
+    private SharedPreferences sharedPreferences;
+    private Map<PresenceType, Integer> isToColorMap = new HashMap<>();
 
-    public ShowPresenceTask(ShowPresence activity, long groupId, long studentId) {
+
+    public ShowPresenceTask(ShowPresence activity, long groupId, long studentId, String subject, SharedPreferences sharedPreferences) {
         this.activity = activity;
         this.groupId = groupId;
         this.studentId = studentId;
+        this.subject = subject;
+        this.sharedPreferences = sharedPreferences;
+        isToColorMap.put(PresenceType.N, R.drawable.red_textview_right_hand);
+        isToColorMap.put(PresenceType.O, R.drawable.green_textview_right_hand);
+        isToColorMap.put(PresenceType.S, R.drawable.yellow_textview_right_hand);
+        isToColorMap.put(PresenceType.U, R.drawable.blue_textview_right_hand);
+
+        initLayout();
+    }
+
+    private void initLayout() {
+        TextView subjectText = activity.findViewById(R.id.subject);
+        subjectText.setText(subject);
+
+        Button returnButton = activity.findViewById(R.id.return_button);
+        returnButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(activity, ChooseAction.class);
+                intent.putExtra("subject", subject);
+                intent.putExtra("student_id", studentId);
+                activity.startActivity(intent);
+            }
+        });
     }
 
     public void findAndShowPresences() {
         RetrofitService retrofitService = new RetrofitService();
         PresenceApi presenceApi = retrofitService.getRetrofit().create(PresenceApi.class);
 
-        presenceApi.getPresences(studentId, groupId)
-                .enqueue(new Callback<List<Object[]>>() {
+        presenceApi.getStudentPresences(studentId, groupId)
+                .enqueue(new Callback<StudentPresenceHistoryDTO>() {
                     @Override
-                    public void onResponse(@NonNull Call<List<Object[]>> call,
-                                           @NonNull Response<List<Object[]>> response) {
+                    public void onResponse(Call<StudentPresenceHistoryDTO> call, Response<StudentPresenceHistoryDTO> response) {
                         showPresences(response.body());
                     }
 
                     @Override
-                    public void onFailure(@NonNull Call<List<Object[]>> call,
-                                          @NonNull Throwable t) {
-                        Toast.makeText(activity, "Server error", Toast.LENGTH_SHORT).show();
-                        Logger.getLogger(ChooseGroup.class.getName()).log(Level.SEVERE, "Error occurred", t);
+                    public void onFailure(Call<StudentPresenceHistoryDTO> call, Throwable t) {
+                        int x = 0;
+                        // TODO -> handle error
                     }
                 });
 
     }
 
-    private void showPresences(List<Object[]> presences) {
-        if (presences != null && !presences.isEmpty()) {
-            LinearLayout layout = activity.findViewById(R.id.linearLayout);
-            layout.removeAllViews();
-            for (Object[] presence : presences) {
-                String dateTime = (String) presence[0];
-                String date = dateTime.split("T")[0];
-                String presenceType = (String) presence[1];
+    private void showPresences(StudentPresenceHistoryDTO presencesHistory) {
+        if (presencesHistory != null) {
+            TableLayout table = activity.findViewById(R.id.presence_table);
+            for (PresenceDTO presence : presencesHistory.getPresences()) {
+                TableRow row = new TableRow(activity);
+                row.setPadding(0, 20, 0, 20);
 
-                TextView textView = getTextView(date + " " + presenceType);
-                layout.addView(textView);
+                String dateTime = presence.getDate();
+                String date = dateTime.split("T")[0];
+                row.addView(getTextView(date));
+
+                PresenceType presenceType = presence.getPresenceType();
+                row.addView(getPresence(presenceType));
+
+                int rowColor = isToColorMap.get(presenceType);
+                row.setBackground(ContextCompat.getDrawable(activity, rowColor));
+                table.addView(row);
             }
         } else {
-            Toast.makeText(activity, "Brak grup do wyświetlenia", Toast.LENGTH_SHORT).show();
+            Toast.makeText(activity, "Brak obecności do wyświetlenia", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private TextView getPresence(PresenceType presenceType) {
+        switch (presenceType) {
+            case N:
+                return getTextView("Nieobecność");
+            case O:
+                return getTextView("Obecność");
+            case S:
+                return getTextView("Spóźnienie");
+            case U:
+                return getTextView("Usprawiedliwienie");
+            default:
+                return getTextView("-");
         }
     }
 
     private TextView getTextView(String text) {
         TextView textView = new TextView(activity);
         textView.setText(text);
+        textView.setGravity(Gravity.CENTER);
+        textView.setTextSize(20);
 
         ConstraintLayout.LayoutParams layoutParams = new ConstraintLayout.LayoutParams(
-                ConstraintLayout.LayoutParams.WRAP_CONTENT,
+                ConstraintLayout.LayoutParams.MATCH_PARENT,
                 ConstraintLayout.LayoutParams.WRAP_CONTENT
         );
 
         layoutParams.startToStart = ConstraintLayout.LayoutParams.PARENT_ID;
         layoutParams.topToTop = ConstraintLayout.LayoutParams.PARENT_ID;
         return textView;
+    }
+
+    private LinearLayout preparePresenceLinearLayout() {
+        LinearLayout layout = new LinearLayout(activity);
+        layout.setLayoutParams(new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+        layout.setOrientation(LinearLayout.HORIZONTAL);
+        layout.setPadding(0, 10, 0, 10);
+        layout.setGravity(Gravity.CENTER_HORIZONTAL);
+
+        return layout;
     }
 }

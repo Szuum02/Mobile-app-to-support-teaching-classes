@@ -1,8 +1,10 @@
 package com.example.teachingapp.Student;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -14,20 +16,21 @@ public class ShowPresence extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.student_choose_group);
+        setContentView(R.layout.student_check_presence);
         long studentId;
         long groupId;
+        String subject;
         Intent intent = getIntent();
         if (intent != null) {
-            studentId = intent.getLongExtra("student", 0);
-            groupId = intent.getLongExtra("group", 0);
-            Toast errorToast = Toast.makeText(ShowPresence.this,
-                    "wita obecność: " + studentId, Toast.LENGTH_SHORT);
-            errorToast.show();
+            studentId = intent.getLongExtra("student_id", 0);
+            groupId = intent.getLongExtra("group_id", 0);
+            subject = intent.getStringExtra("subject");
+//            Toast errorToast = Toast.makeText(ShowPresence.this,
+//                    "wita obecność: " + studentId, Toast.LENGTH_SHORT);
+//            errorToast.show();
+            SharedPreferences sharedPreferences = getSharedPreferences("Settings", MODE_PRIVATE);
 
-            LinearLayout layout = findViewById(R.id.linearLayout);
-
-            ShowPresenceTask presenceTask = new ShowPresenceTask(this, groupId, studentId);
+            ShowPresenceTask presenceTask = new ShowPresenceTask(this, groupId, studentId, subject, sharedPreferences);
             presenceTask.findAndShowPresences();
         }
 

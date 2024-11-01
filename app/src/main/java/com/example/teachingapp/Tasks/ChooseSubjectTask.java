@@ -10,11 +10,13 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 
 import com.example.teachingapp.R;
 import com.example.teachingapp.Student.ChooseAction;
 import com.example.teachingapp.Student.ChooseSubject;
 import com.example.teachingapp.Teacher.ChooseGroup;
+import com.example.teachingapp.Teacher.PresenceOrActivity;
 import com.example.teachingapp.dtos.GroupDTO;
 import com.example.teachingapp.retrofit.Api.StudentApi;
 import com.example.teachingapp.retrofit.RetrofitService;
@@ -34,10 +36,12 @@ import retrofit2.Response;
 
 public class ChooseSubjectTask {
     private final ChooseSubject activity;
+    private final Long studentId;
     SharedPreferences sharedPreferences;
 
-    public ChooseSubjectTask(ChooseSubject activity, SharedPreferences sharedPreferences) {
+    public ChooseSubjectTask(ChooseSubject activity, Long studentId, SharedPreferences sharedPreferences) {
         this.activity = activity;
+        this.studentId = studentId;
         this.sharedPreferences = sharedPreferences;
     }
 
@@ -75,7 +79,7 @@ public class ChooseSubjectTask {
 
             Button button = new Button(activity);
             button.setText(subject);
-            button.setBackgroundColor(R.drawable.button_background);
+            button.setBackground(ContextCompat.getDrawable(activity, R.drawable.button_background));
 
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.MATCH_PARENT,
@@ -88,7 +92,7 @@ public class ChooseSubjectTask {
             button.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        showOptions();
+                        showOptions(groupId, subject);
                 }
             });
 
@@ -96,8 +100,12 @@ public class ChooseSubjectTask {
         }
     }
 
-    private void showOptions() {
-        // TODO -> implement options view
+    private void showOptions(Long groupId, String subject) {
+        Intent intent = new Intent(activity, ChooseAction.class);
+        intent.putExtra("group_id", groupId);
+        intent.putExtra("student_id", studentId);
+        intent.putExtra("subject", subject);
+        activity.startActivity(intent);
     }
 
 //    private void showActions(Long groupId){
