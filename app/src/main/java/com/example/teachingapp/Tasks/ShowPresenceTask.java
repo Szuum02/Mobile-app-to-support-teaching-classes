@@ -75,6 +75,7 @@ public class ShowPresenceTask {
                 Intent intent = new Intent(activity, ChooseAction.class);
                 intent.putExtra("subject", subject);
                 intent.putExtra("student_id", studentId);
+                intent.putExtra("group_id", groupId);
                 activity.startActivity(intent);
             }
         });

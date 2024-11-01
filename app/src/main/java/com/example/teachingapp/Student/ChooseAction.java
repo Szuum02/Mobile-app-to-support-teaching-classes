@@ -42,7 +42,7 @@ public class ChooseAction extends AppCompatActivity {
         activityButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                goToActivity(v, groupId, studentId);
+                goToActivity(v, groupId, studentId, subject);
             }
         });
 
@@ -69,10 +69,11 @@ public class ChooseAction extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public void goToActivity(View view, long groupId, long studentId){
-        Intent intent = new Intent(this, ShowActivityRanking.class);
+    public void goToActivity(View view, long groupId, long studentId, String subject){
+        Intent intent = new Intent(this, ShowActivityGroupRanking.class);
         intent.putExtra("group_id", groupId);
         intent.putExtra("student_id", studentId);
+        intent.putExtra("subject", subject);
         startActivity(intent);
     }
 }

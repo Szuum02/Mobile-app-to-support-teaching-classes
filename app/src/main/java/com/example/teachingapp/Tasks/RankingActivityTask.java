@@ -1,13 +1,24 @@
 package com.example.teachingapp.Tasks;
 
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.view.Gravity;
+import android.view.View;
+import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.TableLayout;
+import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.content.ContextCompat;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.ListIterator;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -16,7 +27,8 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 import com.example.teachingapp.R;
-import com.example.teachingapp.Student.ShowActivityRanking;
+import com.example.teachingapp.Student.ChooseAction;
+import com.example.teachingapp.Student.ShowActivityGroupRanking;
 import com.example.teachingapp.Teacher.ChooseGroup;
 import com.example.teachingapp.dtos.ActivityDTO;
 import com.example.teachingapp.dtos.ActivityPlotDTO;
@@ -25,14 +37,44 @@ import com.example.teachingapp.retrofit.Api.ActivityApi;
 import com.example.teachingapp.retrofit.RetrofitService;
 
 public class RankingActivityTask {
-    private ShowActivityRanking activity;
+    private ShowActivityGroupRanking activity;
     private long groupId;
     private long studentId;
+    private String subject;
+    private SharedPreferences sharedPreferences;
+    private Map<Integer, Integer> colorMap = new HashMap<>();
 
-    public RankingActivityTask(ShowActivityRanking activity, long groupId, long studentId) {
+    public RankingActivityTask(ShowActivityGroupRanking activity, long groupId, long studentId, String subject, SharedPreferences sharedPreferences) {
         this.activity = activity;
         this.groupId = groupId;
         this.studentId = studentId;
+        this.subject = subject;
+        this.sharedPreferences = sharedPreferences;
+        colorMap.put(0, R.drawable.basic_texview);
+        colorMap.put(1, R.drawable.basic_texview);
+        colorMap.put(2, R.drawable.brown_textview);
+        colorMap.put(3, R.drawable.brown_textview);
+
+        initLayout();
+    }
+
+    private void initLayout() {
+        TextView subjectText = activity.findViewById(R.id.subject);
+        subjectText.setText(subject);
+
+        // TODO -> navigate to total ranking and activity plot
+        Button returnButton = activity.findViewById(R.id.return_button);
+        returnButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(activity, ChooseAction.class);
+                intent.putExtra("subject", subject);
+                intent.putExtra("student_id", studentId);
+                intent.putExtra("group_id", groupId);
+
+                activity.startActivity(intent);
+            }
+        });
     }
 
     public void getRanking() {
@@ -44,7 +86,7 @@ public class RankingActivityTask {
                     @Override
                     public void onResponse(@NonNull Call<List<ActivityRankingDTO>> call,
                                            @NonNull Response<List<ActivityRankingDTO>> response) {
-                        createRanking(response.body());
+                        createGroupRanking(response.body());
                     }
 
                     @Override
@@ -88,7 +130,7 @@ public class RankingActivityTask {
                     @Override
                     public void onResponse(@NonNull Call<List<ActivityRankingDTO>> call,
                                            @NonNull Response<List<ActivityRankingDTO>> response) {
-                        createRanking(response.body());
+                        createGroupRanking(response.body());
                     }
 
                     @Override
@@ -120,21 +162,26 @@ public class RankingActivityTask {
                         Logger.getLogger(ChooseGroup.class.getName()).log(Level.SEVERE, "Error occurred", t);
                     }
                 });
-
     }
 
-    private void createRanking(List<ActivityRankingDTO> activityRanking) {
+    private void createGroupRanking(List<ActivityRankingDTO> activityRanking) {
         if (activityRanking != null && !activityRanking.isEmpty()) {
-            LinearLayout layout = activity.findViewById(R.id.linearLayout);
-            layout.removeAllViews();
-            for (int i = 0; i < activityRanking.size(); i++) {
-                TextView textView = getTextView(
-                        String.format("%d. %s -> %d",
-                                i + 1,
-                                activityRanking.get(i).getNick(),
-                                activityRanking.get(i).getTotalPoints())
-                );
-                layout.addView(textView);
+            TableLayout rankingTable = activity.findViewById(R.id.activity_table);
+            ListIterator<ActivityRankingDTO> iterator = activityRanking.listIterator();
+            while (iterator.hasNext()) {
+                TableRow row = new TableRow(activity);
+                row.setPadding(0, 20, 0, 20);
+                int rowColor = colorMap.get(iterator.nextIndex() % 4);
+                row.setBackground(ContextCompat.getDrawable(activity, rowColor));
+                ActivityRankingDTO activityDTO = iterator.next();
+
+                row.addView(getTextView(activityDTO.getNick()));
+                row.addView(getTextView(String.valueOf(activityDTO.getTotalPoints())));
+                if (activityDTO.getTodayPoints() != null) {
+                    row.addView(getTextView(String.valueOf(activityDTO.getTodayPoints())));
+                }
+
+                rankingTable.addView(row);
             }
         } else {
             Toast.makeText(activity, "Brak grup do wyświetlenia", Toast.LENGTH_SHORT).show();
@@ -163,9 +210,11 @@ public class RankingActivityTask {
     private TextView getTextView(String text) {
         TextView textView = new TextView(activity);
         textView.setText(text);
+        textView.setGravity(Gravity.CENTER);
+        textView.setTextSize(20);
 
         ConstraintLayout.LayoutParams layoutParams = new ConstraintLayout.LayoutParams(
-                ConstraintLayout.LayoutParams.WRAP_CONTENT,
+                ConstraintLayout.LayoutParams.MATCH_PARENT,
                 ConstraintLayout.LayoutParams.WRAP_CONTENT
         );
 
