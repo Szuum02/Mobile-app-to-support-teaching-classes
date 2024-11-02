@@ -15,6 +15,7 @@ import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 
+import java.text.NumberFormat;
 import java.util.HashMap;
 import java.util.List;
 import java.util.ListIterator;
@@ -30,6 +31,7 @@ import com.example.teachingapp.R;
 import com.example.teachingapp.Student.ChooseAction;
 import com.example.teachingapp.Student.ShowActivity;
 import com.example.teachingapp.Student.ShowActivityGroupRanking;
+import com.example.teachingapp.Student.ShowActivityPlot;
 import com.example.teachingapp.Student.ShowActivityTotalRanking;
 import com.example.teachingapp.Teacher.ChooseGroup;
 import com.example.teachingapp.dtos.ActivityDTO;
@@ -37,6 +39,11 @@ import com.example.teachingapp.dtos.ActivityPlotDTO;
 import com.example.teachingapp.dtos.ActivityRankingDTO;
 import com.example.teachingapp.retrofit.Api.ActivityApi;
 import com.example.teachingapp.retrofit.RetrofitService;
+import com.jjoe64.graphview.DefaultLabelFormatter;
+import com.jjoe64.graphview.GraphView;
+import com.jjoe64.graphview.helper.StaticLabelsFormatter;
+import com.jjoe64.graphview.series.DataPoint;
+import com.jjoe64.graphview.series.PointsGraphSeries;
 
 public class RankingActivityTask {
     private ShowActivity activity;
@@ -66,7 +73,6 @@ public class RankingActivityTask {
         TextView subjectText = activity.findViewById(R.id.subject);
         subjectText.setText(subject);
 
-        // TODO -> navigate to total ranking and activity plot
         Button returnButton = activity.findViewById(R.id.return_button);
         returnButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -103,6 +109,22 @@ public class RankingActivityTask {
                 @Override
                 public void onClick(View view) {
                     Intent intent = new Intent(activity, ShowActivityTotalRanking.class);
+                    intent.putExtra("subject", subject);
+                    intent.putExtra("student_id", studentId);
+                    intent.putExtra("group_id", groupId);
+                    intent.putExtra("nick", nick);
+
+                    activity.startActivity(intent);
+                }
+            });
+        }
+
+        Button plotButton = activity.findViewById(R.id.plot_button);
+        if (plotButton != null) {
+            plotButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(activity, ShowActivityPlot.class);
                     intent.putExtra("subject", subject);
                     intent.putExtra("student_id", studentId);
                     intent.putExtra("group_id", groupId);
@@ -189,7 +211,7 @@ public class RankingActivityTask {
                     @Override
                     public void onResponse(@NonNull Call<List<ActivityPlotDTO>> call,
                                            @NonNull Response<List<ActivityPlotDTO>> response) {
-                        //TODO zrobic cos z plotem
+                        createActivityPlot(response.body());
                     }
 
                     @Override
@@ -249,22 +271,35 @@ public class RankingActivityTask {
         }
     }
 
-    private void createStudentHistoryInformation(List<ActivityDTO> activityDto){
-        if (activityDto != null && !activityDto.isEmpty()) {
-            LinearLayout layout = activity.findViewById(R.id.linearLayout);
-            layout.removeAllViews();
-            for (int i = 0; i < activityDto.size(); i++) {
-                TextView textView = getTextView(
-                        String.format("%d. %s -> %d, %s",
-                                i + 1,
-                                activityDto.get(i).getDate(),
-                                activityDto.get(i).getPoints(),
-                                activityDto.get(i).getClass())
-                );
-                layout.addView(textView);
+    private void createActivityPlot(List<ActivityPlotDTO> activities) {
+        if (activities != null && !activities.isEmpty()) {
+            GraphView graphView = activity.findViewById(R.id.activity_plot);
+            PointsGraphSeries<DataPoint> series = new PointsGraphSeries<>(getDataPoint(activities));
+            graphView.addSeries(series);
+
+            String[] xLabels = new String[activities.size() + 2];
+
+            xLabels[0] = "0";
+            for (int i = 0; i < activities.size(); i++) {
+                xLabels[i + 1] = String.valueOf(i + 1);
             }
+            xLabels[activities.size() + 1] = String.valueOf(activities.size() + 1);
+
+            StaticLabelsFormatter staticLabelsFormatter = new StaticLabelsFormatter(graphView);
+            staticLabelsFormatter.setHorizontalLabels(xLabels);
+            graphView.getGridLabelRenderer().setLabelFormatter(staticLabelsFormatter);
+//            graphView.getGridLabelRenderer().setNumHorizontalLabels(4);
+
+            graphView.getViewport().setMinX(0);
+            graphView.getViewport().setMaxX(activities.size() + 1);
+            graphView.getViewport().setXAxisBoundsManual(true);
+            graphView.getViewport().setScrollable(true);
+            graphView.getViewport().setScrollableY(true);
+            series.setShape(PointsGraphSeries.Shape.POINT);
+            series.setSize(20);
+            series.setColor(R.color.black);
         } else {
-            Toast.makeText(activity, "Brak historii do wyświetlenia", Toast.LENGTH_SHORT).show();
+            Toast.makeText(activity, "Brak aktywności", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -282,5 +317,13 @@ public class RankingActivityTask {
         layoutParams.startToStart = ConstraintLayout.LayoutParams.PARENT_ID;
         layoutParams.topToTop = ConstraintLayout.LayoutParams.PARENT_ID;
         return textView;
+    }
+
+    private  DataPoint[] getDataPoint(List<ActivityPlotDTO> activities) {
+        DataPoint[] dataPoints = new DataPoint[activities.size()];
+        for (int i = 0; i < activities.size(); i++) {
+            dataPoints[i] = new DataPoint(i + 1, activities.get(i).getPoints());
+        }
+        return dataPoints;
     }
 }

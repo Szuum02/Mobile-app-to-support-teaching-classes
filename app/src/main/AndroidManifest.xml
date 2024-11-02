@@ -52,6 +52,9 @@
         <activity
             android:name=".Student.ShowActivityTotalRanking"
             android:exported="false" />
+        <activity
+            android:name=".Student.ShowActivityPlot"
+            android:exported="false" />
         <activity android:name=".Teacher.ActivityHistory"
             android:exported="false" />
         <activity
