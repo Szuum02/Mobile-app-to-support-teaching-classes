@@ -28,7 +28,9 @@ import retrofit2.Response;
 
 import com.example.teachingapp.R;
 import com.example.teachingapp.Student.ChooseAction;
+import com.example.teachingapp.Student.ShowActivity;
 import com.example.teachingapp.Student.ShowActivityGroupRanking;
+import com.example.teachingapp.Student.ShowActivityTotalRanking;
 import com.example.teachingapp.Teacher.ChooseGroup;
 import com.example.teachingapp.dtos.ActivityDTO;
 import com.example.teachingapp.dtos.ActivityPlotDTO;
@@ -37,18 +39,20 @@ import com.example.teachingapp.retrofit.Api.ActivityApi;
 import com.example.teachingapp.retrofit.RetrofitService;
 
 public class RankingActivityTask {
-    private ShowActivityGroupRanking activity;
+    private ShowActivity activity;
     private long groupId;
     private long studentId;
     private String subject;
+    private String nick;
     private SharedPreferences sharedPreferences;
     private Map<Integer, Integer> colorMap = new HashMap<>();
 
-    public RankingActivityTask(ShowActivityGroupRanking activity, long groupId, long studentId, String subject, SharedPreferences sharedPreferences) {
+    public RankingActivityTask(ShowActivity activity, long groupId, long studentId, String subject, String nick, SharedPreferences sharedPreferences) {
         this.activity = activity;
         this.groupId = groupId;
         this.studentId = studentId;
         this.subject = subject;
+        this.nick = nick;
         this.sharedPreferences = sharedPreferences;
         colorMap.put(0, R.drawable.basic_texview);
         colorMap.put(1, R.drawable.basic_texview);
@@ -71,10 +75,43 @@ public class RankingActivityTask {
                 intent.putExtra("subject", subject);
                 intent.putExtra("student_id", studentId);
                 intent.putExtra("group_id", groupId);
+                intent.putExtra("nick", nick);
 
                 activity.startActivity(intent);
             }
         });
+
+        Button groupRankingButton = activity.findViewById(R.id.group_button);
+        if (groupRankingButton != null) {
+            groupRankingButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(activity, ShowActivityGroupRanking.class);
+                    intent.putExtra("subject", subject);
+                    intent.putExtra("student_id", studentId);
+                    intent.putExtra("group_id", groupId);
+                    intent.putExtra("nick", nick);
+
+                    activity.startActivity(intent);
+                }
+            });
+        }
+
+        Button totalRankingButton = activity.findViewById(R.id.ranking_button);
+        if (totalRankingButton != null) {
+            totalRankingButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(activity, ShowActivityTotalRanking.class);
+                    intent.putExtra("subject", subject);
+                    intent.putExtra("student_id", studentId);
+                    intent.putExtra("group_id", groupId);
+                    intent.putExtra("nick", nick);
+
+                    activity.startActivity(intent);
+                }
+            });
+        }
     }
 
     public void getRanking() {
@@ -86,7 +123,7 @@ public class RankingActivityTask {
                     @Override
                     public void onResponse(@NonNull Call<List<ActivityRankingDTO>> call,
                                            @NonNull Response<List<ActivityRankingDTO>> response) {
-                        createGroupRanking(response.body());
+                        createTotalRanking(response.body());
                     }
 
                     @Override
@@ -171,15 +208,39 @@ public class RankingActivityTask {
             while (iterator.hasNext()) {
                 TableRow row = new TableRow(activity);
                 row.setPadding(0, 20, 0, 20);
-                int rowColor = colorMap.get(iterator.nextIndex() % 4);
-                row.setBackground(ContextCompat.getDrawable(activity, rowColor));
+                int idx = iterator.nextIndex();
                 ActivityRankingDTO activityDTO = iterator.next();
 
+                int rowColor = ((activityDTO.getNick().equals(nick)) ? R.drawable.green_textview : colorMap.get(idx % 4));
+                row.setBackground(ContextCompat.getDrawable(activity, rowColor));
+
                 row.addView(getTextView(activityDTO.getNick()));
-                row.addView(getTextView(String.valueOf(activityDTO.getTotalPoints())));
-                if (activityDTO.getTodayPoints() != null) {
-                    row.addView(getTextView(String.valueOf(activityDTO.getTodayPoints())));
-                }
+                row.addView(getTextView((activityDTO.getTotalPoints() != null) ? activityDTO.getTotalPoints().toString() : "0"));
+                row.addView(getTextView((activityDTO.getTodayPoints() != null) ? activityDTO.getTodayPoints().toString() : ""));
+
+                rankingTable.addView(row);
+            }
+        } else {
+            Toast.makeText(activity, "Brak grup do wyświetlenia", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void createTotalRanking(List<ActivityRankingDTO> activityRanking) {
+        if (activityRanking != null && !activityRanking.isEmpty()) {
+            TableLayout rankingTable = activity.findViewById(R.id.activity_table);
+            ListIterator<ActivityRankingDTO> iterator = activityRanking.listIterator();
+            while (iterator.hasNext()) {
+                TableRow row = new TableRow(activity);
+                row.setPadding(0, 20, 0, 20);
+                int idx = iterator.nextIndex();
+                ActivityRankingDTO activityDTO = iterator.next();
+
+                int rowColor = ((activityDTO.getNick().equals(nick)) ? R.drawable.green_textview : colorMap.get(idx % 4));
+                row.setBackground(ContextCompat.getDrawable(activity, rowColor));
+
+                row.addView(getTextView((idx + 1) + "."));
+                row.addView(getTextView(activityDTO.getNick()));
+                row.addView(getTextView((activityDTO.getTotalPoints() != null) ? activityDTO.getTotalPoints().toString() : "0"));
 
                 rankingTable.addView(row);
             }

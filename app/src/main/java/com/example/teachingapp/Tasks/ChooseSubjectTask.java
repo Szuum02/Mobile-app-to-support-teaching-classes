@@ -37,11 +37,13 @@ import retrofit2.Response;
 public class ChooseSubjectTask {
     private final ChooseSubject activity;
     private final Long studentId;
+    private String nick;
     SharedPreferences sharedPreferences;
 
-    public ChooseSubjectTask(ChooseSubject activity, Long studentId, SharedPreferences sharedPreferences) {
+    public ChooseSubjectTask(ChooseSubject activity, Long studentId, String nick, SharedPreferences sharedPreferences) {
         this.activity = activity;
         this.studentId = studentId;
+        this.nick = nick;
         this.sharedPreferences = sharedPreferences;
     }
 
@@ -105,6 +107,7 @@ public class ChooseSubjectTask {
         intent.putExtra("group_id", groupId);
         intent.putExtra("student_id", studentId);
         intent.putExtra("subject", subject);
+        intent.putExtra("nick", nick);
         activity.startActivity(intent);
     }
 

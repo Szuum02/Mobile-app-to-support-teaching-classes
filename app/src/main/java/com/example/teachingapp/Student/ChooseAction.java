@@ -31,6 +31,7 @@ public class ChooseAction extends AppCompatActivity {
 //            errorToast.show();
         }
         String subject = intent.getStringExtra("subject");
+        String nick = intent.getStringExtra("nick");
 
         TextView subjectText = findViewById(R.id.subject);
         subjectText.setText(subject);
@@ -42,14 +43,14 @@ public class ChooseAction extends AppCompatActivity {
         activityButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                goToActivity(v, groupId, studentId, subject);
+                goToActivity(v, groupId, studentId, subject, nick);
             }
         });
 
         presenceButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                goToPresence(v, groupId, studentId, subject);
+                goToPresence(v, groupId, studentId, subject, nick);
             }
         });
 
@@ -61,19 +62,21 @@ public class ChooseAction extends AppCompatActivity {
         });
     }
 
-    public void goToPresence(View view, long groupId, long studentId, String subject){
+    public void goToPresence(View view, long groupId, long studentId, String subject, String nick){
         Intent intent = new Intent(this, ShowPresence.class);
         intent.putExtra("group_id", groupId);
         intent.putExtra("student_id", studentId);
         intent.putExtra("subject", subject);
+        intent.putExtra("nick", nick);
         startActivity(intent);
     }
 
-    public void goToActivity(View view, long groupId, long studentId, String subject){
+    public void goToActivity(View view, long groupId, long studentId, String subject, String nick){
         Intent intent = new Intent(this, ShowActivityGroupRanking.class);
         intent.putExtra("group_id", groupId);
         intent.putExtra("student_id", studentId);
         intent.putExtra("subject", subject);
+        intent.putExtra("nick", nick);
         startActivity(intent);
     }
 }

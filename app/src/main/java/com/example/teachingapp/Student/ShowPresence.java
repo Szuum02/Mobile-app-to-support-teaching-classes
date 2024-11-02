@@ -17,15 +17,17 @@ public class ShowPresence extends AppCompatActivity {
         long studentId;
         long groupId;
         String subject;
+        String nick;
         Intent intent = getIntent();
         if (intent != null) {
             studentId = intent.getLongExtra("student_id", 0);
             groupId = intent.getLongExtra("group_id", 0);
             subject = intent.getStringExtra("subject");
+            nick = intent.getStringExtra("nick");
 
             SharedPreferences sharedPreferences = getSharedPreferences("Settings", MODE_PRIVATE);
 
-            ShowPresenceTask presenceTask = new ShowPresenceTask(this, groupId, studentId, subject, sharedPreferences);
+            ShowPresenceTask presenceTask = new ShowPresenceTask(this, groupId, studentId, subject, nick, sharedPreferences);
             presenceTask.findAndShowPresences();
         }
 

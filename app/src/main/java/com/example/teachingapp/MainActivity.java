@@ -141,6 +141,7 @@ public class MainActivity extends AppCompatActivity {
     private void goToStudentChooseSubject(StudentDTO studentDTO) {
         Intent intent = new Intent(this, ChooseSubject.class);
         intent.putExtra("student_id", studentDTO.getId());
+        intent.putExtra("nick", studentDTO.getNick());
 
         SharedPreferences.Editor editor = sharedPreferences.edit();
         Gson gson = new Gson();

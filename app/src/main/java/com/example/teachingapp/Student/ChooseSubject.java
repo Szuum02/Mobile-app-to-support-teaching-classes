@@ -20,7 +20,8 @@ public class ChooseSubject extends AppCompatActivity {
         if (intent != null) {
             SharedPreferences sharedPreferences = getSharedPreferences("Settings", MODE_PRIVATE);
             Long studentId = intent.getLongExtra("student_id", 0);
-            ChooseSubjectTask subjectTask = new ChooseSubjectTask(this, studentId, sharedPreferences);
+            String nick = intent.getStringExtra("nick");
+            ChooseSubjectTask subjectTask = new ChooseSubjectTask(this, studentId, nick, sharedPreferences);
             subjectTask.findAndShowSubjects();
         }
 

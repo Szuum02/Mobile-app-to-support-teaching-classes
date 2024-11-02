@@ -46,15 +46,17 @@ public class ShowPresenceTask {
     private long groupId;
     private long studentId;
     private String subject;
+    private String nick;
     private SharedPreferences sharedPreferences;
     private Map<PresenceType, Integer> isToColorMap = new HashMap<>();
 
 
-    public ShowPresenceTask(ShowPresence activity, long groupId, long studentId, String subject, SharedPreferences sharedPreferences) {
+    public ShowPresenceTask(ShowPresence activity, long groupId, long studentId, String subject, String nick, SharedPreferences sharedPreferences) {
         this.activity = activity;
         this.groupId = groupId;
         this.studentId = studentId;
         this.subject = subject;
+        this.nick = nick;
         this.sharedPreferences = sharedPreferences;
         isToColorMap.put(PresenceType.N, R.drawable.red_textview_right_hand);
         isToColorMap.put(PresenceType.O, R.drawable.green_textview_right_hand);
@@ -76,6 +78,7 @@ public class ShowPresenceTask {
                 intent.putExtra("subject", subject);
                 intent.putExtra("student_id", studentId);
                 intent.putExtra("group_id", groupId);
+                intent.putExtra("nick",nick);
                 activity.startActivity(intent);
             }
         });

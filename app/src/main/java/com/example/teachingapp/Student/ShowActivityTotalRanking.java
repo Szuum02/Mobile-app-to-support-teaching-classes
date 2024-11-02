@@ -9,11 +9,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.teachingapp.R;
 import com.example.teachingapp.Tasks.RankingActivityTask;
 
-public class ShowActivityGroupRanking extends ShowActivity {
+public class ShowActivityTotalRanking extends ShowActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.student_activity_group_ranking);
+        setContentView(R.layout.student_check_activity_ranking);
         long studentId;
         long groupId;
         String subject;
@@ -24,10 +24,11 @@ public class ShowActivityGroupRanking extends ShowActivity {
             groupId = intent.getLongExtra("group_id", 0);
             subject = intent.getStringExtra("subject");
             nick = intent.getStringExtra("nick");
+
             SharedPreferences sharedPreferences = getSharedPreferences("Settings", MODE_PRIVATE);
 
             RankingActivityTask rankingTask = new RankingActivityTask(this, groupId, studentId, subject, nick, sharedPreferences);
-            rankingTask.getGroupRanking();
+            rankingTask.getRanking();
         }
 
     }
