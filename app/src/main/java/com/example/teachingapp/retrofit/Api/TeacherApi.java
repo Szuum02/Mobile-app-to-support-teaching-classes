@@ -14,4 +14,7 @@ public interface TeacherApi {
 
     @POST("/teacher/login")
     Call<TeacherDTO> teacherLogin(@Query("id") Long id);
+
+    @POST("/teacher/add")
+    Call<TeacherDTO> addTeacher(@Query("id") Long id, @Query("name") String name, @Query("lastName") String lastName);
 }

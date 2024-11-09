@@ -17,4 +17,7 @@ public interface UserApi {
 
     @POST("/user/login")
     Call<UserDTO> getUserByMail(@Query("mail") String mail, @Query("password") String password);
+
+    @POST("/user/add")
+    Call<Long> addUser(@Query("mail") String mail, @Query("password") String password, @Query("isStudent") boolean isStudent);
 }
