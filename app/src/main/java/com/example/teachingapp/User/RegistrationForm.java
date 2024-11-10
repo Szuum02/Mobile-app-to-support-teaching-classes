@@ -8,13 +8,17 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 
 import com.example.teachingapp.R;
+import com.example.teachingapp.Student.ChooseSubject;
 import com.example.teachingapp.Student.ShowActivity;
 import com.example.teachingapp.Tasks.GroupsTask;
 import com.example.teachingapp.Teacher.ChooseGroup;
+import com.example.teachingapp.dtos.StudentDTO;
 import com.example.teachingapp.dtos.TeacherDTO;
+import com.example.teachingapp.retrofit.Api.StudentApi;
 import com.example.teachingapp.retrofit.Api.TeacherApi;
 import com.example.teachingapp.retrofit.Api.UserApi;
 import com.example.teachingapp.retrofit.RetrofitService;
@@ -64,9 +68,20 @@ public class RegistrationForm extends ShowActivity implements AdapterView.OnItem
 
         UserApi userApi = retrofitService.getRetrofit().create(UserApi.class);
 
-        if (type.equals("Student")) {
-            // Handle student
-        }
+        if (type.equals("Uczeń")) {
+            String login = loginText.getText().toString();
+            String password = passwordText.getText().toString();
+            userApi.addUser(login, password, true).enqueue(new Callback<Long>() {
+                @Override
+                public void onResponse(Call<Long> call, Response<Long> response) {
+                    addStudent(response.body());
+                }
+
+                @Override
+                public void onFailure(Call<Long> call, Throwable t) {
+                    // TODO -> handle error
+                }
+            });        }
         else {
             String login = loginText.getText().toString();
             String password = passwordText.getText().toString();
@@ -117,6 +132,44 @@ public class RegistrationForm extends ShowActivity implements AdapterView.OnItem
         startActivity(intent);
     }
 
+    private void addStudent(Long id) {
+        EditText nameText = findViewById(R.id.NameText);
+        EditText lastNameText = findViewById(R.id.LastNameText);
+        EditText indexText = findViewById(R.id.IndexdText);
+        EditText nickText = findViewById(R.id.NickText);
+        String name = nameText.getText().toString();
+        String lastName = lastNameText.getText().toString();
+        Integer index = Integer.valueOf(indexText.getText().toString());
+        String nick = nickText.getText().toString();
+
+        StudentApi studentApi = retrofitService.getRetrofit().create(StudentApi.class);
+
+        studentApi.addStudent(id, name, lastName, index, nick).enqueue(new Callback<StudentDTO>() {
+            @Override
+            public void onResponse(Call<StudentDTO> call, Response<StudentDTO> response) {
+                goToStudentChooseSubject(response.body());
+            }
+
+            @Override
+            public void onFailure(Call<StudentDTO> call, Throwable t) {
+                // TODO -> handle error
+            }
+        });
+    }
+
+    private void goToStudentChooseSubject(StudentDTO studentDTO) {
+        Intent intent = new Intent(this, ChooseSubject.class);
+        intent.putExtra("student_id", studentDTO.getId());
+        intent.putExtra("nick", studentDTO.getNick());
+
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        Gson gson = new Gson();
+
+        editor.putString("groups", gson.toJson(studentDTO.getGroups()));
+        editor.apply();
+        startActivity(intent);
+    }
+
     private void setupSpinner() {
         Spinner spinner = (Spinner) findViewById(R.id.TypeSpinner);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
@@ -132,6 +185,16 @@ public class RegistrationForm extends ShowActivity implements AdapterView.OnItem
     public void onItemSelected(AdapterView<?> parent, View view,
                                int pos, long id) {
         type = parent.getItemAtPosition(pos).toString();
+        LinearLayout indexLayout = findViewById(R.id.IndexLayout);
+        LinearLayout nickLayout = findViewById(R.id.NickLayout);
+        if (type.equals("Uczeń")) {
+            indexLayout.setVisibility(View.VISIBLE);
+            nickLayout.setVisibility(View.VISIBLE);
+        }
+        else {
+            indexLayout.setVisibility(View.INVISIBLE);
+            nickLayout.setVisibility(View.INVISIBLE);
+        }
     }
 
     // TODO -> handle error
