@@ -3,7 +3,6 @@ package com.example.teachingapp.User;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -14,7 +13,6 @@ import android.widget.Spinner;
 import com.example.teachingapp.R;
 import com.example.teachingapp.Student.ChooseSubject;
 import com.example.teachingapp.Student.ShowActivity;
-import com.example.teachingapp.Tasks.GroupsTask;
 import com.example.teachingapp.Teacher.ChooseGroup;
 import com.example.teachingapp.dtos.StudentDTO;
 import com.example.teachingapp.dtos.TeacherDTO;
@@ -33,6 +31,13 @@ public class RegistrationForm extends ShowActivity implements AdapterView.OnItem
     private final RetrofitService retrofitService = new RetrofitService();
     private SharedPreferences sharedPreferences;
 
+    private EditText loginText;
+    private EditText passwordText;
+    private EditText nameText;
+    private EditText lastNameText;
+    private EditText indexText;
+    private EditText nickText;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,66 +47,17 @@ public class RegistrationForm extends ShowActivity implements AdapterView.OnItem
             sharedPreferences = getSharedPreferences("Settings", MODE_PRIVATE);
             setupSpinner();
         }
-
-//        long studentId;
-//        long groupId;
-//        String subject;
-//        String nick;
-//        Intent intent = getIntent();
-//        if (intent != null) {
-//            studentId = intent.getLongExtra("student_id", 0);
-//            groupId = intent.getLongExtra("group_id", 0);
-//            subject = intent.getStringExtra("subject");
-//            nick = intent.getStringExtra("nick");
-//
-//            SharedPreferences sharedPreferences = getSharedPreferences("Settings", MODE_PRIVATE);
-//
-//            RankingActivityTask rankingTask = new RankingActivityTask(this, groupId, studentId, subject, nick, sharedPreferences);
-//            rankingTask.getPlot();
-//        }
-
     }
 
     public void register(View view) {
-        EditText loginText = findViewById(R.id.MailText);
-        EditText passwordText = findViewById(R.id.PasswordText);
-
-        UserApi userApi = retrofitService.getRetrofit().create(UserApi.class);
-
-        if (type.equals("Uczeń")) {
-            String login = loginText.getText().toString();
-            String password = passwordText.getText().toString();
-            userApi.addUser(login, password, true).enqueue(new Callback<Long>() {
-                @Override
-                public void onResponse(Call<Long> call, Response<Long> response) {
-                    addStudent(response.body());
-                }
-
-                @Override
-                public void onFailure(Call<Long> call, Throwable t) {
-                    // TODO -> handle error
-                }
-            });        }
-        else {
-            String login = loginText.getText().toString();
-            String password = passwordText.getText().toString();
-            userApi.addUser(login, password, false).enqueue(new Callback<Long>() {
-                @Override
-                public void onResponse(Call<Long> call, Response<Long> response) {
-                    addTeacher(response.body());
-                }
-
-                @Override
-                public void onFailure(Call<Long> call, Throwable t) {
-                    // TODO -> handle error
-                }
-            });
-        }
+        loginText = findViewById(R.id.MailText);
+        passwordText = findViewById(R.id.PasswordText);
+        nameText = findViewById(R.id.NameText);
+        lastNameText = findViewById(R.id.LastNameText);
+        addUser(type.equals("Uczeń"));
     }
 
-    private void addTeacher(Long id) {
-        EditText nameText = findViewById(R.id.NameText);
-        EditText lastNameText = findViewById(R.id.LastNameText);
+    private void addTeacher(long id) {
         String name = nameText.getText().toString();
         String lastName = lastNameText.getText().toString();
 
@@ -118,6 +74,7 @@ public class RegistrationForm extends ShowActivity implements AdapterView.OnItem
                 // TODO -> handle error
             }
         });
+
     }
 
     private void goToTeacherChooseGroup(TeacherDTO teacherDTO) {
@@ -132,11 +89,11 @@ public class RegistrationForm extends ShowActivity implements AdapterView.OnItem
         startActivity(intent);
     }
 
-    private void addStudent(Long id) {
-        EditText nameText = findViewById(R.id.NameText);
-        EditText lastNameText = findViewById(R.id.LastNameText);
-        EditText indexText = findViewById(R.id.IndexdText);
-        EditText nickText = findViewById(R.id.NickText);
+    private void addStudent(long id) {
+        nameText = findViewById(R.id.NameText);
+        lastNameText = findViewById(R.id.LastNameText);
+        indexText = findViewById(R.id.IndexdText);
+        nickText = findViewById(R.id.NickText);
         String name = nameText.getText().toString();
         String lastName = lastNameText.getText().toString();
         Integer index = Integer.valueOf(indexText.getText().toString());
@@ -168,6 +125,32 @@ public class RegistrationForm extends ShowActivity implements AdapterView.OnItem
         editor.putString("groups", gson.toJson(studentDTO.getGroups()));
         editor.apply();
         startActivity(intent);
+    }
+
+    private void addUser(boolean isStudent) {
+        String login = loginText.getText().toString();
+        String password = passwordText.getText().toString();
+        UserApi userApi = retrofitService.getRetrofit().create(UserApi.class);
+        userApi.addUser(login, password, isStudent).enqueue(new Callback<Long>() {
+            @Override
+            public void onResponse(Call<Long> call, Response<Long> response) {
+                addSpecificUser(response.body(), isStudent);
+            }
+
+            @Override
+            public void onFailure(Call<Long> call, Throwable t) {
+                // TODO -> handle error
+            }
+        });
+    }
+
+    private void addSpecificUser(long id, boolean isStudent) {
+        if (isStudent) {
+            addStudent(id);
+        }
+        else {
+            addTeacher(id);
+        }
     }
 
     private void setupSpinner() {
