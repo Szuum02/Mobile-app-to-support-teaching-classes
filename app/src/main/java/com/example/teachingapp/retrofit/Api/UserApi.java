@@ -20,4 +20,7 @@ public interface UserApi {
 
     @POST("/user/add")
     Call<Long> addUser(@Query("mail") String mail, @Query("password") String password, @Query("isStudent") boolean isStudent);
+
+    @GET("/user/checkUnique")
+    Call<String> checkUniqueValues(@Query("mail") String mail, @Query("index") Integer index);
 }

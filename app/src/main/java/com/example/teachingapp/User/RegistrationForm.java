@@ -22,6 +22,9 @@ import com.example.teachingapp.retrofit.Api.UserApi;
 import com.example.teachingapp.retrofit.RetrofitService;
 import com.google.gson.Gson;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -54,7 +57,81 @@ public class RegistrationForm extends ShowActivity implements AdapterView.OnItem
         passwordText = findViewById(R.id.PasswordText);
         nameText = findViewById(R.id.NameText);
         lastNameText = findViewById(R.id.LastNameText);
-        addUser(type.equals("Uczeń"));
+        indexText = findViewById(R.id.IndexdText);
+        nickText = findViewById(R.id.NickText);
+        UserApi userApi = retrofitService.getRetrofit().create(UserApi.class);
+        // TODO -> handle not unique mail or index
+        if (type.equals("Uczeń") && validateStudent()) {
+            userApi.checkUniqueValues(loginText.getText().toString(), Integer.valueOf(indexText.getText().toString())).enqueue(new Callback<String>() {
+                @Override
+                public void onResponse(Call<String> call, Response<String> response) {
+                    switch (response.body()) {
+                        case "ok":
+                            addUser(true);
+                            break;
+                        case "mail":
+                            loginText.setError("Ten mail już istnieje");
+                            break;
+                        case "index":
+                            indexText.setError("Ten nr albumu już istnieje");
+                            break;
+                        default:
+                            break;
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<String> call, Throwable t) {
+
+                }
+            });
+        }
+        else if (type.equals("Nauczyciel") && validateTeacher()) {
+            userApi.checkUniqueValues(loginText.getText().toString(), -1).enqueue(new Callback<String>() {
+                @Override
+                public void onResponse(Call<String> call, Response<String> response) {
+                    switch (response.body()) {
+                        case "ok":
+                            addUser(false);
+                            break;
+                        case "mail":
+                            loginText.setError("Ten mail już istnieje");
+                            break;
+                        default:
+                            break;
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<String> call, Throwable t) {
+                }
+            });
+        }
+    }
+
+    private void addUser(boolean isStudent) {
+        String login = loginText.getText().toString();
+        String password = passwordText.getText().toString();
+        UserApi userApi = retrofitService.getRetrofit().create(UserApi.class);
+        userApi.addUser(login, password, isStudent).enqueue(new Callback<Long>() {
+            @Override
+            public void onResponse(Call<Long> call, Response<Long> response) {
+                addSpecificUser(response.body(), isStudent);
+            }
+
+            @Override
+            public void onFailure(Call<Long> call, Throwable t) {
+            }
+        });
+    }
+
+    private void addSpecificUser(long id, boolean isStudent) {
+        if (isStudent) {
+            addStudent(id);
+        }
+        else {
+            addTeacher(id);
+        }
     }
 
     private void addTeacher(long id) {
@@ -90,10 +167,6 @@ public class RegistrationForm extends ShowActivity implements AdapterView.OnItem
     }
 
     private void addStudent(long id) {
-        nameText = findViewById(R.id.NameText);
-        lastNameText = findViewById(R.id.LastNameText);
-        indexText = findViewById(R.id.IndexdText);
-        nickText = findViewById(R.id.NickText);
         String name = nameText.getText().toString();
         String lastName = lastNameText.getText().toString();
         Integer index = Integer.valueOf(indexText.getText().toString());
@@ -127,32 +200,6 @@ public class RegistrationForm extends ShowActivity implements AdapterView.OnItem
         startActivity(intent);
     }
 
-    private void addUser(boolean isStudent) {
-        String login = loginText.getText().toString();
-        String password = passwordText.getText().toString();
-        UserApi userApi = retrofitService.getRetrofit().create(UserApi.class);
-        userApi.addUser(login, password, isStudent).enqueue(new Callback<Long>() {
-            @Override
-            public void onResponse(Call<Long> call, Response<Long> response) {
-                addSpecificUser(response.body(), isStudent);
-            }
-
-            @Override
-            public void onFailure(Call<Long> call, Throwable t) {
-                // TODO -> handle error
-            }
-        });
-    }
-
-    private void addSpecificUser(long id, boolean isStudent) {
-        if (isStudent) {
-            addStudent(id);
-        }
-        else {
-            addTeacher(id);
-        }
-    }
-
     private void setupSpinner() {
         Spinner spinner = (Spinner) findViewById(R.id.TypeSpinner);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
@@ -183,5 +230,65 @@ public class RegistrationForm extends ShowActivity implements AdapterView.OnItem
     // TODO -> handle error
     public void onNothingSelected(AdapterView<?> parent) {
         // Another interface callback.
+    }
+
+    private boolean validateStudent() {
+        return validateName() &&
+                validateLastName() &&
+                validateEmail() &&
+                validatePassword() &&
+                validateIndex();
+    }
+
+    private boolean validateTeacher() {
+        return validateName() &&
+                validateLastName() &&
+                validateEmail() &&
+                validatePassword();
+    }
+
+    private boolean validateName() {
+        Pattern p = Pattern.compile("[-\\s\\p{L}]+");
+        Matcher m = p.matcher(nameText.getText().toString());
+        if (!m.matches()) {
+            nameText.setError("Imię powinno zawierać tylko polskie znaki, spacje i -");
+            return false;
+        }
+        return true;
+    }
+
+    private boolean validateLastName() {
+        Pattern p = Pattern.compile("[-\\s\\p{L}]+");
+        Matcher m = p.matcher(lastNameText.getText().toString());
+        if (!m.matches()) {
+            lastNameText.setError("Nazwisko powinno zawierać tylko polskie znaki, spacje i -");
+            return false;
+        }
+        return true;
+    }
+
+    private boolean validateEmail() {
+        Pattern p = Pattern.compile("^((?!\\.)[\\w\\-_.]*[^.])(@\\w+)(\\.\\w+(\\.\\w+)?[^.\\W])$");
+        Matcher m = p.matcher(loginText.getText().toString());
+        if (!m.matches()) {
+            loginText.setError("Błędny email");
+            return false;
+        }
+        return true;
+    }
+
+    // TODO -> password pattern?
+    private boolean validatePassword() {
+        return true;
+    }
+
+    private boolean validateIndex() {
+        Pattern p = Pattern.compile("\\d{6}");
+        Matcher m = p.matcher(indexText.getText().toString());
+        if (!m.matches()) {
+            indexText.setError("Album powinien składać się z 6 cyfr");
+            return false;
+        }
+        return true;
     }
 }
