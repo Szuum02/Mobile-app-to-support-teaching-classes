@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="-114dp">
+
+        <include layout="@layout/background" />
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/welcome_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="188dp"
+        android:fontFamily="@font/poppins_semibold"
+        android:gravity="center"
+        android:text="Dołącz do nas!"
+        android:textStyle="bold"
+        android:textSize="20sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <TextView
+        android:id="@+id/info_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="67dp"
+        android:fontFamily="@font/poppins_semibold"
+        android:gravity="center"
+        android:text="Wybierz rodzaj konta"
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/welcome_text"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:layout_marginTop="38dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/info_text">
+
+        <Button
+            android:id="@+id/teacher_button"
+            android:layout_width="346dp"
+            android:layout_height="53dp"
+            android:background="@drawable/red_button_background"
+            android:fontFamily="@font/poppins_semibold"
+            android:gravity="center"
+            android:onClick="teacherHandler"
+            android:text="Nauczyciel"
+            android:textColor="#000"
+            android:textSize="15sp" />
+
+        <Button
+            android:id="@+id/student_button"
+            android:layout_width="346dp"
+            android:layout_height="53dp"
+            android:layout_marginTop="25dp"
+            android:background="@drawable/green_button_background"
+            android:fontFamily="@font/poppins_semibold"
+            android:gravity="center"
+            android:onClick="studentHandler"
+            android:text="Uczeń"
+            android:textColor="#000"
+            android:textSize="15sp"
+            app:layout_constraintTop_toBottomOf="@id/teacher_button" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:layout_marginBottom="70dp"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <Button
+            android:id="@+id/return_button"
+            android:layout_width="346dp"
+            android:layout_height="70dp"
+            android:background="@drawable/gray_button_background"
+            android:fontFamily="@font/poppins_semibold"
+            android:gravity="center"
+            android:onClick="returnHandler"
+            android:text="Powrót"
+            android:textColor="#000"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
