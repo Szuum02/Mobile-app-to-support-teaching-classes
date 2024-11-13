@@ -11,7 +11,7 @@
         tools:layout_editor_absoluteX="0dp"
         tools:layout_editor_absoluteY="-114dp">
 
-        <include layout="@layout/background" />
+        <include layout="@layout/_background" />
     </RelativeLayout>
 
     <TextView
@@ -52,7 +52,7 @@
             android:id="@+id/teacher_button"
             android:layout_width="346dp"
             android:layout_height="53dp"
-            android:background="@drawable/red_button_background"
+            android:background="@drawable/_red_button_background"
             android:fontFamily="@font/poppins_semibold"
             android:gravity="center"
             android:onClick="teacherHandler"
@@ -67,7 +67,7 @@
             android:layout_width="346dp"
             android:layout_height="53dp"
             android:layout_marginTop="25dp"
-            android:background="@drawable/green_button_background"
+            android:background="@drawable/_green_button_background"
             android:fontFamily="@font/poppins_semibold"
             android:gravity="center"
             android:onClick="studentHandler"
@@ -91,7 +91,7 @@
             android:id="@+id/return_button"
             android:layout_width="346dp"
             android:layout_height="70dp"
-            android:background="@drawable/gray_button_background"
+            android:background="@drawable/_gray_button_background"
             android:fontFamily="@font/poppins_semibold"
             android:gravity="center"
             android:onClick="returnHandler"

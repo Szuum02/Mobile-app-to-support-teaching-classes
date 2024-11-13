@@ -44,7 +44,7 @@ public class RegistrationForm extends ShowActivity implements AdapterView.OnItem
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.registration_form);
+        setContentView(R.layout._registration_form);
         Intent intent = getIntent();
         if (intent != null) {
             sharedPreferences = getSharedPreferences("Settings", MODE_PRIVATE);
