@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <include layout="@layout/_background" />
+
+    <TextView
+        android:id="@+id/title_texView"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:layout_marginTop="187dp"
+        android:fontFamily="@font/poppins"
+        android:gravity="center|center_horizontal|center_vertical"
+        android:text="Sprawdź swoje postępy"
+        android:textAllCaps="false"
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/description_texView"
+        android:layout_width="333dp"
+        android:layout_height="72dp"
+        android:layout_marginStart="29dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="31dp"
+        android:fontFamily="@font/poppins"
+        android:gravity="center|center_horizontal|center_vertical"
+        android:text="Zobrazuj swoje postępy"
+        android:textAllCaps="false"
+        android:textColor="#707070"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/title_texView" />
+
+    <LinearLayout
+        android:id="@+id/navigation_laylout"
+        android:layout_width="258dp"
+        android:layout_height="70dp"
+        android:layout_marginStart="21dp"
+        android:layout_marginTop="248dp"
+        android:layout_marginBottom="64dp"
+        android:background="@drawable/_white_rectangle"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/yes_button">
+
+        <ImageButton
+            android:id="@+id/three_people_button"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="7dp"
+            android:background="@color/white"
+            android:scaleType="center"
+            android:src="@drawable/_3_people_image" />
+
+        <ImageButton
+            android:id="@+id/five_people_button"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="7dp"
+            android:background="@color/white"
+            android:scaleType="center"
+            android:src="@drawable/_5_people_image" />
+
+        <ImageButton
+            android:id="@+id/plot_button"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="7dp"
+            android:background="@drawable/_gray_navigationbar_background"
+            android:scaleType="center"
+            android:src="@drawable/_plot_image" />
+
+        <ImageButton
+            android:id="@+id/calendar_button"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="7dp"
+            android:background="@color/white"
+            android:scaleType="center"
+            android:src="@drawable/_calendar_image" />
+    </LinearLayout>
+
+    <ImageButton
+        android:id="@+id/return_button"
+        android:layout_width="76dp"
+        android:layout_height="70dp"
+        android:layout_marginStart="7dp"
+        android:layout_marginEnd="31dp"
+        android:layout_marginBottom="64dp"
+        android:background="@drawable/_white_rectangle"
+        android:scaleType="center"
+        android:src="@drawable/_return_image"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/navigation_laylout" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

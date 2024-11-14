@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <include layout="@layout/_background" />
+
+    <TextView
+        android:id="@+id/title_texView"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:layout_marginTop="187dp"
+        android:fontFamily="@font/poppins"
+        android:gravity="center|center_horizontal|center_vertical"
+        android:text="Wyraź swoje zdanie"
+        android:textAllCaps="false"
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/description_texView"
+        android:layout_width="333dp"
+        android:layout_height="72dp"
+        android:layout_marginStart="29dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="31dp"
+        android:fontFamily="@font/poppins"
+        android:gravity="center|center_horizontal|center_vertical"
+        android:text="Czy wyrażasz zgodę na wyświetlanie informacji innym użytkownikom o uzyskanych przez ciebie punktach?"
+        android:textAllCaps="false"
+        android:textColor="#707070"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/title_texView" />
+
+    <Button
+        android:id="@+id/no_button"
+        android:layout_width="346dp"
+        android:layout_height="53dp"
+        android:layout_marginStart="21dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="26dp"
+        android:background="@drawable/_red_button_background"
+        android:fontFamily="@font/poppins_semibold"
+        android:text="Nie"
+        android:textAllCaps="false"
+        android:textSize="15sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/description_texView" />
+
+    <Button
+        android:id="@+id/yes_button"
+        android:layout_width="346dp"
+        android:layout_height="53dp"
+        android:layout_marginStart="21dp"
+        android:layout_marginTop="25dp"
+        android:layout_marginEnd="26dp"
+        android:background="@drawable/_green_button_background"
+        android:fontFamily="@font/poppins_semibold"
+        android:text="Tak"
+        android:textAllCaps="false"
+        android:textSize="15sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/no_button" />
+
+    <Button
+        android:id="@+id/return_button"
+        android:layout_width="346dp"
+        android:layout_height="70dp"
+        android:layout_marginStart="21dp"
+        android:layout_marginTop="248dp"
+        android:layout_marginEnd="26dp"
+        android:layout_marginBottom="64dp"
+        android:background="@drawable/_gray_button_background"
+        android:fontFamily="@font/poppins_semibold"
+        android:text="Powrót"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/yes_button" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
