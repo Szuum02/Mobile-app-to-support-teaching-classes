@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#EBEBEB">
+
+    <RelativeLayout
+        android:id="@+id/relativeLayout"
+        android:layout_width="match_parent"
+        android:layout_height="285dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/gray_rectangle"
+            android:layout_width="match_parent"
+            android:layout_height="281dp"
+            android:background="@drawable/_gray_rectangle" />
+
+        <ImageView
+            android:layout_width="223dp"
+            android:layout_height="208dp"
+            android:layout_marginStart="-111dp"
+            android:background="@drawable/red_oval" />
+
+        <TextView
+            android:layout_width="15dp"
+            android:layout_height="30dp"
+            android:layout_marginStart="43dp"
+            android:layout_marginTop="136dp"
+            android:fontFamily="@font/poppins_semibold"
+            android:text="@string/a"
+            android:textColor="#21000000"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <ImageView
+            android:layout_width="223dp"
+            android:layout_height="208dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="-96dp"
+            android:background="@drawable/green_oval" />
+
+        <TextView
+            android:layout_width="15dp"
+            android:layout_height="30dp"
+            android:layout_marginStart="152dp"
+            android:layout_marginTop="55dp"
+            android:fontFamily="@font/poppins_semibold"
+            android:text="@string/g"
+            android:textColor="#21000000"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="103dp"
+            android:layout_marginStart="207dp"
+            android:layout_marginTop="-52dp"
+            android:background="@drawable/gray_oval" />
+
+        <TextView
+            android:layout_width="15dp"
+            android:layout_height="30dp"
+            android:layout_marginStart="295dp"
+            android:fontFamily="@font/poppins_semibold"
+            android:text="@string/h"
+            android:textColor="#21000000"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <Button
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginStart="321dp"
+            android:layout_marginTop="54dp"
+            android:background="@drawable/_settings_icon" />
+
+        <TextView
+            android:id="@+id/welcome_texView"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:layout_marginStart="0dp"
+            android:layout_marginTop="239dp"
+            android:fontFamily="@font/poppins"
+            android:gravity="center|center_horizontal|center_vertical"
+            android:textAllCaps="false"
+            android:textColor="#000000"
+            android:text="Witaj Kacper Fus"
+            android:textSize="20sp" />
+
+        <ImageView
+            android:id="@+id/people_pic"
+            android:layout_width="100dp"
+            android:layout_height="83.15dp"
+            android:layout_marginStart="146dp"
+            android:layout_marginTop="141dp"
+            android:background="@drawable/_people_pic" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="360dp"
+        android:layout_height="506dp"
+
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="33dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="27dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/relativeLayout"
+        app:layout_constraintVertical_bias="1.0">
+
+        <ImageView
+            android:id="@+id/white_rectangle"
+            android:layout_width="342dp"
+            android:layout_height="120dp"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="43dp"
+            android:background="@drawable/_white_rectangle" />
+
+        <TextView
+            android:id="@+id/coming_classes"
+            android:layout_width="173dp"
+            android:layout_height="25dp"
+            android:layout_marginStart="0dp"
+            android:layout_marginTop="0dp"
+            android:background="@color/background_color"
+            android:fontFamily="@font/poppins_semibold"
+            android:text="Najbliższe zajęcia"
+            android:textColor="#313131"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/show_all_classes"
+            android:layout_width="123dp"
+            android:layout_height="20dp"
+            android:layout_marginStart="235dp"
+            android:layout_marginTop="0dp"
+            android:background="@color/background_color"
+            android:fontFamily="@font/poppins_semibold"
+            android:foregroundGravity="left"
+            android:text="Pokaż wszystkie"
+            android:textColor="#313131"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/subject_textView"
+            android:layout_width="209dp"
+            android:layout_height="100dp"
+            android:layout_marginStart="19dp"
+            android:layout_marginTop="52dp"
+            android:fontFamily="@font/poppins_semibold"
+            android:gravity="left|fill_vertical"
+            android:textAllCaps="false"
+            android:textColor="@color/black" />
+
+        <ImageView
+            android:id="@+id/subject_image"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_marginStart="229dp"
+            android:layout_marginTop="70dp"
+            android:background="@drawable/_subjcet_image" />
+        <Button
+            android:id="@+id/log_off_button"
+            android:layout_width="346dp"
+            android:layout_height="70dp"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="399dp"
+            android:background="@drawable/_gray_button_background"
+            android:fontFamily="@font/poppins_semibold"
+            android:text="Wyloguj się"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textSize="20sp" />
+    </RelativeLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
