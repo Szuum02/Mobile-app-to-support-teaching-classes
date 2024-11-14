@@ -1,13 +1,9 @@
 package com.example.teachingapp.Tasks;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.res.Resources;
-import android.text.Layout;
 import android.view.Gravity;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TableLayout;
@@ -15,15 +11,12 @@ import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 
 import com.example.teachingapp.R;
 import com.example.teachingapp.Student.ChooseAction;
 import com.example.teachingapp.Student.ShowPresence;
-import com.example.teachingapp.Teacher.CheckActivity;
-import com.example.teachingapp.Teacher.ChooseGroup;
 import com.example.teachingapp.dtos.PresenceDTO;
 import com.example.teachingapp.dtos.StudentPresenceHistoryDTO;
 import com.example.teachingapp.enums.PresenceType;
@@ -31,11 +24,7 @@ import com.example.teachingapp.retrofit.Api.PresenceApi;
 import com.example.teachingapp.retrofit.RetrofitService;
 
 import java.util.HashMap;
-import java.util.List;
-import java.util.ListIterator;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import retrofit2.Call;
 import retrofit2.Callback;

@@ -18,9 +18,11 @@ import android.widget.Toast;
 
 import com.example.teachingapp.DayOfWeekMapper;
 import com.example.teachingapp.R;
-import com.example.teachingapp.Teacher.ChooseGroup;
+import com.example.teachingapp.Teacher.AllGroups;
+import com.example.teachingapp.Teacher.TeacherMainPage;
 import com.example.teachingapp.Teacher.PresenceOrActivity;
 import com.example.teachingapp.dtos.LessonDTO;
+import com.example.teachingapp.models.Group;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -37,13 +39,13 @@ public class GroupsTask {
     private static final String TAG = "FetchGroupsTask";
     private static final String ERROR_MESSAGE = "Cannot fetch groups";
 
-    private ChooseGroup activity;
+    private AllGroups activity;
     private SharedPreferences sharedPreferences;
     private String lastDate;
     private TextView textView;
     AlertDialog dialog;
 
-    public GroupsTask(ChooseGroup activity, SharedPreferences sharedPreferences) {
+    public GroupsTask(AllGroups activity, SharedPreferences sharedPreferences) {
         this.activity = activity;
         this.sharedPreferences = sharedPreferences;
         LocalDate today = LocalDate.now();
@@ -51,7 +53,7 @@ public class GroupsTask {
         textView = activity.findViewById(R.id.weekDay);
     }
 
-    public void findAndShowGroups() {
+    public void startTask() {
         Map<String, List<LessonDTO>> lessonsMap = getLessons();
         Set<String> dates = lessonsMap.keySet();
 

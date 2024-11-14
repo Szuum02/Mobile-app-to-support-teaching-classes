@@ -14,10 +14,9 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.teachingapp.Student.ChooseSubject;
-import com.example.teachingapp.Teacher.ChooseGroup;
+import com.example.teachingapp.Teacher.TeacherMainPage;
 import com.example.teachingapp.User.RegistrationForm;
 import com.example.teachingapp.dtos.StudentDTO;
-import com.example.teachingapp.dtos.StudentHistoryDTO;
 import com.example.teachingapp.dtos.TeacherDTO;
 import com.example.teachingapp.dtos.UserDTO;
 import com.example.teachingapp.retrofit.Api.StudentApi;
@@ -25,9 +24,7 @@ import com.example.teachingapp.retrofit.Api.TeacherApi;
 import com.example.teachingapp.retrofit.Api.UserApi;
 import com.example.teachingapp.retrofit.RetrofitService;
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 
-import java.lang.reflect.Type;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -109,7 +106,7 @@ public class MainActivity extends AppCompatActivity {
             teacherApi.teacherLogin(user.getId()).enqueue(new Callback<TeacherDTO>() {
                 @Override
                 public void onResponse(Call<TeacherDTO> call, Response<TeacherDTO> response) {
-                    goToTeacherChooseGroup(response.body());
+                    goToTeacherMainPage(response.body());
                 }
 
                 @Override
@@ -127,14 +124,15 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private void goToTeacherChooseGroup(TeacherDTO teacherDTO) {
-        Intent intent = new Intent(this, ChooseGroup.class);
-        intent.putExtra("teacher_id", teacherDTO.getId());
+    private void goToTeacherMainPage(TeacherDTO teacherDTO) {
+        Intent intent = new Intent(this, TeacherMainPage.class);
 
         SharedPreferences.Editor editor = sharedPreferences.edit();
         Gson gson = new Gson();
 
+        intent.putExtra("teacher_id", teacherDTO.getId());
         editor.putString("lessons", gson.toJson(teacherDTO.getLessons()));
+        editor.putString("teacher_data", gson.toJson(teacherDTO));
         editor.apply();
         startActivity(intent);
     }

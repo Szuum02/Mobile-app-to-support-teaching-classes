@@ -1,17 +1,16 @@
 package com.example.teachingapp.Teacher;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.widget.LinearLayout;
-import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.teachingapp.R;
 import com.example.teachingapp.Tasks.GroupsTask;
+import com.example.teachingapp.Tasks.MainPageTeacherTask;
 
-public class ChooseGroup extends AppCompatActivity {
+public class AllGroups extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,7 +21,7 @@ public class ChooseGroup extends AppCompatActivity {
 
             SharedPreferences sharedPreferences = getSharedPreferences("Settings", MODE_PRIVATE);
             GroupsTask groupsTask = new GroupsTask(this, sharedPreferences);
-            groupsTask.findAndShowGroups();
+            groupsTask.startTask();
         }
     }
 }

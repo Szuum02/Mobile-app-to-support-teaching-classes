@@ -13,7 +13,7 @@ import android.widget.Spinner;
 import com.example.teachingapp.R;
 import com.example.teachingapp.Student.ChooseSubject;
 import com.example.teachingapp.Student.ShowActivity;
-import com.example.teachingapp.Teacher.ChooseGroup;
+import com.example.teachingapp.Teacher.TeacherMainPage;
 import com.example.teachingapp.dtos.StudentDTO;
 import com.example.teachingapp.dtos.TeacherDTO;
 import com.example.teachingapp.retrofit.Api.StudentApi;
@@ -155,7 +155,7 @@ public class RegistrationForm extends ShowActivity implements AdapterView.OnItem
     }
 
     private void goToTeacherChooseGroup(TeacherDTO teacherDTO) {
-        Intent intent = new Intent(this, ChooseGroup.class);
+        Intent intent = new Intent(this, TeacherMainPage.class);
         intent.putExtra("teacher_id", teacherDTO.getId());
 
         SharedPreferences.Editor editor = sharedPreferences.edit();

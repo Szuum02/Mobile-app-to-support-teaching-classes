@@ -5,7 +5,6 @@ import android.content.SharedPreferences;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -15,7 +14,6 @@ import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 
-import java.text.NumberFormat;
 import java.util.HashMap;
 import java.util.List;
 import java.util.ListIterator;
@@ -33,13 +31,11 @@ import com.example.teachingapp.Student.ShowActivity;
 import com.example.teachingapp.Student.ShowActivityGroupRanking;
 import com.example.teachingapp.Student.ShowActivityPlot;
 import com.example.teachingapp.Student.ShowActivityTotalRanking;
-import com.example.teachingapp.Teacher.ChooseGroup;
-import com.example.teachingapp.dtos.ActivityDTO;
+import com.example.teachingapp.Teacher.TeacherMainPage;
 import com.example.teachingapp.dtos.ActivityPlotDTO;
 import com.example.teachingapp.dtos.ActivityRankingDTO;
 import com.example.teachingapp.retrofit.Api.ActivityApi;
 import com.example.teachingapp.retrofit.RetrofitService;
-import com.jjoe64.graphview.DefaultLabelFormatter;
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.helper.StaticLabelsFormatter;
 import com.jjoe64.graphview.series.DataPoint;
@@ -152,7 +148,7 @@ public class RankingActivityTask {
                     public void onFailure(@NonNull Call<List<ActivityRankingDTO>> call,
                                           @NonNull Throwable t) {
                         Toast.makeText(activity, "Server error", Toast.LENGTH_SHORT).show();
-                        Logger.getLogger(ChooseGroup.class.getName()).log(Level.SEVERE, "Error occurred", t);
+                        Logger.getLogger(TeacherMainPage.class.getName()).log(Level.SEVERE, "Error occurred", t);
                     }
                 });
 
@@ -196,7 +192,7 @@ public class RankingActivityTask {
                     public void onFailure(@NonNull Call<List<ActivityRankingDTO>> call,
                                           @NonNull Throwable t) {
                         Toast.makeText(activity, "Server error", Toast.LENGTH_SHORT).show();
-                        Logger.getLogger(ChooseGroup.class.getName()).log(Level.SEVERE, "Error occurred", t);
+                        Logger.getLogger(TeacherMainPage.class.getName()).log(Level.SEVERE, "Error occurred", t);
                     }
                 });
 
@@ -218,7 +214,7 @@ public class RankingActivityTask {
                     public void onFailure(@NonNull Call<List<ActivityPlotDTO>> call,
                                           @NonNull Throwable t) {
                         Toast.makeText(activity, "Server error", Toast.LENGTH_SHORT).show();
-                        Logger.getLogger(ChooseGroup.class.getName()).log(Level.SEVERE, "Error occurred", t);
+                        Logger.getLogger(TeacherMainPage.class.getName()).log(Level.SEVERE, "Error occurred", t);
                     }
                 });
     }

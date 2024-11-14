@@ -15,7 +15,7 @@ import android.widget.Toast;
 import com.example.teachingapp.R;
 import com.example.teachingapp.Teacher.CheckActivity;
 import com.example.teachingapp.Teacher.CheckPresence;
-import com.example.teachingapp.Teacher.ChooseGroup;
+import com.example.teachingapp.Teacher.TeacherMainPage;
 import com.example.teachingapp.Teacher.PresenceHistory;
 import com.example.teachingapp.dtos.LessonDTO;
 import com.example.teachingapp.retrofit.Api.LessonApi;
@@ -76,7 +76,7 @@ public class StudentsPresenceTask {
                     @Override
                     public void onFailure(Call<List<Object[]>> call, Throwable t) {
                         Toast.makeText(activity, "Server error", Toast.LENGTH_SHORT).show();
-                        Logger.getLogger(ChooseGroup.class.getName()).log(Level.SEVERE, "Error occurred", t);
+                        Logger.getLogger(TeacherMainPage.class.getName()).log(Level.SEVERE, "Error occurred", t);
                     }
                 });
     }
@@ -268,7 +268,7 @@ public class StudentsPresenceTask {
         timeTableButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(activity, ChooseGroup.class);
+                Intent intent = new Intent(activity, TeacherMainPage.class);
                 activity.startActivity(intent);
             }
         });

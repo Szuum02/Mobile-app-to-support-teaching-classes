@@ -32,7 +32,13 @@
             android:name=".Student.TmpStudentDefaultView"
             android:exported="false" />
         <activity
-            android:name=".Teacher.ChooseGroup"
+            android:name=".Teacher.TeacherMainPage"
+            android:exported="false" />
+        <activity
+            android:name=".Teacher.AllGroups"
+            android:exported="false" />
+        <activity
+            android:name=".SettingsActivity"
             android:exported="false" />
         <activity
             android:name=".Teacher.ChooseLesson"
