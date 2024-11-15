@@ -8,16 +8,31 @@
     <include layout="@layout/_background" />
 
     <TextView
-        android:id="@+id/choose_subjects"
+        android:id="@+id/title_texView"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:layout_marginTop="187dp"
+        android:fontFamily="@font/poppins"
+        android:gravity="center|center_horizontal|center_vertical"
+        android:text="Wybierz zajęcia"
+        android:textAllCaps="false"
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/all_subjects"
         android:layout_width="173dp"
         android:layout_height="25dp"
         android:layout_marginStart="17dp"
         android:layout_marginTop="247dp"
         android:background="@color/background_color"
         android:fontFamily="@font/poppins_semibold"
-        android:text="Wybierz zajęcia"
+        android:text="Pokaż wszystkie"
         android:textColor="#313131"
-        android:textSize="18sp"
+        android:textSize="14sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -48,7 +63,17 @@
         android:background="@drawable/_white_rectangle"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/choose_subjects" />
+        app:layout_constraintTop_toBottomOf="@+id/all_subjects">
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+    </LinearLayout>
+
+    </ScrollView>
 
     <Button
         android:id="@+id/return_button"

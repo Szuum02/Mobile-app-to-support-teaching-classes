@@ -82,9 +82,8 @@ public class MainPageTeacherTask {
                     new StringBuilder()
                             .append("Witaj ")
                             .append(teacherDTO.getName())
-                            .append(" ").
-                            append(teacherDTO.getLastname()).toString()
-            );
+                            .append(" ")
+                            .append(teacherDTO.getLastname()).toString());
         }
     }
 
@@ -94,43 +93,50 @@ public class MainPageTeacherTask {
             subjectTextView.setText("Brak najbliższych zajęć");
         } else {
 
-            String topic = upcomingLesson.getTopic();
-
-            String date = getDateFromData(upcomingLesson);
-
-            String classRoom = String.valueOf(upcomingLesson.getClassroom());
-
-            String combinedText = topic + "\n" + date + "\n" + classRoom;
-
-            SpannableString spannableString = new SpannableString(combinedText);
-
-            int topicEnd = topic.length();
-            spannableString.setSpan(
-                    new RelativeSizeSpan(1.17f),
-                    0,
-                    topicEnd,
-                    Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
-            );
-
-
-            int dateEnd = topicEnd + date.length() + 1;
-            spannableString.setSpan(
-                    new ForegroundColorSpan(Color.parseColor("#555555")),
-                    topicEnd + 1,
-                    dateEnd,
-                    Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
-            );
-
-            spannableString.setSpan(
-                    new ForegroundColorSpan(Color.parseColor("#555555")),
-                    dateEnd + 1,
-                    combinedText.length(),
-                    Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
-            );
+            Spannable spannableString = setUpcomingLessonText();
 
             subjectTextView.setText(spannableString);
 
         }
+    }
+
+    private Spannable setUpcomingLessonText() {
+        String topic = upcomingLesson.getTopic();
+
+        String date = getDateFromData(upcomingLesson);
+
+        String classRoom = String.valueOf(upcomingLesson.getClassroom());
+
+        String combinedText = topic + "\n" + date + "\n" + classRoom;
+
+
+        SpannableString spannableString = new SpannableString(combinedText);
+
+        int topicEnd = topic.length();
+        spannableString.setSpan(
+                new RelativeSizeSpan(1.17f),
+                0,
+                topicEnd,
+                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+        );
+
+
+        int dateEnd = topicEnd + date.length() + 1;
+        spannableString.setSpan(
+                new ForegroundColorSpan(Color.parseColor("#555555")),
+                topicEnd + 1,
+                dateEnd,
+                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+        );
+
+        spannableString.setSpan(
+                new ForegroundColorSpan(Color.parseColor("#555555")),
+                dateEnd + 1,
+                combinedText.length(),
+                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+        );
+
+        return spannableString;
     }
 
     private String getDateFromData(LessonDTO upcomingLesson) {

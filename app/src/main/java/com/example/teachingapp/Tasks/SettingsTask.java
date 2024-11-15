@@ -7,7 +7,6 @@ import android.widget.Toast;
 
 import com.example.teachingapp.R;
 import com.example.teachingapp.SettingsActivity;
-import com.example.teachingapp.Teacher.TeacherMainPage;
 
 public class SettingsTask {
     private SettingsActivity activity;

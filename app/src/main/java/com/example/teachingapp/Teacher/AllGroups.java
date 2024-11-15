@@ -8,14 +8,13 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.teachingapp.R;
 import com.example.teachingapp.Tasks.GroupsTask;
-import com.example.teachingapp.Tasks.MainPageTeacherTask;
 
 public class AllGroups extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_choose_group);
+        setContentView(R.layout._all_subjects_page);
         Intent intent = getIntent();
         if (intent != null) {
 

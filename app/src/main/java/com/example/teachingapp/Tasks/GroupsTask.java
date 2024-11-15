@@ -1,38 +1,35 @@
 package com.example.teachingapp.Tasks;
 
-import android.app.AlertDialog;
+import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Typeface;
-import android.text.SpannableStringBuilder;
-import android.text.Spanned;
+
+import android.graphics.Color;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.style.ForegroundColorSpan;
 import android.text.style.RelativeSizeSpan;
-import android.text.style.StyleSpan;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.teachingapp.DayOfWeekMapper;
 import com.example.teachingapp.R;
 import com.example.teachingapp.Teacher.AllGroups;
-import com.example.teachingapp.Teacher.TeacherMainPage;
 import com.example.teachingapp.Teacher.PresenceOrActivity;
 import com.example.teachingapp.dtos.LessonDTO;
-import com.example.teachingapp.models.Group;
+import com.example.teachingapp.dtos.TeacherDTO;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
-import java.time.LocalDate;
-import java.time.Period;
-import java.util.HashMap;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 
 public class GroupsTask {
@@ -41,259 +38,241 @@ public class GroupsTask {
 
     private AllGroups activity;
     private SharedPreferences sharedPreferences;
-    private String lastDate;
-    private TextView textView;
-    AlertDialog dialog;
+    private Button returnButton;
+    private String chosenDate;
+    private TeacherDTO teacherDTO;
+    private TextView chooseDateTextView;
+    private LinearLayout linearLayout;
+    private TextView showAllClassesTexView;
+    private int chosenYear;
+    private int chosenMonth;
+    private int chosenDay;
 
     public GroupsTask(AllGroups activity, SharedPreferences sharedPreferences) {
         this.activity = activity;
         this.sharedPreferences = sharedPreferences;
-        LocalDate today = LocalDate.now();
-        this.lastDate = today.minusDays(1).toString();
-        textView = activity.findViewById(R.id.weekDay);
+        this.returnButton = activity.findViewById(R.id.return_button);
+        this.teacherDTO = getTeacherDot();
+        this.chooseDateTextView = activity.findViewById(R.id.choose_date);
+        this.linearLayout = activity.findViewById(R.id.linearLayout);
+        this.chosenDate = null;
+        this.showAllClassesTexView = activity.findViewById(R.id.all_subjects);
+        Calendar calendar = Calendar.getInstance();
+        chosenYear = calendar.get(Calendar.YEAR);
+        chosenMonth = calendar.get(Calendar.MONTH);
+        chosenDay = calendar.get(Calendar.DAY_OF_MONTH);
     }
 
     public void startTask() {
-        Map<String, List<LessonDTO>> lessonsMap = getLessons();
-        Set<String> dates = lessonsMap.keySet();
-
-        lastDate = findClosestDate(dates);
-
-        setButtons(dates, lessonsMap);
-
-        showGroup(dates, lessonsMap);
-
+        setUpChooseDateTextView();
+        setUpReturnButton();
+        setUpShowAllClassesTexView();
+        showClasses();
     }
 
-    private void showGroup(Set<String> dates, Map<String, List<LessonDTO>> lessonsMap) {
-        if (dates != null && !dates.isEmpty() && lastDate != null) {
-            addGroups(dates, lessonsMap);
+    private void setUpReturnButton() {
+        returnButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                activity.finish();
+            }
+        });
+    }
+
+    private void showClasses() {
+        if(chosenDate == null) {
+            showAllClasses();
         } else {
-            Toast.makeText(activity, "Brak grup do wyświetlenia", Toast.LENGTH_SHORT).show();
+            showChosenDateClasses();
         }
     }
 
-    public void addGroups(Set<String> dates, Map<String, List<LessonDTO>> lessonsMap) {
-        LinearLayout layout = activity.findViewById(R.id.linearLayout);
-        layout.removeAllViews();
-
-        setTextView();
-
-        for (LessonDTO lesson : lessonsMap.get(lastDate)) {
-            Long groupId = lesson.getGroupId();
-            String subject = lesson.getTopic();
-
-            Button button = new Button(activity);
-            button.setText(subject);
-            button.setBackgroundResource(R.drawable.group_button);
-
-            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.MATCH_PARENT,
-                    LinearLayout.LayoutParams.WRAP_CONTENT
-            );
-
-            params.setMargins(0, 0, 0, 16);
-            button.setLayoutParams(params);
-
-            button.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    showLessons(groupId);
-                }
-            });
-            layout.addView(button);
-        }
-    }
-
-    private void showLessons(Long groupId){
-        Intent intent = new Intent(activity, PresenceOrActivity.class);
-        intent.putExtra("group_id", groupId);
-        activity.startActivity(intent);
-    }
-
-    public Map<String, List<LessonDTO>> getLessons() {
-        String json = sharedPreferences.getString("lessons", null);
-        if (json == null) {
-            return new HashMap<>();
-        }
-
-        Gson gson = new Gson();
-        Type type = new TypeToken<Map<String, List<LessonDTO>>>() {}.getType();
-        return gson.fromJson(json, type);
-    }
-
-    public String findClosestDate(Set<String> dates) {
-        String upcoming = null;
-        String past = null;
-
-        for(String day : dates) {
-            if (Period.between(LocalDate.parse(lastDate), LocalDate.parse(day)).getDays() > 0) {
-                upcoming = findUpcoming(upcoming, day);
-            } else {
-                past = findPast(past, day);
+    private void showChosenDateClasses() {
+        linearLayout.removeAllViews();
+        List<LessonDTO> lessonList = teacherDTO.getLessons().get(chosenDate);
+        if(lessonList != null){
+            int counter = 0;
+            for (LessonDTO lesson :  lessonList) {
+                    LocalDateTime lessonDate  = lesson
+                    .getDate()
+                    .toInstant()
+                    .atZone(ZoneId.systemDefault())
+                    .toLocalDateTime();
+            linearLayout.addView(createButton(lesson, counter, lesson.getGroupId()));
+            counter++;
             }
-        }
-        if (upcoming != null){return upcoming;}
-        return past;
-    }
-
-    public String findClosestUpcomingDate(Set<String> dates) {
-        String upcoming = null;
-
-        for(String day : dates) {
-            if (Period.between(LocalDate.parse(lastDate), LocalDate.parse(day)).getDays() > 0) {
-                upcoming = findUpcoming(upcoming, day);
-            }
-        }
-        return upcoming;
-    }
-
-    public String findClosestPastDate(Set<String> dates) {
-        String past = null;
-
-        for(String day : dates) {
-            if (Period.between(LocalDate.parse(lastDate), LocalDate.parse(day)).getDays() < 0) {
-                past = findPast(past, day);
-            }
-        }
-        return past;
-    }
-
-    public String findUpcoming(String upcoming, String day){
-        if(upcoming == null){
-            return day;
-        }
-        if (Period.between(LocalDate.parse(lastDate), LocalDate.parse(day)).getDays() <
-                Period.between(LocalDate.parse(lastDate), LocalDate.parse(upcoming)).getDays()) {
-            return day;
-        }
-        return upcoming;
-    }
-
-    public String findPast(String past, String day) {
-        if (past == null) {
-            return day;
-        }
-        if (Period.between(LocalDate.parse(lastDate), LocalDate.parse(day)).getDays() >
-                Period.between(LocalDate.parse(lastDate), LocalDate.parse(past)).getDays()) {
-            return day;
-        }
-        return past;
-    }
-
-    public void setTextView() {
-        String dayOfWeek = DayOfWeekMapper.mapEnglishToPolish(LocalDate.parse(lastDate).getDayOfWeek().toString());
-        SpannableStringBuilder builder = new SpannableStringBuilder();
-
-        int dayOfWeekStart = builder.length();
-        builder.append(dayOfWeek);
-        int dayOfWeekEnd = builder.length();
-
-        int dateStart = builder.length();
-        builder.append("\n" + lastDate);
-        int dateEnd = builder.length();
-
-        builder.setSpan(new StyleSpan(Typeface.NORMAL), dateStart, dateEnd, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-        builder.setSpan(new StyleSpan(Typeface.BOLD), dayOfWeekStart, dayOfWeekEnd, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-        builder.setSpan(new RelativeSizeSpan(1f), dateStart, dateEnd, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE); // Mała czcionka dla daty
-        builder.setSpan(new RelativeSizeSpan(2f), dayOfWeekStart, dayOfWeekEnd, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE); // Duża czcionka dla dnia tygodnia
-
-        textView.setText(builder);
-        textView.setGravity(Gravity.CENTER);
-    }
-
-    public void setButtons(Set<String> dates, Map<String, List<LessonDTO>> lessonsMap) {
-        String savedLefHandTribe = sharedPreferences.getString("left_hand", "off");
-
-        Button nextButton = activity.findViewById(R.id.nextButton);
-        Button prevButton = activity.findViewById(R.id.prevButton);
-        Button leftDates = activity.findViewById(R.id.datyLeft);
-        Button rightDates = activity.findViewById(R.id.datyRight);
-
-        if(savedLefHandTribe.equals("on")){
-            rightDates.setVisibility(View.GONE);
-            rightDates.setEnabled(false);
         }
         else {
-            leftDates.setVisibility(View.GONE);
-            leftDates.setEnabled(false);
+            Toast.makeText(activity, "Nie ma zajęć dla wybranej daty", Toast.LENGTH_SHORT).show();
         }
 
-        leftDates.setBackgroundResource(R.drawable.button_background);
-        rightDates.setBackgroundResource(R.drawable.button_background);
-
-        leftDates.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                showDatesDialog(dates);
-            }
-        });
-
-        rightDates.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                showDatesDialog(dates);
-            }
-        });
-
-        nextButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String findDate = findClosestUpcomingDate(dates);
-                if(findDate != null){
-                    lastDate = findDate;
-                    showGroup(dates, lessonsMap);
-                }
-                else {
-                    Toast.makeText(activity, "Dotarłeś do ostatniej zarejestrowanej daty", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
-
-        nextButton.setBackgroundResource(R.drawable.button_background);
-
-        prevButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String findDate = findClosestPastDate(dates);
-                if(findDate != null){
-                    lastDate = findDate;
-                    showGroup(dates, lessonsMap);
-                }
-                else {
-                    Toast.makeText(activity, "Dotarłeś do ostatniej zarejestrowanej daty", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
-        prevButton.setBackgroundResource(R.drawable.button_background);
     }
-    public void showDatesDialog(Set<String> dates) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(activity);
 
-        ScrollView scrollView = new ScrollView(activity);
-        LinearLayout layout = new LinearLayout(activity);
-        layout.setOrientation(LinearLayout.VERTICAL);
-
-        for (String date : dates) {
-            Button dateButton = new Button(activity);
-            dateButton.setText(date);
-            dateButton.setBackgroundResource(R.drawable.button_background);
-
-            dateButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    lastDate = date;
-                    showGroup(dates, getLessons());
-                    dialog.dismiss();
-                }
-            });
-
-            layout.addView(dateButton);
+    private void showAllClasses() {
+        int counter = 0;
+        linearLayout.removeAllViews();
+        for (List<LessonDTO> lessonList : teacherDTO.getLessons().values()) {
+            for (LessonDTO lesson : lessonList) {
+                linearLayout.addView(createButton(lesson, counter, lesson.getGroupId()));
+                counter++;
+            }
         }
+    }
 
-        scrollView.addView(layout);
-        builder.setView(scrollView);
-        dialog = builder.create();
-        dialog.show();
+    private Button createButton(LessonDTO lesson, int counter, Long groupId) {
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                dpToPx(332),
+                dpToPx(76)
+        );
+        params.setMargins(21, 22, 0, 22);
+
+        Button button = new Button(activity);
+        setButtonColor(button, counter%3);
+        button.setLayoutParams(params);
+        setButtonText(button, lesson);
+
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(activity, PresenceOrActivity.class);
+                intent.putExtra("group_id", groupId);
+                activity.startActivity(intent);
+            }
+        });
+
+        return button;
+    }
+
+    private void setButtonText(Button button, LessonDTO lesson) {
+        String topic = lesson.getTopic();
+
+        String date = getDateFromData(lesson);
+
+        String classRoom = String.valueOf(lesson.getClassroom());
+
+        String combinedText = topic + "\n" + date + ", " + classRoom;
+
+
+        SpannableString spannableString = new SpannableString(combinedText);
+
+        int topicEnd = topic.length();
+        spannableString.setSpan(
+                new RelativeSizeSpan(1.25f),
+                0,
+                topicEnd,
+                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+        );
+
+
+        int dateEnd = topicEnd + date.length() + 1;
+        spannableString.setSpan(
+                new ForegroundColorSpan(Color.parseColor("#474747")),
+                topicEnd + 2,
+                dateEnd,
+                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+        );
+
+        spannableString.setSpan(
+                new ForegroundColorSpan(Color.parseColor("#474747")),
+                dateEnd + 2,
+                combinedText.length(),
+                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+        );
+        button.setGravity(Gravity.LEFT);
+        button.setGravity(Gravity.CENTER_VERTICAL);
+        button.setPadding(dpToPx(20), 0, 0, 0);
+        button.setText(spannableString);
+    }
+
+    private String getDateFromData(LessonDTO upcomingLesson) {
+        LocalDateTime localDateTime = upcomingLesson.getDate()
+                .toInstant()
+                .atZone(ZoneId.systemDefault())
+                .toLocalDateTime();
+
+        return localDateTime.getDayOfMonth()
+                + "-" + addZeroToString(String.valueOf(localDateTime.getMonth().getValue()))
+                + "-" + localDateTime.getYear()
+                + ", " + addZeroToString(String.valueOf(localDateTime.getHour()))
+                + ":" + addZeroToString(String.valueOf(localDateTime.getMinute()));
+    }
+
+    private String addZeroToString(String string) {
+        if(string.length() < 2){
+            return "0" + string;
+        }
+        return string;
+    }
+
+    private void setUpChooseDateTextView() {
+        chooseDateTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showDatePickerDialog();
+            }
+        });
+    }
+
+    private TeacherDTO getTeacherDot() {
+        String json = sharedPreferences.getString("teacher_data", null);
+        if (json == null) {
+            return null;
+        } else {
+            Gson gson = new Gson();
+            Type type = new TypeToken<TeacherDTO>() {}.getType();
+            return gson.fromJson(json, type);
+        }
+    }
+
+    private void showDatePickerDialog() {
+        DatePickerDialog datePickerDialog = new DatePickerDialog(
+                activity,
+                (view, selectedYear, selectedMonth, selectedDay) -> {
+                    chosenDate = selectedYear + "-"
+                            + addZeroToString(String.valueOf(selectedMonth + 1))
+                            + "-" + addZeroToString(String.valueOf(selectedDay));
+                    chosenYear = selectedYear;
+                    chosenMonth = selectedMonth;
+                    chosenDay = selectedDay;
+                    showClasses();
+                },
+                chosenYear, chosenMonth, chosenDay
+        );
+
+        datePickerDialog.show();
+    }
+
+    private int dpToPx(int dp) {
+        float density = activity.getResources().getDisplayMetrics().density;
+        return Math.round(dp * density);
+    }
+
+    public void setButtonColor(Button button, int counter){
+        switch (counter) {
+            case 0:
+                button.setBackgroundResource(R.drawable._red_button_background);
+                break;
+            case 1:
+                button.setBackgroundResource(R.drawable._green_button_background);
+                break;
+            case 2:
+                button.setBackgroundResource(R.drawable._gray_light_button_background);
+                break;
+            default:
+        }
+    }
+
+    public void setUpShowAllClassesTexView() {
+        showAllClassesTexView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Calendar calendar = Calendar.getInstance();
+                chosenYear = calendar.get(Calendar.YEAR);
+                chosenMonth = calendar.get(Calendar.MONTH);
+                chosenDay = calendar.get(Calendar.DAY_OF_MONTH);
+                chosenDate = null;
+                showAllClasses();
+            }
+        });
     }
 }
