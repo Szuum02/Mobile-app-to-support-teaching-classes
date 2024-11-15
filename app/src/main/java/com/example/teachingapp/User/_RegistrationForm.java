@@ -27,15 +27,17 @@ public class _RegistrationForm extends AppCompatActivity {
         }
     }
 
-    public void teacherHandler() {
-        Intent intent = new Intent(this, _TeacherRegistration.class);
+    public void teacherHandler(View view) {
+        Intent intent = new Intent(this, _RegistrationLogin.class);
+        intent.putExtra("type", "teacher");
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.apply();
         startActivity(intent);
     }
 
-    public void studentHandler() {
-        Intent intent = new Intent(this, _StudentRegistration.class);
+    public void studentHandler(View view) {
+        Intent intent = new Intent(this, _RegistrationLogin.class);
+        intent.putExtra("type", "student");
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.apply();
         startActivity(intent);
