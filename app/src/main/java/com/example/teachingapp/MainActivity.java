@@ -16,6 +16,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.teachingapp.Student.ChooseSubject;
 import com.example.teachingapp.Teacher.TeacherMainPage;
 import com.example.teachingapp.User.RegistrationForm;
+import com.example.teachingapp.User._RegistrationForm;
 import com.example.teachingapp.dtos.StudentDTO;
 import com.example.teachingapp.dtos.TeacherDTO;
 import com.example.teachingapp.dtos.UserDTO;
@@ -151,7 +152,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void showForm(View view) {
-        Intent intent = new Intent(this, RegistrationForm.class);
+        Intent intent = new Intent(this, _RegistrationForm.class);
 
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.apply();

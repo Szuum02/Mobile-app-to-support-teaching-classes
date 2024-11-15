@@ -17,6 +17,15 @@
         android:theme="@style/Theme.TeachingApp"
         tools:targetApi="31">
         <activity
+            android:name=".User._RegistrationForm"
+            android:exported="false" />
+        <activity
+            android:name=".Teacher._TeacherRegistration"
+            android:exported="false" />
+        <activity
+            android:name=".Student._StudentRegistration"
+            android:exported="false" />
+        <activity
             android:name=".User.RegistrationForm"
             android:exported="false" />
         <activity
