@@ -190,7 +190,7 @@ public class GroupsTask {
                 .atZone(ZoneId.systemDefault())
                 .toLocalDateTime();
 
-        return localDateTime.getDayOfMonth()
+        return addZeroToString(String.valueOf(localDateTime.getDayOfMonth()))
                 + "-" + addZeroToString(String.valueOf(localDateTime.getMonth().getValue()))
                 + "-" + localDateTime.getYear()
                 + ", " + addZeroToString(String.valueOf(localDateTime.getHour()))
