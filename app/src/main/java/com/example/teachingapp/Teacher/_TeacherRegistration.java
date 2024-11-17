@@ -15,6 +15,9 @@ import com.example.teachingapp.retrofit.Api.UserApi;
 import com.example.teachingapp.retrofit.RetrofitService;
 import com.google.gson.Gson;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -48,28 +51,25 @@ public class _TeacherRegistration extends AppCompatActivity {
     private void checkDataAndRegister(EditText mailText, EditText passwordText, EditText confirmPasswordText) {
         String mail = mailText.getText().toString();
         String password = passwordText.getText().toString();
-        String confirmPassword = confirmPasswordText.getText().toString();
 
-        if (!password.equals(confirmPassword)) {
-            confirmPasswordText.setError("Hasła są różne");
-        }
-
-        UserApi userApi = retrofitService.getRetrofit().create(UserApi.class);
-        userApi.checkUniqueMail(mail).enqueue(new Callback<Boolean>() {
-            @Override
-            public void onResponse(Call<Boolean> call, Response<Boolean> response) {
-                if (!response.body()) {
-                    mailText.setError("Konto już istnieje");
-                    return;
+        if (validateEmail(mailText) && validateConfirmPassword(passwordText, confirmPasswordText)) {
+            UserApi userApi = retrofitService.getRetrofit().create(UserApi.class);
+            userApi.checkUniqueMail(mail).enqueue(new Callback<Boolean>() {
+                @Override
+                public void onResponse(Call<Boolean> call, Response<Boolean> response) {
+                    if (!response.body()) {
+                        mailText.setError("Konto już istnieje");
+                        return;
+                    }
+                    registerTeacher(mail, password);
                 }
-                registerTeacher(mail, password);
-            }
 
-            @Override
-            public void onFailure(Call<Boolean> call, Throwable t) {
-                // TODO -> handle error
-            }
-        });
+                @Override
+                public void onFailure(Call<Boolean> call, Throwable t) {
+                    // TODO -> handle error
+                }
+            });
+        }
     }
 
     private void registerTeacher(String mail, String password) {
@@ -85,6 +85,31 @@ public class _TeacherRegistration extends AppCompatActivity {
                 // TODO -> handle error
             }
         });
+    }
+
+    private boolean validateEmail(EditText loginText) {
+        Pattern p = Pattern.compile("^((?!\\.)[\\w\\-_.]*[^.])(@\\w+)(\\.\\w+(\\.\\w+)?[^.\\W])$");
+        Matcher m = p.matcher(loginText.getText().toString());
+        if (!m.matches()) {
+            loginText.setError("Błędny email");
+            return false;
+        }
+        return true;
+    }
+
+    private boolean validateConfirmPassword(EditText passwordText, EditText confirmPasswordText) {
+        if (!passwordText.getText().toString().equals(
+                confirmPasswordText.getText().toString()
+        )) {
+            confirmPasswordText.setError("Hasła są różne");
+            return false;
+        }
+        return true;
+    }
+
+    // TODO -> password pattern?
+    private boolean validatePassword() {
+        return true;
     }
 
     private void goToTeacherMainPage(TeacherDTO teacherDTO) {

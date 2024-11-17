@@ -13,6 +13,9 @@ import com.example.teachingapp.R;
 import com.example.teachingapp.Student._StudentRegistration;
 import com.example.teachingapp.Teacher._TeacherRegistration;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 public class _RegistrationName extends AppCompatActivity {
     private SharedPreferences sharedPreferences;
     private String type;
@@ -32,24 +35,36 @@ public class _RegistrationName extends AppCompatActivity {
         EditText nameText = findViewById(R.id.name);
         EditText lastNameText = findViewById(R.id.lastName);
 
-        String name = nameText.getText().toString();
-        String lastName = lastNameText.getText().toString();
+        if (validateName(nameText, "Imię") && validateName(lastNameText, "Nazwisko")) {
+            String name = nameText.getText().toString();
+            String lastName = lastNameText.getText().toString();
 
-        if (type.equals("teacher")) {
-            Intent intent = new Intent(this, _TeacherRegistration.class);
-            intent.putExtra("name", name);
-            intent.putExtra("lastName", lastName);
-            SharedPreferences.Editor editor = sharedPreferences.edit();
-            editor.apply();
-            startActivity(intent);
+            if (type.equals("teacher")) {
+                Intent intent = new Intent(this, _TeacherRegistration.class);
+                intent.putExtra("name", name);
+                intent.putExtra("lastName", lastName);
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.apply();
+                startActivity(intent);
+            }
+            else {
+                Intent intent = new Intent(this, _StudentRegistration.class);
+                intent.putExtra("name", name);
+                intent.putExtra("lastName", lastName);
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.apply();
+                startActivity(intent);
+            }
         }
-        else {
-            Intent intent = new Intent(this, _StudentRegistration.class);
-            intent.putExtra("name", name);
-            intent.putExtra("lastName", lastName);
-            SharedPreferences.Editor editor = sharedPreferences.edit();
-            editor.apply();
-            startActivity(intent);
+    }
+
+    private boolean validateName(EditText nameText, String nameType) {
+        Pattern p = Pattern.compile("[-\\s\\p{L}]+");
+        Matcher m = p.matcher(nameText.getText().toString());
+        if (!m.matches()) {
+            nameText.setError(nameType + " powinno zawierać tylko polskie znaki, spacje i -");
+            return false;
         }
+        return true;
     }
 }
