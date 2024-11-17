@@ -10,6 +10,8 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.teachingapp.R;
+import com.example.teachingapp.User._RegistrationForm;
+import com.example.teachingapp.User._RegistrationName;
 import com.example.teachingapp.dtos.TeacherDTO;
 import com.example.teachingapp.retrofit.Api.UserApi;
 import com.example.teachingapp.retrofit.RetrofitService;
@@ -46,6 +48,15 @@ public class _TeacherRegistration extends AppCompatActivity {
         EditText confirmPasswordText = findViewById(R.id.confirmPassword);
 
         checkDataAndRegister(mailText, passwordText, confirmPasswordText);
+    }
+
+    public void returnHandler(View view) {
+        Intent intent = new Intent(this, _RegistrationName.class);
+        intent.putExtra("name", name);
+        intent.putExtra("lastName", lastName);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.apply();
+        startActivity(intent);
     }
 
     private void checkDataAndRegister(EditText mailText, EditText passwordText, EditText confirmPasswordText) {

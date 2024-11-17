@@ -7,6 +7,7 @@ import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.teachingapp.MainActivity;
 import com.example.teachingapp.R;
 
 public class _RegistrationForm extends AppCompatActivity {
@@ -33,6 +34,13 @@ public class _RegistrationForm extends AppCompatActivity {
     public void studentHandler(View view) {
         Intent intent = new Intent(this, _RegistrationName.class);
         intent.putExtra("type", "student");
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.apply();
+        startActivity(intent);
+    }
+
+    public void returnHandler(View view) {
+        Intent intent = new Intent(this, MainActivity.class);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.apply();
         startActivity(intent);

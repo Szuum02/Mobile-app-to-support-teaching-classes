@@ -19,7 +19,6 @@ import java.util.regex.Pattern;
 public class _RegistrationName extends AppCompatActivity {
     private SharedPreferences sharedPreferences;
     private String type;
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,6 +27,18 @@ public class _RegistrationName extends AppCompatActivity {
         if (intent != null) {
             sharedPreferences = getSharedPreferences("Settings", MODE_PRIVATE);
             type = intent.getStringExtra("type");
+            String name = intent.getStringExtra("name");
+            String lastName = intent.getStringExtra("lastName");
+
+            if (name != null) {
+                EditText nameText = findViewById(R.id.name);
+                nameText.setText(name);
+            }
+
+            if (lastName != null) {
+                EditText lastNameText = findViewById(R.id.lastName);
+                lastNameText.setText(lastName);
+            }
         }
     }
 
@@ -56,6 +67,13 @@ public class _RegistrationName extends AppCompatActivity {
                 startActivity(intent);
             }
         }
+    }
+
+    public void returnHandler(View view) {
+        Intent intent = new Intent(this, _RegistrationForm.class);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.apply();
+        startActivity(intent);
     }
 
     private boolean validateName(EditText nameText, String nameType) {

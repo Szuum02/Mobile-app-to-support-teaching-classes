@@ -11,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.teachingapp.R;
 import com.example.teachingapp.Teacher.TeacherMainPage;
+import com.example.teachingapp.User._RegistrationName;
 import com.example.teachingapp.dtos.StudentDTO;
 import com.example.teachingapp.dtos.TeacherDTO;
 import com.example.teachingapp.retrofit.Api.UserApi;
@@ -52,6 +53,15 @@ public class _StudentRegistration extends AppCompatActivity {
         checkDataAndRegister(mailText, passwordText, confirmPasswordText, nickText, indexText);
     }
 
+    public void returnHandler(View view) {
+        Intent intent = new Intent(this, _RegistrationName.class);
+        intent.putExtra("name", name);
+        intent.putExtra("lastName", lastName);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.apply();
+        startActivity(intent);
+    }
+
     private void checkDataAndRegister(EditText mailText, EditText passwordText,
                                       EditText confirmPasswordText, EditText nickText,
                                       EditText indexText) {
@@ -90,24 +100,6 @@ public class _StudentRegistration extends AppCompatActivity {
                 }
             });
         }
-
-
-//        UserApi userApi = retrofitService.getRetrofit().create(UserApi.class);
-//        userApi.checkUniqueMail(mail).enqueue(new Callback<Boolean>() {
-//            @Override
-//            public void onResponse(Call<Boolean> call, Response<Boolean> response) {
-//                if (!response.body()) {
-//                    mailText.setError("Konto już istnieje");
-//                    return;
-//                }
-//                registerTeacher(mail, password);
-//            }
-//
-//            @Override
-//            public void onFailure(Call<Boolean> call, Throwable t) {
-//                // TODO -> handle error
-//            }
-//        });
     }
 
     private void registerStudent(String mail, String password, int index, String nick) {
