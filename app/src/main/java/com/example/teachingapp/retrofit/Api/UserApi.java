@@ -1,5 +1,6 @@
 package com.example.teachingapp.retrofit.Api;
 
+import com.example.teachingapp.dtos.TeacherDTO;
 import com.example.teachingapp.dtos.UserDTO;
 import com.example.teachingapp.models.User;
 
@@ -23,4 +24,8 @@ public interface UserApi {
 
     @GET("/user/checkUniqueMail")
     Call<Boolean> checkUniqueMail(@Query("mail") String mail);
+
+    @POST("/user/addTeacher")
+    Call<TeacherDTO> addTeacher(@Query("name") String name, @Query("lastName") String lastName,
+                                @Query("mail") String mail, @Query("password") String password);
 }
