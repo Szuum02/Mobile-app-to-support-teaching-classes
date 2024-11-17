@@ -20,7 +20,7 @@
             android:name=".User._RegistrationForm"
             android:exported="false" />
         <activity
-            android:name=".User._RegistrationLogin"
+            android:name=".User._RegistrationName"
             android:exported="false" />
         <activity
             android:name=".Teacher._TeacherRegistration"
