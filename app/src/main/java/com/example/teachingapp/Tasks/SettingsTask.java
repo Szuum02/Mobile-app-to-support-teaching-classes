@@ -18,8 +18,8 @@ public class SettingsTask {
     public SettingsTask(SettingsActivity activity, SharedPreferences sharedPreferences) {
         this.activity = activity;
         this.sharedPreferences = sharedPreferences;
-        this.noButton = activity.findViewById(R.id.no_button);
-        this.yesButton = activity.findViewById(R.id.yes_button);
+        this.noButton = activity.findViewById(R.id.lesson_button);
+        this.yesButton = activity.findViewById(R.id.stats_button);
         this.returnButton = activity.findViewById(R.id.return_button);
     }
 

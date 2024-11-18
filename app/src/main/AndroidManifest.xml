@@ -26,6 +26,9 @@
             android:name=".Teacher._TeacherRegistration"
             android:exported="false" />
         <activity
+            android:name=".Teacher.ChooseStudent"
+            android:exported="false" />
+        <activity
             android:name=".Student._StudentRegistration"
             android:exported="false"
             android:windowSoftInputMode="adjustPan"/>
@@ -39,7 +42,7 @@
             android:name=".Teacher.CheckPresence"
             android:exported="false" />
         <activity
-            android:name=".Teacher.PresenceOrActivity"
+            android:name=".Teacher.ChooseAction"
             android:exported="false" />
         <activity
             android:name=".Student.TmpStudentDefaultView"

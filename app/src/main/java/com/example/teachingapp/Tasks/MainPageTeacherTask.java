@@ -16,7 +16,7 @@ import com.example.teachingapp.MainActivity;
 import com.example.teachingapp.R;
 import com.example.teachingapp.SettingsActivity;
 import com.example.teachingapp.Teacher.AllGroups;
-import com.example.teachingapp.Teacher.PresenceOrActivity;
+import com.example.teachingapp.Teacher.ChooseAction;
 import com.example.teachingapp.Teacher.TeacherMainPage;
 import com.example.teachingapp.dtos.LessonDTO;
 import com.example.teachingapp.dtos.TeacherDTO;
@@ -219,7 +219,7 @@ public class MainPageTeacherTask {
             whiteRectangle.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Intent intent = new Intent(activity, PresenceOrActivity.class);
+                    Intent intent = new Intent(activity, ChooseAction.class);
                     intent.putExtra("group_id", upcomingLesson.getGroupId());
                     activity.startActivity(intent);
                 }

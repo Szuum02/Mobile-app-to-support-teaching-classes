@@ -18,7 +18,7 @@ import android.widget.Toast;
 
 import com.example.teachingapp.R;
 import com.example.teachingapp.Teacher.AllGroups;
-import com.example.teachingapp.Teacher.PresenceOrActivity;
+import com.example.teachingapp.Teacher.ChooseAction;
 import com.example.teachingapp.dtos.LessonDTO;
 import com.example.teachingapp.dtos.TeacherDTO;
 import com.google.gson.Gson;
@@ -29,7 +29,6 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Calendar;
 import java.util.List;
-import java.util.Map;
 
 
 public class GroupsTask {
@@ -98,7 +97,7 @@ public class GroupsTask {
                     .toInstant()
                     .atZone(ZoneId.systemDefault())
                     .toLocalDateTime();
-            linearLayout.addView(createButton(lesson, counter, lesson.getGroupId()));
+            linearLayout.addView(createButton(lesson, counter, lesson));
             counter++;
             }
         }
@@ -113,13 +112,13 @@ public class GroupsTask {
         linearLayout.removeAllViews();
         for (List<LessonDTO> lessonList : teacherDTO.getLessons().values()) {
             for (LessonDTO lesson : lessonList) {
-                linearLayout.addView(createButton(lesson, counter, lesson.getGroupId()));
+                linearLayout.addView(createButton(lesson, counter, lesson));
                 counter++;
             }
         }
     }
 
-    private Button createButton(LessonDTO lesson, int counter, Long groupId) {
+    private Button createButton(LessonDTO lesson, int counter, LessonDTO lessonDTO) {
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
                 dpToPx(332),
                 dpToPx(76)
@@ -134,8 +133,9 @@ public class GroupsTask {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(activity, PresenceOrActivity.class);
-                intent.putExtra("group_id", groupId);
+                Intent intent = new Intent(activity, ChooseAction.class);
+                intent.putExtra("group_id", lessonDTO.getGroupId());
+                intent.putExtra("lesson_id", lessonDTO.getLessonId());
                 activity.startActivity(intent);
             }
         });

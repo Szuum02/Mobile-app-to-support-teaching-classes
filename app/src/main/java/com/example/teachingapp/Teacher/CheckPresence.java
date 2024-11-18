@@ -3,7 +3,6 @@ package com.example.teachingapp.Teacher;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -15,17 +14,19 @@ public class CheckPresence extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_check_presence);
-        Long groupId;
+        SharedPreferences sharedPreferences = getSharedPreferences("Settings", MODE_PRIVATE);
+        if(sharedPreferences.getString("left_hand", "off").equals("on")){
+            setContentView(R.layout._left_hand_presence_teacher);
+        } else {
+            setContentView(R.layout._right_hand_presence_teacher);
+        }
 
         Intent intent = getIntent();
         if (intent != null) {
-            groupId = intent.getLongExtra("group_id", 0);  //Todo dodać obsługę wyjątku na brak grupy
-
-            SharedPreferences sharedPreferences = getSharedPreferences("Settings", MODE_PRIVATE);
-
-            StudentsPresenceTask studentsPresenceTask = new StudentsPresenceTask(CheckPresence.this, groupId, sharedPreferences);
-            studentsPresenceTask.findAndShowStudents();
+            Long groupId = intent.getLongExtra("group_id", 0);
+            Long lessonId = intent.getLongExtra("lesson_id", 0);
+            StudentsPresenceTask studentsPresenceTask = new StudentsPresenceTask(CheckPresence.this, groupId, lessonId, sharedPreferences);
+            studentsPresenceTask.startTask();
         }
 
     }

@@ -73,7 +73,17 @@
         android:layout_height="303dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/table_deadline_laylout" />
+        app:layout_constraintTop_toBottomOf="@+id/table_deadline_laylout">
+
+        <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+        </LinearLayout>
+
+    </ScrollView>
 
     <LinearLayout
         android:id="@+id/navigation_laylout"
@@ -85,7 +95,7 @@
         android:background="@drawable/_white_rectangle"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/yes_button">
+        app:layout_constraintTop_toBottomOf="@+id/stats_button">
 
         <ImageButton
             android:id="@+id/calendar_button"
