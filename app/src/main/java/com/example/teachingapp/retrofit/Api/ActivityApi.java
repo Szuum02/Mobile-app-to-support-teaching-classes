@@ -3,6 +3,7 @@ package com.example.teachingapp.retrofit.Api;
 import com.example.teachingapp.dtos.ActivityDTO;
 import com.example.teachingapp.dtos.ActivityPlotDTO;
 import com.example.teachingapp.dtos.ActivityRankingDTO;
+import com.example.teachingapp.dtos.StudentHistoryDTO;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -25,7 +26,7 @@ public interface ActivityApi {
     Call<List<ActivityRankingDTO>> getGroupRanking(@Query("groupId") long groupId);
 
     @GET("/activity/studentHistory")
-    Call<List<ActivityDTO>> getStudentHistory(
+    Call<StudentHistoryDTO> getStudentHistory(
             @Query("studentId") long studentId,
             @Query("groupId") long groupId);
 

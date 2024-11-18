@@ -8,25 +8,24 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.teachingapp.R;
-import com.example.teachingapp.Tasks.StudentsPresenceTask;
+import com.example.teachingapp.Tasks.ActivityHistoryTask;
+import com.example.teachingapp.Tasks.StudentsActivityTask;
 
-public class CheckPresence extends AppCompatActivity {
-
+public class ActivityHistory extends AppCompatActivity {
+    Long studentId;
+    Long groupId;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_check_presence);
-        Long groupId;
-
         Intent intent = getIntent();
+        setContentView(R.layout.activity_history);
+
         if (intent != null) {
+            studentId = intent.getLongExtra("studentId", 0);  //Todo dodać obsługę wyjątku na brak grupy
             groupId = intent.getLongExtra("group_id", 0);  //Todo dodać obsługę wyjątku na brak grupy
 
-            SharedPreferences sharedPreferences = getSharedPreferences("Settings", MODE_PRIVATE);
-
-            StudentsPresenceTask studentsPresenceTask = new StudentsPresenceTask(CheckPresence.this, groupId, sharedPreferences);
-            studentsPresenceTask.findAndShowStudents();
+            ActivityHistoryTask activityHistoryTask = new ActivityHistoryTask(ActivityHistory.this, studentId, groupId);
+            activityHistoryTask.showHistory();
         }
-
     }
 }

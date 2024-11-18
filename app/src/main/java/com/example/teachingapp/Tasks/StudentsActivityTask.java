@@ -1,5 +1,6 @@
 package com.example.teachingapp.Tasks;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -14,12 +15,16 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 
 import com.example.teachingapp.R;
+import com.example.teachingapp.Teacher.ActivityHistory;
 import com.example.teachingapp.Teacher.CheckActivity;
+import com.example.teachingapp.Teacher.CheckPresence;
 import com.example.teachingapp.Teacher.ChooseGroup;
 import com.example.teachingapp.retrofit.Api.LessonApi;
 import com.example.teachingapp.retrofit.RetrofitService;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -31,21 +36,29 @@ public class StudentsActivityTask {
     private static int VERTICAL = 1;
     private static int HORIZONTAL = 0;
     private final CheckActivity activity;
-    private final long lessonId;
+    private final long groupId;
     private SharedPreferences sharedPreferences;
     String leftHandTribe;
+    private int counter;
+    Map<Integer, Boolean> isToColorMap = new HashMap<>();
 
-    public StudentsActivityTask(CheckActivity activity, long lessonId, SharedPreferences sharedPreferences) {
+    public StudentsActivityTask(CheckActivity activity, long groupId, SharedPreferences sharedPreferences) {
         this.activity = activity;
-        this.lessonId = lessonId;
+        this.groupId = groupId;
         this.sharedPreferences = sharedPreferences;
+        setLayoutButtons();
+        isToColorMap.put(0, false);
+        isToColorMap.put(1, false);
+        isToColorMap.put(2, true);
+        isToColorMap.put(3, true);
     }
 
     public void findAndShowStudents() {
         RetrofitService retrofitService = new RetrofitService();
         LessonApi lessonApi = retrofitService.getRetrofit().create(LessonApi.class);
+        counter = 0;
 
-        lessonApi.getStudents(lessonId)
+        lessonApi.getStudents(groupId)
                 .enqueue(new Callback<>() {
                     @Override
                     public void onResponse(@NonNull Call<List<Object[]>> call,
@@ -80,13 +93,17 @@ public class StudentsActivityTask {
 
                 if(leftHandTribe.equals("on")) {
                     layout.addView(setUpLayoutWithButtons(nameView, pointsView, studentId, name, lastName));
-                    layout.addView(setUpLayoutWithTexView(nameView, pointsView));
-                }
+                    layout.addView(setUpLayoutWithTexView(nameView, pointsView));}
                 else {
                     layout.addView(setUpLayoutWithTexView(nameView, pointsView));
-                    layout.addView(setUpLayoutWithButtons(nameView, pointsView, studentId, name, lastName));
-                }
+                    layout.addView(setUpLayoutWithButtons(nameView, pointsView, studentId, name, lastName));}
 
+                if(isToColorMap.get(counter%4)) {
+                    layout.setBackgroundResource(R.drawable.basic_texview);}
+                else {
+                    layout.setBackgroundResource(R.drawable.brown_textview);}
+
+                counter++;
                 dynamicLayout.addView(layout);
             }
         } else {
@@ -100,7 +117,6 @@ public class StudentsActivityTask {
         textView.setLayoutParams(new LinearLayout.LayoutParams(
                 0, LinearLayout.LayoutParams.WRAP_CONTENT, 3f));
         textView.setText(String.format("%s ", name));
-        textView.setBackgroundResource(R.drawable.basic_texview);
         textView.setTextSize(15);
         textView.setTextColor(Color.BLACK);
         textView.setPadding(16, 8, 16, 8);
@@ -108,7 +124,6 @@ public class StudentsActivityTask {
         textView.setMaxLines(2);
         textView.setEllipsize(TextUtils.TruncateAt.END);
         textView.setGravity(Gravity.CENTER_VERTICAL | Gravity.START);
-
         return textView;
     }
 
@@ -117,7 +132,6 @@ public class StudentsActivityTask {
         textView.setLayoutParams(new LinearLayout.LayoutParams(
                 0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f));
         textView.setText(String.format("%s ", name));
-        textView.setBackgroundColor(Color.parseColor("#EFEAC2"));
         textView.setTextSize(14);
         textView.setTextColor(Color.BLACK);
         textView.setTypeface(null, Typeface.BOLD);
@@ -198,7 +212,7 @@ public class StudentsActivityTask {
             @Override
             public void onClick(View v) {
                 int points = 1;
-                InsertActivity task = new InsertActivity(studentId, lessonId, points, fullName, nameView, pointsView);
+                InsertActivity task = new InsertActivity(studentId, groupId, points, fullName, nameView, pointsView);
                 task.addActivity();
             }
         });
@@ -214,7 +228,7 @@ public class StudentsActivityTask {
             @Override
             public void onClick(View v) {
                 int points = -1;
-                InsertActivity task = new InsertActivity(studentId, lessonId, points, fullName, nameView, pointsView);
+                InsertActivity task = new InsertActivity(studentId, groupId, points, fullName, nameView, pointsView);
                 task.addActivity();
             }
         });
@@ -226,9 +240,47 @@ public class StudentsActivityTask {
                                 long studentId, String fullName, TextView nameView, TextView pointsView) {
         button.setText(buttonText);
         button.setBackgroundResource(R.drawable.blue_button);
+
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(activity, ActivityHistory.class);
+                intent.putExtra("studentId", studentId);
+                intent.putExtra("group_id", groupId);
+                activity.startActivity(intent);
+            }
+        });
+
         layout.addView(button);
     }
 
+    public void setLayoutButtons() {
+        Button presenceButton = activity.findViewById(R.id.presence_button);
+        Button refresh = activity.findViewById(R.id.refresh_button);
+        Button timeTableButton = activity.findViewById(R.id.sheet_button);
 
+        presenceButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(activity, CheckPresence.class);
+                intent.putExtra("group_id", groupId);
+                activity.startActivity(intent);
+            }
+        });
 
+        refresh.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                findAndShowStudents();
+            }
+        });
+
+        timeTableButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(activity, ChooseGroup.class);
+                activity.startActivity(intent);
+            }
+        });
+    }
 }

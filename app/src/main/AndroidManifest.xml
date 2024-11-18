@@ -35,6 +35,9 @@
             android:name=".Teacher.ChooseLesson"
             android:exported="false" />
         <activity
+            android:name=".Teacher.PresenceHistory"
+            android:exported="false" />
+        <activity
             android:name=".Student.ChooseSubject"
             android:exported="false" />
         <activity
@@ -45,6 +48,8 @@
             android:exported="false" />
         <activity
             android:name=".Student.ShowActivityRanking"
+            android:exported="false" />
+        <activity android:name=".Teacher.ActivityHistory"
             android:exported="false" />
         <activity
             android:name=".MainActivity"

@@ -19,9 +19,6 @@ public class ChooseLesson extends AppCompatActivity {
         Intent intent = getIntent();
         if (intent != null) {
             groupId = intent.getLongExtra("group", 0);
-            Toast errorToast = Toast.makeText(ChooseLesson.this,
-                    "wita obecność: " + groupId, Toast.LENGTH_SHORT);
-            errorToast.show();
 
             LinearLayout layout = findViewById(R.id.linearLayout);
 

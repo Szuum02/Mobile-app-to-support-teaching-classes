@@ -5,14 +5,13 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.teachingapp.R;
 
 public class PresenceOrActivity extends AppCompatActivity {
-    private Long lessonId;
+    private Long groupId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,10 +20,7 @@ public class PresenceOrActivity extends AppCompatActivity {
         Log.d("Presenceor", "dziala");
         Intent intent = getIntent();
         if (intent != null) {
-            lessonId = intent.getLongExtra("lesson", 0);  //Todo dodać obsługę wyjątku na brak grupy
-            Toast errorToast = Toast.makeText(PresenceOrActivity.this,
-                    String.valueOf(lessonId), Toast.LENGTH_SHORT); // dla ułatwienia, usunąć przed pokazaniem
-            errorToast.show();
+            groupId = intent.getLongExtra("group_id", 0);  //Todo dodać obsługę wyjątku na brak grupy
         }
 
         Button activityButton = findViewById(R.id.activityButton);
@@ -33,27 +29,27 @@ public class PresenceOrActivity extends AppCompatActivity {
         activityButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                goToActivity(v, lessonId);
+                goToActivity(v, groupId);
             }
         });
 
         presenceButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                goToPresence(v, lessonId);
+                goToPresence(v, groupId);
             }
         });
     }
 
     public void goToPresence(View view, long lessonId){
         Intent intent = new Intent(this, CheckPresence.class);
-        intent.putExtra("lesson", lessonId);
+        intent.putExtra("group_id", lessonId);
         startActivity(intent);
     }
 
     public void goToActivity(View view, long lessonId){
         Intent intent = new Intent(this, CheckActivity.class);
-        intent.putExtra("lesson", lessonId);
+        intent.putExtra("group_id", lessonId);
         startActivity(intent);
     }
 }

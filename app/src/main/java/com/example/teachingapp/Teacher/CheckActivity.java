@@ -18,17 +18,13 @@ public class CheckActivity extends AppCompatActivity {
         SharedPreferences sharedPreferences = getSharedPreferences("Settings", MODE_PRIVATE);
         setContentView(R.layout.activity_check_activity);
 
-        Long lessonId;
+        Long groupId;
         Intent intent = getIntent();
 
         if (intent != null) {
-            lessonId = intent.getLongExtra("lesson", 0);  //Todo dodać obsługę wyjątku na brak grupy
-            Toast errorToast = Toast.makeText(CheckActivity.this,
-                    "wita aktywność: " + lessonId, Toast.LENGTH_SHORT);                               // dla ułatwienia, usunąć przed pokazaniem
-            errorToast.show();
+            groupId = intent.getLongExtra("group_id", 0);  //Todo dodać obsługę wyjątku na brak grupy
 
-
-            StudentsActivityTask studentsActivityTask = new StudentsActivityTask(CheckActivity.this, lessonId, sharedPreferences);
+            StudentsActivityTask studentsActivityTask = new StudentsActivityTask(CheckActivity.this, groupId, sharedPreferences);
             studentsActivityTask.findAndShowStudents();
         }
 
