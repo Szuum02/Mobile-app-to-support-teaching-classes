@@ -12,7 +12,7 @@ public class RetrofitService {
 
     public RetrofitService() {
         //change to your IP address
-        String BASE_URL = "http://192.168.0.64:8080";
+        String BASE_URL = "http://192.168.202.9:8080";
         retrofit = new Retrofit.Builder()
                 .baseUrl(BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create(new Gson()))

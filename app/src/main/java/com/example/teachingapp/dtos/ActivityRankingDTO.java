@@ -7,7 +7,7 @@ import lombok.Setter;
 @Setter
 public class ActivityRankingDTO {
     private final String nick;
-    private final long totalPoints;
+    private final Long totalPoints;
     private Long todayPoints;
 
     public ActivityRankingDTO(String nick, long totalPoints, Long todayPoints) {

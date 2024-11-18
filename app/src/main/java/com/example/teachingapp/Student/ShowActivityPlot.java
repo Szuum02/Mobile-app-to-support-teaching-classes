@@ -4,16 +4,14 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import com.example.teachingapp.R;
-import com.example.teachingapp.Tasks.ShowPresenceTask;
+import com.example.teachingapp.Tasks.RankingActivityTask;
 
-public class ShowPresence extends AppCompatActivity {
+public class ShowActivityPlot extends ShowActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.student_check_presence);
+        setContentView(R.layout.student_check_activity_plot);
         long studentId;
         long groupId;
         String subject;
@@ -27,8 +25,8 @@ public class ShowPresence extends AppCompatActivity {
 
             SharedPreferences sharedPreferences = getSharedPreferences("Settings", MODE_PRIVATE);
 
-            ShowPresenceTask presenceTask = new ShowPresenceTask(this, groupId, studentId, subject, nick, sharedPreferences);
-            presenceTask.findAndShowPresences();
+            RankingActivityTask rankingTask = new RankingActivityTask(this, groupId, studentId, subject, nick, sharedPreferences);
+            rankingTask.getPlot();
         }
 
     }

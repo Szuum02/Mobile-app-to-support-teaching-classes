@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#EFEAC2"
-    tools:context=".Student.ShowActivityGroupRanking">
+    tools:context=".Student.ShowActivityPlot">
 
     <TextView
         android:id="@+id/subject"
@@ -20,9 +20,9 @@
         android:textColor="#000000"
         android:gravity="center" />
 
-    <ScrollView
-        android:id="@+id/activityView"
-        android:layout_width="401dp"
+    <com.jjoe64.graphview.GraphView
+        android:id="@+id/activity_plot"
+        android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginStart="10dp"
         android:layout_marginEnd="10dp"
@@ -32,48 +32,7 @@
         app:layout_constraintTop_toBottomOf="@+id/subject"
         app:layout_constraintBottom_toTopOf="@+id/activity_buttons_layouts"
         android:layout_marginTop="30dp"
-        android:layout_marginBottom="30dp"
-        >
-
-        <TableLayout
-            android:id="@+id/activity_table"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:stretchColumns="1,2">
-
-            <TableRow
-                android:layout_width="fill_parent"
-                android:minHeight="40dp"
-                android:background="@color/button_color">
-
-                <TextView
-                    android:layout_height="match_parent"
-                    android:gravity="center"
-                    android:padding="3dip"
-                    android:text="Lp."
-                    android:textColor="#FFFFFF"
-                    android:textSize="25dp"
-                    android:layout_gravity="center"
-                    android:layout_marginLeft="5dp"
-                    android:layout_marginRight="5dp"/>
-
-                <TextView
-                    android:layout_height="match_parent"
-                    android:gravity="center"
-                    android:padding="3dip"
-                    android:text="Nick"
-                    android:textColor="#FFFFFF"
-                    android:textSize="25dp" />
-
-                <TextView
-                    android:gravity="center"
-                    android:padding="3dip"
-                    android:text="Punkty"
-                    android:textColor="#FFFFFF"
-                    android:textSize="25dp"/>
-            </TableRow>
-        </TableLayout>
-    </ScrollView>
+        android:layout_marginBottom="30dp"/>
 
     <LinearLayout
         android:id="@+id/activity_buttons_layouts"
@@ -102,11 +61,11 @@
             />
 
         <Button
-            android:id="@+id/plot_button"
+            android:id="@+id/ranking_button"
             android:layout_width="160dp"
             android:layout_height="50dp"
             android:background="@drawable/button_background"
-            android:text="Wykres"
+            android:text="Ranking"
             android:textColor="#FFFFFF"
             android:textSize="20sp"
             app:layout_constraintTop_toBottomOf="@+id/activityView"
