@@ -5,6 +5,10 @@
     android:layout_height="match_parent"
     android:background="#EFEAC2"
     tools:context=".MainActivity">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    </RelativeLayout>
 
     <ImageView
         android:id="@+id/myImageView"
@@ -32,7 +36,7 @@
         android:ems="10"
         android:gravity="center"
         android:inputType="textPassword"
-        android:text="haslo26"
+        android:text="haslo1"
         app:layout_constraintBottom_toTopOf="@+id/button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
@@ -48,7 +52,7 @@
         android:ems="10"
         android:gravity="center"
         android:inputType="text"
-        android:text="nauczyciel1@example.com"
+        android:text="student1@example.com"
         app:layout_constraintBottom_toTopOf="@+id/PasswordText"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
@@ -59,10 +63,28 @@
         android:layout_height="40dp"
         android:layout_marginStart="50dp"
         android:layout_marginEnd="53dp"
-        android:layout_marginBottom="144dp"
+        android:layout_marginBottom="50dp"
         android:background="@drawable/button_background"
         android:onClick="checkLoginData"
         android:text="Zaloguj się"
+        android:textAppearance="@style/TextAppearance.AppCompat.Display2"
+        android:textColor="#FFFFFF"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toTopOf="@+id/registration_button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/registration_button"
+        android:layout_width="309dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="50dp"
+        android:layout_marginEnd="53dp"
+        android:layout_marginBottom="70dp"
+        android:background="@drawable/button_background"
+        android:onClick="showForm"
+        android:text="Załóż konto"
         android:textAppearance="@style/TextAppearance.AppCompat.Display2"
         android:textColor="#FFFFFF"
         android:textSize="18sp"
