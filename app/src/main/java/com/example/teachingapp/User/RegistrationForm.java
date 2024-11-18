@@ -13,7 +13,7 @@ import android.widget.Spinner;
 import com.example.teachingapp.R;
 import com.example.teachingapp.Student.ChooseSubject;
 import com.example.teachingapp.Student.ShowActivity;
-import com.example.teachingapp.Teacher.ChooseGroup;
+import com.example.teachingapp.Teacher.TeacherMainPage;
 import com.example.teachingapp.dtos.StudentDTO;
 import com.example.teachingapp.dtos.TeacherDTO;
 import com.example.teachingapp.retrofit.Api.StudentApi;
@@ -61,52 +61,52 @@ public class RegistrationForm extends ShowActivity implements AdapterView.OnItem
         nickText = findViewById(R.id.NickText);
         UserApi userApi = retrofitService.getRetrofit().create(UserApi.class);
         // TODO -> handle not unique mail or index
-        if (type.equals("Uczeń") && validateStudent()) {
-            userApi.checkUniqueValues(loginText.getText().toString(), Integer.valueOf(indexText.getText().toString())).enqueue(new Callback<String>() {
-                @Override
-                public void onResponse(Call<String> call, Response<String> response) {
-                    switch (response.body()) {
-                        case "ok":
-                            addUser(true);
-                            break;
-                        case "mail":
-                            loginText.setError("Ten mail już istnieje");
-                            break;
-                        case "index":
-                            indexText.setError("Ten nr albumu już istnieje");
-                            break;
-                        default:
-                            break;
-                    }
-                }
-
-                @Override
-                public void onFailure(Call<String> call, Throwable t) {
-
-                }
-            });
-        }
-        else if (type.equals("Nauczyciel") && validateTeacher()) {
-            userApi.checkUniqueValues(loginText.getText().toString(), -1).enqueue(new Callback<String>() {
-                @Override
-                public void onResponse(Call<String> call, Response<String> response) {
-                    switch (response.body()) {
-                        case "ok":
-                            addUser(false);
-                            break;
-                        case "mail":
-                            loginText.setError("Ten mail już istnieje");
-                            break;
-                        default:
-                            break;
-                    }
-                }
-
-                @Override
-                public void onFailure(Call<String> call, Throwable t) {
-                }
-            });
-        }
+//        if (type.equals("Uczeń") && validateStudent()) {
+//            userApi.checkUniqueValues(loginText.getText().toString(), Integer.valueOf(indexText.getText().toString())).enqueue(new Callback<String>() {
+//                @Override
+//                public void onResponse(Call<String> call, Response<String> response) {
+//                    switch (response.body()) {
+//                        case "ok":
+//                            addUser(true);
+//                            break;
+//                        case "mail":
+//                            loginText.setError("Ten mail już istnieje");
+//                            break;
+//                        case "index":
+//                            indexText.setError("Ten nr albumu już istnieje");
+//                            break;
+//                        default:
+//                            break;
+//                    }
+//                }
+//
+//                @Override
+//                public void onFailure(Call<String> call, Throwable t) {
+//
+//                }
+//            });
+//        }
+//        else if (type.equals("Nauczyciel") && validateTeacher()) {
+//            userApi.checkUniqueValues(loginText.getText().toString(), -1).enqueue(new Callback<String>() {
+//                @Override
+//                public void onResponse(Call<String> call, Response<String> response) {
+//                    switch (response.body()) {
+//                        case "ok":
+//                            addUser(false);
+//                            break;
+//                        case "mail":
+//                            loginText.setError("Ten mail już istnieje");
+//                            break;
+//                        default:
+//                            break;
+//                    }
+//                }
+//
+//                @Override
+//                public void onFailure(Call<String> call, Throwable t) {
+//                }
+//            });
+//        }
     }
 
     private void addUser(boolean isStudent) {
@@ -155,7 +155,7 @@ public class RegistrationForm extends ShowActivity implements AdapterView.OnItem
     }
 
     private void goToTeacherChooseGroup(TeacherDTO teacherDTO) {
-        Intent intent = new Intent(this, ChooseGroup.class);
+        Intent intent = new Intent(this, TeacherMainPage.class);
         intent.putExtra("teacher_id", teacherDTO.getId());
 
         SharedPreferences.Editor editor = sharedPreferences.edit();
