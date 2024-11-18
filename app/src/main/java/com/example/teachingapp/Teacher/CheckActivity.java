@@ -3,8 +3,6 @@ package com.example.teachingapp.Teacher;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.widget.Button;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -16,20 +14,23 @@ public class CheckActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         SharedPreferences sharedPreferences = getSharedPreferences("Settings", MODE_PRIVATE);
-        setContentView(R.layout.activity_check_activity);
+        if(sharedPreferences.getString("left_hand", "off").equals("on")){
+            setContentView(R.layout._left_hand_activity_teacher);
+        } else {
+            setContentView(R.layout._right_hand_activity_teacher);
+        }
 
-        Long groupId;
         Intent intent = getIntent();
 
         if (intent != null) {
-            groupId = intent.getLongExtra("group_id", 0);  //Todo dodać obsługę wyjątku na brak grupy
+            Long groupId = intent.getLongExtra("group_id", 0);
+            Long lessonId = intent.getLongExtra("lesson_id", 0);
 
-            StudentsActivityTask studentsActivityTask = new StudentsActivityTask(CheckActivity.this, groupId, sharedPreferences);
-            studentsActivityTask.findAndShowStudents();
+            StudentsActivityTask studentsActivityTask = new StudentsActivityTask(CheckActivity.this, groupId, lessonId, sharedPreferences);
+            studentsActivityTask.startTask();
         }
 
-
-
     }
+
 
 }

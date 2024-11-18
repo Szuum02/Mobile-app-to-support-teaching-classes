@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#EFEAC2"
-    tools:context=".Teacher.PresenceOrActivity">
+    tools:context=".Teacher.ChooseAction">
 
     <Button
         android:id="@+id/activityButton"

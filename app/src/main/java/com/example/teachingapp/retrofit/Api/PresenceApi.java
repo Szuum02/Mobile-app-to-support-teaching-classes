@@ -1,5 +1,6 @@
 package com.example.teachingapp.retrofit.Api;
 
+import com.example.teachingapp.dtos.LessonPresenceDTO;
 import com.example.teachingapp.dtos.StudentPresenceHistoryDTO;
 import com.example.teachingapp.models.Presence;
 
@@ -23,4 +24,7 @@ public interface PresenceApi {
 
     @GET("/presence/student/get")
     Call<StudentPresenceHistoryDTO> getStudentPresences(@Query("studentId") long studentId, @Query("groupId") long groupId);
+
+    @GET("/presence/get")
+    Call<List<LessonPresenceDTO>> getLessonPresence(@Query("lessonId") long lessonId);
 }

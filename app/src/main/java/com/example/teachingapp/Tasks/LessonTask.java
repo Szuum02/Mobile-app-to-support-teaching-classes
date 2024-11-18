@@ -10,9 +10,9 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 
 import com.example.teachingapp.R;
-import com.example.teachingapp.Teacher.ChooseGroup;
+import com.example.teachingapp.Teacher.TeacherMainPage;
 import com.example.teachingapp.Teacher.ChooseLesson;
-import com.example.teachingapp.Teacher.PresenceOrActivity;
+import com.example.teachingapp.Teacher.ChooseAction;
 import com.example.teachingapp.retrofit.Api.GroupApi;
 import com.example.teachingapp.retrofit.RetrofitService;
 
@@ -52,7 +52,7 @@ public class LessonTask {
                                           @NonNull Throwable t) {
                         Toast.makeText(activity, "Server error", Toast.LENGTH_SHORT).show();
                         Logger.getLogger(
-                                ChooseGroup.class.getName()).log(Level.SEVERE, "Error occurred", t);
+                                TeacherMainPage.class.getName()).log(Level.SEVERE, "Error occurred", t);
                     }
                 });
     }
@@ -81,9 +81,10 @@ public class LessonTask {
     }
 
     private void goToChosenGroup(Long lessonId){
-        Intent intent = new Intent(activity, PresenceOrActivity.class);
+        Intent intent = new Intent(activity, ChooseAction.class);
         intent.putExtra("lesson", lessonId);
         Log.d("lessonId", String.valueOf(lessonId));
         activity.startActivity(intent);
     }
+
 }

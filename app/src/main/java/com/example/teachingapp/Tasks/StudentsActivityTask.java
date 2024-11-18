@@ -3,284 +3,409 @@ package com.example.teachingapp.Tasks;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
-import android.graphics.Typeface;
-import android.text.TextUtils;
+import android.os.Build;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.res.ResourcesCompat;
 
 import com.example.teachingapp.R;
-import com.example.teachingapp.Teacher.ActivityHistory;
 import com.example.teachingapp.Teacher.CheckActivity;
 import com.example.teachingapp.Teacher.CheckPresence;
-import com.example.teachingapp.Teacher.ChooseGroup;
+import com.example.teachingapp.Teacher.ChooseAction;
+import com.example.teachingapp.Teacher.TeacherMainPage;
+import com.example.teachingapp.dtos.LessonPointsDTO;
+import com.example.teachingapp.dtos.StudentDataDTO;
+import com.example.teachingapp.retrofit.Api.ActivityApi;
 import com.example.teachingapp.retrofit.Api.LessonApi;
 import com.example.teachingapp.retrofit.RetrofitService;
 
-import java.util.HashMap;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 public class StudentsActivityTask {
-    private static int VERTICAL = 1;
-    private static int HORIZONTAL = 0;
     private final CheckActivity activity;
     private final long groupId;
+    private final long lessonId;
     private SharedPreferences sharedPreferences;
-    String leftHandTribe;
-    private int counter;
-    Map<Integer, Boolean> isToColorMap = new HashMap<>();
-
-    public StudentsActivityTask(CheckActivity activity, long groupId, SharedPreferences sharedPreferences) {
+    private Map<Long, StudentDataDTO> studentsMap;
+    private ImageButton presenceButton;
+    private ImageButton qrButton;
+    private ImageButton scanButton;
+    private ImageButton returnButton;
+    private LinearLayout linearLayout;
+    public StudentsActivityTask(CheckActivity activity, long groupId, long lessonId, SharedPreferences sharedPreferences) {
         this.activity = activity;
         this.groupId = groupId;
         this.sharedPreferences = sharedPreferences;
-        setLayoutButtons();
-        isToColorMap.put(0, false);
-        isToColorMap.put(1, false);
-        isToColorMap.put(2, true);
-        isToColorMap.put(3, true);
+        this.lessonId = lessonId;
+        this.linearLayout = activity.findViewById(R.id.linearLayout);
+        this.presenceButton = activity.findViewById(R.id.calendar_button);
+        this.qrButton = activity.findViewById(R.id.show_qr_code_button);
+        this.scanButton = activity.findViewById(R.id.scan_qr_code_button);
+        this.returnButton = activity.findViewById(R.id.return_button);
     }
 
-    public void findAndShowStudents() {
+    public void startTask() {
+        getStudentsList();
+        setUpButtons();
+    }
+
+    public void getStudentsList() {
         RetrofitService retrofitService = new RetrofitService();
         LessonApi lessonApi = retrofitService.getRetrofit().create(LessonApi.class);
-        counter = 0;
-
         lessonApi.getStudents(groupId)
-                .enqueue(new Callback<>() {
+                .enqueue(new Callback<List<Object[]>>() {
                     @Override
                     public void onResponse(@NonNull Call<List<Object[]>> call,
                                            @NonNull Response<List<Object[]>> response) {
-                        leftHandTribe = sharedPreferences.getString("left_hand", "off");
-                        showStudents(response.body());
+                        if (response.body() != null) {
+                            activity.runOnUiThread(() -> {
+                                addStudentsToList(response.body());
+                            });
+                        }
                     }
 
                     @Override
                     public void onFailure(@NonNull Call<List<Object[]>> call,
                                           @NonNull Throwable t) {
-                        Toast.makeText(activity, "Server error", Toast.LENGTH_SHORT).show();
-                        Logger.getLogger(ChooseGroup.class.getName()).log(Level.SEVERE, "Error occurred", t);
+                        Toast.makeText(activity, "Nie udało się pobrać listy uczniów", Toast.LENGTH_SHORT).show();
+                        Logger.getLogger(
+                                TeacherMainPage.class.getName()).log(Level.SEVERE, "Error occurred", t);
                     }
                 });
     }
 
-    private void showStudents(List<Object[]> students) {
-        if (students != null && !students.isEmpty()) {
-            LinearLayout dynamicLayout = activity.findViewById(R.id.dynamic_layout);
-            dynamicLayout.removeAllViews();
+    public void addStudentsToList(List<Object[]> results) {
+        if (results != null && !results.isEmpty()) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
+                studentsMap = results.stream()
+                        .collect(Collectors.toMap(
+                                row -> ((Double) row[0]).longValue(),
+                                row -> new StudentDataDTO(
+                                        ((Double) row[0]).longValue(),
+                                        (String) row[1],
+                                        (String) row[2],
+                                        ((Double) row[3]).longValue()
+                                )
+                        ));
 
-            for (Object[] student : students) {
-                long studentId = ((Double) student[0]).longValue();
-                String name = (String) student[1];
-                String lastName = (String) student[2];
-
-                TextView nameView = prepareNameTextView(name + " " + lastName);
-                TextView pointsView = preparePointsTextView( " ");
-
-                LinearLayout layout = prepareMainLinearLayout();
-
-                if(leftHandTribe.equals("on")) {
-                    layout.addView(setUpLayoutWithButtons(nameView, pointsView, studentId, name, lastName));
-                    layout.addView(setUpLayoutWithTexView(nameView, pointsView));}
-                else {
-                    layout.addView(setUpLayoutWithTexView(nameView, pointsView));
-                    layout.addView(setUpLayoutWithButtons(nameView, pointsView, studentId, name, lastName));}
-
-                if(isToColorMap.get(counter%4)) {
-                    layout.setBackgroundResource(R.drawable.basic_texview);}
-                else {
-                    layout.setBackgroundResource(R.drawable.brown_textview);}
-
-                counter++;
-                dynamicLayout.addView(layout);
+                setUpStudentActivity();
             }
         } else {
-            Toast.makeText(activity, "Brak studentów do wyświetlenia", Toast.LENGTH_SHORT).show();
+            Toast.makeText(activity, "Lista uczniów jest pusta", Toast.LENGTH_SHORT).show();
         }
     }
 
 
-    public TextView prepareNameTextView(String name) {
+    public void setUpStudentActivity() {
+        RetrofitService retrofitService = new RetrofitService();
+        ActivityApi activityApi = retrofitService.getRetrofit().create(ActivityApi.class);
+        activityApi.showLessonActivity(lessonId)
+                .enqueue(new Callback<List<LessonPointsDTO>>() {
+                    @Override
+                    public void onResponse(Call<List<LessonPointsDTO>> call, Response<List<LessonPointsDTO>> response) {
+                        addActivityToStudent(response.body());
+                    }
+
+                    @Override
+                    public void onFailure(Call<List<LessonPointsDTO>> call, Throwable t) {
+
+                    }
+                });
+    }
+
+    public void addActivityToStudent(List<LessonPointsDTO> lessonPointsList) {
+        if(lessonPointsList != null && studentsMap != null) {
+            for(LessonPointsDTO lessonPointsDTO : lessonPointsList) {
+                if(studentsMap.get(lessonPointsDTO.getStudentId()) != null) {
+                    studentsMap.get(lessonPointsDTO.getStudentId()).setAllPoints(lessonPointsDTO.getPoints());
+                }
+            }
+            setUpLayout();
+        }
+    }
+
+    public void setUpLayout() {
+        int counter = 0;
+        if(studentsMap != null) {
+            for (StudentDataDTO studentDataDTO : studentsMap.values()) {
+                LinearLayout rowLayout = new LinearLayout(activity);
+                rowLayout.setOrientation(LinearLayout.HORIZONTAL);
+                rowLayout.setLayoutParams(new LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.MATCH_PARENT,
+                        dpToPx(52)
+                ));
+                rowLayout.setGravity(Gravity.CENTER);
+
+                TextView textView = generateTextView(studentDataDTO);
+                TextView todayPoints = generateTodayPointsTextView(studentDataDTO);
+                TextView allPoint = generateAllPointsTextView(studentDataDTO);
+
+                if(sharedPreferences.getString("left_hand", "off").equals("on")) {
+                    rowLayout.addView(addLayoutWithButtons(todayPoints, allPoint, studentDataDTO));
+                    rowLayout.addView(allPoint);
+                    rowLayout.addView(todayPoints);
+                    rowLayout.addView(textView);
+
+                } else {
+                    rowLayout.addView(textView);
+                    rowLayout.addView(todayPoints);
+                    rowLayout.addView(allPoint);
+                    rowLayout.addView(addLayoutWithButtons(todayPoints, allPoint, studentDataDTO));
+                }
+
+                if(counter% 2 == 0) {
+                    rowLayout.setBackgroundColor(Color.parseColor("#D5D4D4"));
+                }
+                counter++;
+
+                linearLayout.addView(rowLayout);
+
+            }
+        }
+    }
+
+    public TextView generateTodayPointsTextView(StudentDataDTO studentDataDTO) {
         TextView textView = new TextView(activity);
         textView.setLayoutParams(new LinearLayout.LayoutParams(
-                0, LinearLayout.LayoutParams.WRAP_CONTENT, 3f));
-        textView.setText(String.format("%s ", name));
+                0,
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                13
+        ));
+        textView.setGravity(Gravity.CENTER_VERTICAL);
+        textView.setTypeface(ResourcesCompat.getFont(activity, R.font.poppins));
         textView.setTextSize(15);
         textView.setTextColor(Color.BLACK);
-        textView.setPadding(16, 8, 16, 8);
-        textView.setSingleLine(false);
-        textView.setMaxLines(2);
-        textView.setEllipsize(TextUtils.TruncateAt.END);
-        textView.setGravity(Gravity.CENTER_VERTICAL | Gravity.START);
         return textView;
     }
 
-    public TextView preparePointsTextView(String name) {
-        TextView textView = new TextView(activity);
-        textView.setLayoutParams(new LinearLayout.LayoutParams(
-                0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f));
-        textView.setText(String.format("%s ", name));
-        textView.setTextSize(14);
-        textView.setTextColor(Color.BLACK);
-        textView.setTypeface(null, Typeface.BOLD);
-        textView.setPadding(16, 8, 16, 8);
-        textView.setSingleLine(false);
-        textView.setMaxLines(2);
-        textView.setEllipsize(TextUtils.TruncateAt.END);
-        textView.setGravity(Gravity.CENTER_HORIZONTAL);
+    public LinearLayout addLayoutWithButtons(TextView todayPoint, TextView allPoints, StudentDataDTO studentDataDTO) {
+        LinearLayout rowLayout = new LinearLayout(activity);
+        rowLayout.setOrientation(LinearLayout.HORIZONTAL);
+        rowLayout.setLayoutParams(new LinearLayout.LayoutParams(
+                0,
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                32
+        ));
+        rowLayout.setGravity(Gravity.CENTER);
 
-        return textView;
-    }
-
-    public LinearLayout setUpLayoutWithTexView(TextView nameView, TextView pointsView) {
-        LinearLayout layout = prepareSideLinearLayout(HORIZONTAL, 5);
-
-        if(leftHandTribe.equals("on")){
-            layout.addView(pointsView);
-            layout.addView(nameView);
-        } else {
-            layout.addView(nameView);
-            layout.addView(pointsView);
-        }
-
-        return layout;
-    }
-
-    public LinearLayout setUpLayoutWithButtons(TextView nameView, TextView pointsView, Long studentId, String name, String lastName) {
-        LinearLayout layout = prepareSideLinearLayout(HORIZONTAL,4);
+        LinearLayout.LayoutParams buttonParams = new LinearLayout.LayoutParams(
+                dpToPx(36),
+                dpToPx(36)
+        );
+        buttonParams.setMarginEnd(dpToPx(24));
 
         Button pluseButton = new Button(activity);
         Button minusButton = new Button(activity);
-        Button informationButton = new Button(activity);
 
-        addPlusButton(pluseButton, layout, "+", studentId, name + " " + lastName, nameView, pointsView) ;
-        addInformationButton(minusButton, layout, "?", studentId, name + " " + lastName, nameView, pointsView);
-        addMinusButton(informationButton, layout, "-", studentId, name + " " + lastName, nameView, pointsView);
-
-        LinearLayout.LayoutParams buttonParams = new LinearLayout.LayoutParams(
-                0, LinearLayout.LayoutParams.WRAP_CONTENT, 1.0f);
+        pluseButton.setBackgroundResource(R.drawable._o_button);
+        pluseButton.setTextSize(15);
+        pluseButton.setTextColor(Color.WHITE);
+        pluseButton.setGravity(Gravity.CENTER);
+        pluseButton.setText("+");
         pluseButton.setLayoutParams(buttonParams);
-        informationButton.setLayoutParams(buttonParams);
+
+        minusButton.setBackgroundResource(R.drawable._n_button);
+        minusButton.setTextSize(15);
+        minusButton.setTextColor(Color.WHITE);
+        minusButton.setGravity(Gravity.CENTER);
+        minusButton.setText("-");
         minusButton.setLayoutParams(buttonParams);
 
-        return layout;
-    }
 
-    public LinearLayout prepareSideLinearLayout(Integer orientation, float weight) {
-        LinearLayout layout = new LinearLayout(activity);
-        layout.setLayoutParams(new LinearLayout.LayoutParams(
-                0, LinearLayout.LayoutParams.WRAP_CONTENT, weight));
-
-        if (orientation == LinearLayout.VERTICAL) {
-            layout.setOrientation(LinearLayout.VERTICAL);
-        } else if (orientation == LinearLayout.HORIZONTAL) {
-            layout.setOrientation(LinearLayout.HORIZONTAL);
-        }
-
-        return layout;
-    }
-
-
-    public LinearLayout prepareMainLinearLayout() {
-        LinearLayout layout = new LinearLayout(activity);
-        layout.setLayoutParams(new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-        layout.setOrientation(LinearLayout.HORIZONTAL);
-        layout.setPadding(0, 10, 0, 10);
-
-        return layout;
-    }
-
-
-    private void addPlusButton(Button button, LinearLayout layout, String buttonText,
-                                 long studentId, String fullName, TextView nameView, TextView pointsView) {
-        button.setText(buttonText);
-        button.setBackgroundResource(R.drawable.green_button);
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                int points = 1;
-                InsertActivity task = new InsertActivity(studentId, groupId, points, fullName, nameView, pointsView);
-                task.addActivity();
-            }
-        });
-
-        layout.addView(button);
-    }
-
-    private void addMinusButton(Button button, LinearLayout layout, String buttonText,
-                                 long studentId, String fullName, TextView nameView, TextView pointsView) {
-        button.setText(buttonText);
-        button.setBackgroundResource(R.drawable.red_button);
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                int points = -1;
-                InsertActivity task = new InsertActivity(studentId, groupId, points, fullName, nameView, pointsView);
-                task.addActivity();
-            }
-        });
-
-        layout.addView(button);
-    }
-
-    private void addInformationButton(Button button, LinearLayout layout, String buttonText,
-                                long studentId, String fullName, TextView nameView, TextView pointsView) {
-        button.setText(buttonText);
-        button.setBackgroundResource(R.drawable.blue_button);
-
-        button.setOnClickListener(new View.OnClickListener() {
+        minusButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(activity, ActivityHistory.class);
-                intent.putExtra("studentId", studentId);
-                intent.putExtra("group_id", groupId);
-                activity.startActivity(intent);
+                RetrofitService retrofitService = new RetrofitService();
+                ActivityApi activityApi = retrofitService.getRetrofit().create(ActivityApi.class);
+                activityApi.addActivity(lessonId, studentDataDTO.getId(), LocalDateTime.now(), -1).enqueue(new Callback<Integer>() {
+                    @Override
+                            public void onResponse(Call<Integer> call, Response<Integer> response) {
+                                setTextPointsAllPoints(allPoints, -1);
+                                setTextPointTodayPointss(todayPoint, -1);
+                                studentDataDTO.setAllPoints(studentDataDTO.getAllPoints()-1);
+                                if(studentDataDTO.getTodayPoints() == null) {
+                                    studentDataDTO.setTodayPoints(-1L);
+                                } else {
+                                    studentDataDTO.setTodayPoints(studentDataDTO.getTodayPoints()-1);
+                                }
+                            }
+
+                            @Override
+                            public void onFailure(Call<Integer> call, Throwable t) {
+                                Toast.makeText(activity, "Nie udało się zarejestrować aktywności", Toast.LENGTH_SHORT).show();
+                            }
+                        });
             }
         });
 
-        layout.addView(button);
+        pluseButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                RetrofitService retrofitService = new RetrofitService();
+                ActivityApi activityApi = retrofitService.getRetrofit().create(ActivityApi.class);
+                activityApi.addActivity(lessonId, studentDataDTO.getId(), LocalDateTime.now(), 1)
+                        .enqueue(new Callback<Integer>() {
+                            @Override
+                            public void onResponse(Call<Integer> call, Response<Integer> response) {
+                                setTextPointsAllPoints(allPoints, 1);
+                                setTextPointTodayPointss(todayPoint, 1);
+                                studentDataDTO.setAllPoints(studentDataDTO.getAllPoints()+1);
+                                if(studentDataDTO.getTodayPoints() == null) {
+                                    studentDataDTO.setTodayPoints(1L);
+                                } else {
+                                    studentDataDTO.setTodayPoints(studentDataDTO.getTodayPoints()+1);
+                                }
+                            }
+
+                            @Override
+                            public void onFailure(Call<Integer> call, Throwable t) {
+                                Toast.makeText(activity, "Nie udało się zarejestrować aktywności", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+            }
+        });
+
+        if(sharedPreferences.getString("left_hand", "off").equals("on")) {
+            rowLayout.addView(pluseButton);
+            rowLayout.addView(minusButton);
+        } else {
+            rowLayout.addView(minusButton);
+            rowLayout.addView(pluseButton);
+        }
+
+
+        return rowLayout;
     }
 
-    public void setLayoutButtons() {
-        Button presenceButton = activity.findViewById(R.id.presence_button);
-        Button refresh = activity.findViewById(R.id.refresh_button);
-        Button timeTableButton = activity.findViewById(R.id.sheet_button);
+    public TextView generateAllPointsTextView(StudentDataDTO studentDataDTO) {
+        TextView textView = new TextView(activity);
+        if(studentDataDTO.getAllPoints() == null) {
+            textView.setText(String.valueOf(0));
+        } else {
+            textView.setText(String.valueOf(studentDataDTO.getAllPoints()));
+        }
+        textView.setLayoutParams(new LinearLayout.LayoutParams(
+                0,
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                13
+        ));
+        textView.setGravity(Gravity.CENTER_VERTICAL);
+        textView.setTypeface(ResourcesCompat.getFont(activity, R.font.poppins));
+        textView.setTextSize(15);
+        textView.setTextColor(Color.BLACK);
+        return textView;
+    }
 
+    private int dpToPx(int dp) {
+        float density = activity.getResources().getDisplayMetrics().density;
+        return Math.round(dp * density);
+    }
+
+    public TextView generateTextView(StudentDataDTO studentDataDTO) {
+        TextView textView = new TextView(activity);
+        textView.setText(new StringBuilder()
+                .append(studentDataDTO.getName())
+                .append(" ")
+                .append(studentDataDTO.getLastname())
+                .append(" ")
+                .toString());
+        textView.setLayoutParams(new LinearLayout.LayoutParams(
+                0,
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                39
+        ));
+        textView.setGravity(Gravity.CENTER_VERTICAL);
+        textView.setTypeface(ResourcesCompat.getFont(activity, R.font.poppins));
+        textView.setTextSize(15);
+        textView.setTextColor(Color.BLACK);
+        return textView;
+    }
+
+    public void setUpButtons() {
         presenceButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(activity, CheckPresence.class);
                 intent.putExtra("group_id", groupId);
+                intent.putExtra("lesson_id", lessonId);
                 activity.startActivity(intent);
             }
         });
 
-        refresh.setOnClickListener(new View.OnClickListener() {
+        qrButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                findAndShowStudents();
+
             }
         });
 
-        timeTableButton.setOnClickListener(new View.OnClickListener() {
+        scanButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(activity, ChooseGroup.class);
+
+            }
+        });
+
+        returnButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(activity, ChooseAction.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
                 activity.startActivity(intent);
             }
         });
+    }
+
+    public void setTextPointsAllPoints(TextView textView, Integer value) {
+        if(textView.getText() != null) {
+            Integer number;
+            if (textView.getText().toString().equals("")) {
+                number = value;
+            } else {
+                number = Integer.valueOf(textView.getText().toString()) + value;
+            }
+            if (number > 0) {
+                textView.setText("+" + String.valueOf(number));
+            } else if (number == 0) {
+                textView.setText("0");
+            } else {
+                textView.setText(String.valueOf(number));
+            }
+        }
+    }
+
+    public void setTextPointTodayPointss(TextView textView, Integer value) {
+        if(textView.getText() != null) {
+            Integer number;
+            if (textView.getText().toString().equals("")) {
+                number = value;
+            } else {
+                number = Integer.valueOf(textView.getText().toString()) + value;
+            }
+            if (number > 0) {
+                textView.setText("+" + String.valueOf(number));
+            } else if (number < 0) {
+                textView.setText(String.valueOf(number));
+            } else {
+                textView.setText("");
+
+            }
+        }
     }
 }

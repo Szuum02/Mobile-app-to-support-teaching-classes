@@ -21,7 +21,7 @@ public class ActivityHistory extends AppCompatActivity {
         setContentView(R.layout.activity_history);
 
         if (intent != null) {
-            studentId = intent.getLongExtra("studentId", 0);  //Todo dodać obsługę wyjątku na brak grupy
+            studentId = intent.getLongExtra("student_id", 0);  //Todo dodać obsługę wyjątku na brak grupy
             groupId = intent.getLongExtra("group_id", 0);  //Todo dodać obsługę wyjątku na brak grupy
 
             ActivityHistoryTask activityHistoryTask = new ActivityHistoryTask(ActivityHistory.this, studentId, groupId);

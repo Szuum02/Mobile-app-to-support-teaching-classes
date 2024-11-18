@@ -14,9 +14,12 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.teachingapp.Student.ChooseSubject;
-import com.example.teachingapp.Teacher.ChooseGroup;
+import com.example.teachingapp.Teacher.TeacherMainPage;
+import com.example.teachingapp.User.RegistrationForm;
+import com.example.teachingapp.User._Login;
+import com.example.teachingapp.User._RegistrationForm;
+import com.example.teachingapp.User._RegistrationName;
 import com.example.teachingapp.dtos.StudentDTO;
-import com.example.teachingapp.dtos.StudentHistoryDTO;
 import com.example.teachingapp.dtos.TeacherDTO;
 import com.example.teachingapp.dtos.UserDTO;
 import com.example.teachingapp.retrofit.Api.StudentApi;
@@ -24,9 +27,7 @@ import com.example.teachingapp.retrofit.Api.TeacherApi;
 import com.example.teachingapp.retrofit.Api.UserApi;
 import com.example.teachingapp.retrofit.RetrofitService;
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 
-import java.lang.reflect.Type;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -44,111 +45,134 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.login_page);
-        LinearLayout settingsBar = findViewById(R.id.settingsBar);
+        setContentView(R.layout._welcome_view);
+//        LinearLayout settingsBar = findViewById(R.id.settingsBar);
         sharedPreferences = getSharedPreferences("Settings", MODE_PRIVATE);
-        Button settingsButton = findViewById(R.id.settings_buttton);
-        Switch leftHandSwitch = findViewById(R.id.lef_hand_switch);
-        settings = new Settings(settingsButton, settingsBar, sharedPreferences, leftHandSwitch, this);
+//        Button settingsButton = findViewById(R.id.settings_buttton);
+//        Switch leftHandSwitch = findViewById(R.id.lef_hand_switch);
+//        settings = new Settings(settingsButton, settingsBar, sharedPreferences, leftHandSwitch, this);
     }
 
-
-    public void checkLoginData(View view){
-        EditText loginText = findViewById(R.id.LoginText);
-        EditText passwordText = findViewById(R.id.PasswordText);
-        Button loginButton = findViewById(R.id.button);
-
-        retrofitService = new RetrofitService();
-        UserApi userApi = retrofitService.getRetrofit().create(UserApi.class);
-
-        String login = loginText.getText().toString();
-        String password = passwordText.getText().toString();
-        Log.d("info", login + " " + password);
-
-        userApi.getUserByMail(login, password)
-                .enqueue(new Callback<UserDTO>() {
-                    @Override
-                    public void onResponse(Call<UserDTO> call, Response<UserDTO> response) {
-                            tryLogin(response.body());
-                    }
-
-                    @Override
-                    public void onFailure(Call<UserDTO> call, Throwable t) {
-                        Toast.makeText(MainActivity.this, "Server error", Toast.LENGTH_SHORT).show();
-                        Logger.getLogger(MainActivity.class.getName()).log(Level.SEVERE, "Error occurred", t);
-                    }
-                });
-    }
-
-    private void tryLogin(UserDTO user) {
-        if (user.getId() == null) {
-            Toast.makeText(MainActivity.this, "Wrong mail", Toast.LENGTH_SHORT).show();
-            return;
-        }
-        if (user.isStudent()) {
-            StudentApi studentApi = retrofitService.getRetrofit().create(StudentApi.class);
-
-            studentApi.studentLogin(user.getId()).enqueue(new Callback<StudentDTO>() {
-                @Override
-                public void onResponse(Call<StudentDTO> call, Response<StudentDTO> response) {
-                    goToStudentChooseSubject(response.body());
-                }
-
-                @Override
-                public void onFailure(Call<StudentDTO> call, Throwable t) {
-                    Toast.makeText(MainActivity.this, "Nie znaleziono Id użytkownika",
-                            Toast.LENGTH_SHORT).show();
-                    Log.e("StudentApiError", "Error occurred: " + t.getMessage(), t);
-                }
-            });
-
-        } else if (!user.isStudent()) {
-
-            TeacherApi teacherApi = retrofitService.getRetrofit().create(TeacherApi.class);
-            teacherApi.teacherLogin(user.getId()).enqueue(new Callback<TeacherDTO>() {
-                @Override
-                public void onResponse(Call<TeacherDTO> call, Response<TeacherDTO> response) {
-                    goToTeacherChooseGroup(response.body());
-                }
-
-                @Override
-                public void onFailure(Call<TeacherDTO> call, Throwable t) {
-                    Toast.makeText(MainActivity.this, "Nie znaleziono Id użytkownika",
-                            Toast.LENGTH_SHORT).show();
-                    Log.e("TeacherApiError", "Error occurred: " + t.getMessage(), t);
-                    }
-            });
-        }
-        else {
-            Toast.makeText(MainActivity.this, "Błąd logowania, spróbuj ponownie",
-                    Toast.LENGTH_SHORT).show();
-        }
-
-    }
-
-    private void goToTeacherChooseGroup(TeacherDTO teacherDTO) {
-        Intent intent = new Intent(this, ChooseGroup.class);
-        intent.putExtra("teacher_id", teacherDTO.getId());
-
+    public void loginHandler(View view) {
+        Intent intent = new Intent(this, _Login.class);
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        Gson gson = new Gson();
-
-        editor.putString("lessons", gson.toJson(teacherDTO.getLessons()));
         editor.apply();
         startActivity(intent);
     }
 
-    private void goToStudentChooseSubject(StudentDTO studentDTO) {
-        Intent intent = new Intent(this, ChooseSubject.class);
-        intent.putExtra("student_id", studentDTO.getId());
-        intent.putExtra("nick", studentDTO.getNick());
-
+    public void registerHandler(View view) {
+        Intent intent = new Intent(this, _RegistrationForm.class);
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        Gson gson = new Gson();
-
-        editor.putString("groups", gson.toJson(studentDTO.getGroups()));
         editor.apply();
         startActivity(intent);
     }
+
+//    public void checkLoginData(View view){
+//        EditText loginText = findViewById(R.id.LoginText);
+//        EditText passwordText = findViewById(R.id.PasswordText);
+//        Button loginButton = findViewById(R.id.button);
+//
+//        retrofitService = new RetrofitService();
+//        UserApi userApi = retrofitService.getRetrofit().create(UserApi.class);
+//
+//        String login = loginText.getText().toString();
+//        String password = passwordText.getText().toString();
+//        Log.d("info", login + " " + password);
+//
+//        userApi.getUserByMail(login, password)
+//                .enqueue(new Callback<UserDTO>() {
+//                    @Override
+//                    public void onResponse(Call<UserDTO> call, Response<UserDTO> response) {
+//                            tryLogin(response.body());
+//                    }
+//
+//                    @Override
+//                    public void onFailure(Call<UserDTO> call, Throwable t) {
+//                        Toast.makeText(MainActivity.this, "Server error", Toast.LENGTH_SHORT).show();
+//                        Logger.getLogger(MainActivity.class.getName()).log(Level.SEVERE, "Error occurred", t);
+//                    }
+//                });
+//    }
+//
+//    private void tryLogin(UserDTO user) {
+//        if (user.getId() == null) {
+//            Toast.makeText(MainActivity.this, "Wrong mail", Toast.LENGTH_SHORT).show();
+//            return;
+//        }
+//        if (user.isStudent()) {
+//            StudentApi studentApi = retrofitService.getRetrofit().create(StudentApi.class);
+//
+//            studentApi.studentLogin(user.getId()).enqueue(new Callback<StudentDTO>() {
+//                @Override
+//                public void onResponse(Call<StudentDTO> call, Response<StudentDTO> response) {
+//                    goToStudentChooseSubject(response.body());
+//                }
+//
+//                @Override
+//                public void onFailure(Call<StudentDTO> call, Throwable t) {
+//                    Toast.makeText(MainActivity.this, "Nie znaleziono Id użytkownika",
+//                            Toast.LENGTH_SHORT).show();
+//                    Log.e("StudentApiError", "Error occurred: " + t.getMessage(), t);
+//                }
+//            });
+//
+//        } else if (!user.isStudent()) {
+//
+//            TeacherApi teacherApi = retrofitService.getRetrofit().create(TeacherApi.class);
+//            teacherApi.teacherLogin(user.getId()).enqueue(new Callback<TeacherDTO>() {
+//                @Override
+//                public void onResponse(Call<TeacherDTO> call, Response<TeacherDTO> response) {
+//                    goToTeacherMainPage(response.body());
+//                }
+//
+//                @Override
+//                public void onFailure(Call<TeacherDTO> call, Throwable t) {
+//                    Toast.makeText(MainActivity.this, "Nie znaleziono Id użytkownika",
+//                            Toast.LENGTH_SHORT).show();
+//                    Log.e("TeacherApiError", "Error occurred: " + t.getMessage(), t);
+//                    }
+//            });
+//        }
+//        else {
+//            Toast.makeText(MainActivity.this, "Błąd logowania, spróbuj ponownie",
+//                    Toast.LENGTH_SHORT).show();
+//        }
+//
+//    }
+//
+//    private void goToTeacherMainPage(TeacherDTO teacherDTO) {
+//        Intent intent = new Intent(this, TeacherMainPage.class);
+//
+//        SharedPreferences.Editor editor = sharedPreferences.edit();
+//        Gson gson = new Gson();
+//
+//        intent.putExtra("teacher_id", teacherDTO.getId());
+//        editor.putString("lessons", gson.toJson(teacherDTO.getLessons()));
+//        editor.putString("teacher_data", gson.toJson(teacherDTO));
+//        editor.apply();
+//        startActivity(intent);
+//    }
+//
+//    private void goToStudentChooseSubject(StudentDTO studentDTO) {
+//        Intent intent = new Intent(this, ChooseSubject.class);
+//        intent.putExtra("student_id", studentDTO.getId());
+//        intent.putExtra("nick", studentDTO.getNick());
+//
+//        SharedPreferences.Editor editor = sharedPreferences.edit();
+//        Gson gson = new Gson();
+//
+//        editor.putString("groups", gson.toJson(studentDTO.getGroups()));
+//        editor.apply();
+//        startActivity(intent);
+//    }
+//
+//    public void showForm(View view) {
+//        Intent intent = new Intent(this, _RegistrationForm.class);
+//
+//        SharedPreferences.Editor editor = sharedPreferences.edit();
+//        editor.apply();
+//        startActivity(intent);
+//    }
+
 
 }

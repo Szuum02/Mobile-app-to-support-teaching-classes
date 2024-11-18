@@ -3,6 +3,7 @@ package com.example.teachingapp.retrofit.Api;
 import com.example.teachingapp.dtos.ActivityDTO;
 import com.example.teachingapp.dtos.ActivityPlotDTO;
 import com.example.teachingapp.dtos.ActivityRankingDTO;
+import com.example.teachingapp.dtos.LessonPointsDTO;
 import com.example.teachingapp.dtos.StudentHistoryDTO;
 
 import java.time.LocalDateTime;
@@ -14,6 +15,9 @@ import retrofit2.http.POST;
 import retrofit2.http.Query;
 
 public interface ActivityApi {
+
+    @GET("/activity/lessonPoints")
+    Call<List<LessonPointsDTO>> showLessonActivity(@Query("lessonId") long lessonId);
 
     @POST("/activity/add")
     Call<Integer> addActivity(@Query("lessonId") long lessonId, @Query("studentId") long studentId,

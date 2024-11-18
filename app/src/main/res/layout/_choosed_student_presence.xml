@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <include layout="@layout/_background" />
+
+    <TextView
+        android:id="@+id/title_texView"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:layout_marginTop="187dp"
+        android:fontFamily="@font/poppins"
+        android:gravity="center|center_horizontal|center_vertical"
+        android:text="Przeanalizuj aktywność"
+        android:textAllCaps="false"
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/description_texView"
+        android:layout_width="333dp"
+        android:layout_height="72dp"
+        android:layout_marginStart="29dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="31dp"
+        android:fontFamily="@font/poppins"
+        android:gravity="center|center_horizontal|center_vertical"
+        android:textAllCaps="false"
+        android:textColor="#707070"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/title_texView" />
+
+
+    <LinearLayout
+        android:id="@+id/table_deadline_laylout"
+        android:layout_width="match_parent"
+        android:layout_height="35dp"
+        android:layout_marginTop="5dp"
+        android:background="#8ADAB2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/description_texView">
+
+        <TextView
+            android:id="@+id/data_title"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:fontFamily="@font/poppins"
+            android:gravity="center|center_vertical"
+            android:text="Data"
+            android:textColor="#000000" />
+
+        <TextView
+            android:id="@+id/time_title"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:fontFamily="@font/poppins"
+            android:gravity="center|center_vertical"
+            android:text="Obecność"
+            android:textColor="#000000" />
+
+        <TextView
+            android:id="@+id/points_title"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:fontFamily="@font/poppins"
+            android:gravity="center|center_vertical"
+            android:text="Obecność"
+            android:textColor="#000000" />
+
+    </LinearLayout>
+
+    <ScrollView
+        android:id="@+id/scroll_list"
+        android:layout_width="match_parent"
+        android:layout_height="303dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/table_deadline_laylout" />
+
+    <LinearLayout
+        android:id="@+id/navigation_laylout"
+        android:layout_width="203dp"
+        android:layout_height="70dp"
+        android:layout_marginStart="47dp"
+        android:layout_marginTop="248dp"
+        android:layout_marginBottom="64dp"
+        android:background="@drawable/_white_rectangle"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/stats_button">
+
+        <ImageButton
+            android:id="@+id/calendar_button"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="7dp"
+            android:background="@color/white"
+            android:scaleType="center"
+            android:src="@drawable/_calendar_image" />
+
+        <ImageButton
+            android:id="@+id/plus_minus_button"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="7dp"
+            android:background="@drawable/_green_navigationbar_backround"
+            android:scaleType="center"
+            android:src="@drawable/_plus_minus_icon" />
+
+        <ImageButton
+            android:id="@+id/show_qr_code_button"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="7dp"
+            android:background="@color/white"
+            android:scaleType="center"
+            android:src="@drawable/_raport_icon" />
+    </LinearLayout>
+
+    <ImageButton
+        android:id="@+id/return_button"
+        android:layout_width="76dp"
+        android:layout_height="70dp"
+        android:layout_marginStart="7dp"
+        android:layout_marginEnd="31dp"
+        android:layout_marginBottom="64dp"
+        android:background="@drawable/_white_rectangle"
+        android:scaleType="center"
+        android:src="@drawable/_return_image"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/navigation_laylout" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
