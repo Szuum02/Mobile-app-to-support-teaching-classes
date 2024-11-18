@@ -1,5 +1,6 @@
 package com.example.teachingapp.retrofit.Api;
 
+import com.example.teachingapp.dtos.StudentPresenceHistoryDTO;
 import com.example.teachingapp.models.Presence;
 
 import java.time.LocalDateTime;
@@ -20,6 +21,6 @@ public interface PresenceApi {
     Call<Void> removeAndAddPresence(@Query("studentId") long studentId, @Query("lessonId") long lessonId, @Query("date") LocalDateTime date,
                                     @Query("presence") int presenceType);
 
-    @GET("/presence/student/getPresences")
-    Call<List<Object[]>> getPresences(@Query("studentId") long studentId, @Query("groupId") long groupId);
+    @GET("/presence/student/get")
+    Call<StudentPresenceHistoryDTO> getStudentPresences(@Query("studentId") long studentId, @Query("groupId") long groupId);
 }
