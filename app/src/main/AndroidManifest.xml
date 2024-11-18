@@ -17,6 +17,9 @@
         android:theme="@style/Theme.TeachingApp"
         tools:targetApi="31">
         <activity
+            android:name=".User._Login"
+            android:exported="false" />
+        <activity
             android:name=".User._RegistrationForm"
             android:exported="false" />
         <activity
