@@ -13,6 +13,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.teachingapp.MainActivity;
 import com.example.teachingapp.R;
 import com.example.teachingapp.Student.ChooseSubject;
+import com.example.teachingapp.Student.StudentMainPage;
 import com.example.teachingapp.Teacher.TeacherMainPage;
 import com.example.teachingapp.dtos.StudentDTO;
 import com.example.teachingapp.dtos.TeacherDTO;
@@ -138,14 +139,14 @@ public class _Login extends AppCompatActivity {
     }
 
     private void goToStudentChooseSubject(StudentDTO studentDTO) {
-        Intent intent = new Intent(this, ChooseSubject.class);
+        Intent intent = new Intent(this, StudentMainPage.class);
         intent.putExtra("student_id", studentDTO.getId());
         intent.putExtra("nick", studentDTO.getNick());
 
         SharedPreferences.Editor editor = sharedPreferences.edit();
         Gson gson = new Gson();
 
-        editor.putString("groups", gson.toJson(studentDTO.getGroups()));
+        editor.putString("student_data", gson.toJson(studentDTO));
         editor.apply();
         startActivity(intent);
     }

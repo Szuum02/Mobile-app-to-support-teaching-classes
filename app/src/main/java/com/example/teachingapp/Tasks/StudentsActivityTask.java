@@ -19,7 +19,9 @@ import com.example.teachingapp.R;
 import com.example.teachingapp.Teacher.CheckActivity;
 import com.example.teachingapp.Teacher.CheckPresence;
 import com.example.teachingapp.Teacher.ChooseAction;
+import com.example.teachingapp.Teacher.ShowQR;
 import com.example.teachingapp.Teacher.TeacherMainPage;
+import com.example.teachingapp.Teacher.TeacherScanQR;
 import com.example.teachingapp.dtos.LessonPointsDTO;
 import com.example.teachingapp.dtos.StudentDataDTO;
 import com.example.teachingapp.retrofit.Api.ActivityApi;
@@ -351,14 +353,20 @@ public class StudentsActivityTask {
         qrButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                Intent intent = new Intent(activity, ShowQR.class);
+                intent.putExtra("group_id", groupId);
+                intent.putExtra("lesson_id", lessonId);
+                activity.startActivity(intent);
             }
         });
 
         scanButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                Intent intent = new Intent(activity, TeacherScanQR.class);
+                intent.putExtra("group_id", groupId);
+                intent.putExtra("lesson_id", lessonId);
+                activity.startActivity(intent);
             }
         });
 
