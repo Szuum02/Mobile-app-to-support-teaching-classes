@@ -7,6 +7,21 @@
 
     <include layout="@layout/_background" />
 
+    <ScrollView
+        android:id="@+id/scroll_list"
+        android:layout_width="match_parent"
+        android:layout_height="303dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/table_deadline_laylout">
+
+        <LinearLayout
+            android:id="@+id/linearLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"></LinearLayout>
+    </ScrollView>
+
     <TextView
         android:id="@+id/title_texView"
         android:layout_width="match_parent"
@@ -87,23 +102,7 @@
 
     </LinearLayout>
 
-    <ScrollView
-        android:id="@+id/scroll_list"
-        android:layout_width="match_parent"
-        android:layout_height="303dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/table_deadline_laylout">
 
-        <LinearLayout
-            android:id="@+id/linearLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="16dp">
-        </LinearLayout>
-
-    </ScrollView>
 
     <LinearLayout
         android:id="@+id/navigation_layout"

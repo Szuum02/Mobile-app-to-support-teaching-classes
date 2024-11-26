@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.example.teachingapp.R;
+import com.example.teachingapp.Teacher.CheckActivity;
 import com.example.teachingapp.Teacher.CheckPresence;
 import com.example.teachingapp.Teacher.ChooseAction;
 import com.example.teachingapp.Teacher.ShowQR;
@@ -47,6 +48,7 @@ public class TeacherShowQRTask {
         this.presenceButton = activity.findViewById(R.id.calendar_button);
         this.qrButton = activity.findViewById(R.id.show_qr_code_button);
         this.scanButton = activity.findViewById(R.id.scan_qr_code_button);
+        this.activityButton = activity.findViewById(R.id.plus_minus_button);
         this.returnButton = activity.findViewById(R.id.return_button);
     }
 
@@ -96,6 +98,16 @@ public class TeacherShowQRTask {
             public void onClick(View view) {
                 Intent intent = new Intent(activity, ChooseAction.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                activity.startActivity(intent);
+            }
+        });
+
+        activityButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(activity, CheckActivity.class);
+                intent.putExtra("group_id", groupId);
+                intent.putExtra("lesson_id", lessonId);
                 activity.startActivity(intent);
             }
         });

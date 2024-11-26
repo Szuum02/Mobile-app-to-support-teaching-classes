@@ -18,14 +18,14 @@ public class ActivityHistory extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Intent intent = getIntent();
-        setContentView(R.layout.activity_history);
+        setContentView(R.layout._choosed_student_activity);
 
         if (intent != null) {
-            studentId = intent.getLongExtra("student_id", 0);  //Todo dodać obsługę wyjątku na brak grupy
-            groupId = intent.getLongExtra("group_id", 0);  //Todo dodać obsługę wyjątku na brak grupy
+            studentId = intent.getLongExtra("student_id", 0);
+            groupId = intent.getLongExtra("group_id", 0);
 
             ActivityHistoryTask activityHistoryTask = new ActivityHistoryTask(ActivityHistory.this, studentId, groupId);
-            activityHistoryTask.showHistory();
+            activityHistoryTask.startTask();
         }
     }
 }
