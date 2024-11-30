@@ -291,6 +291,9 @@ public class RankingActivityTask {
                         dpToPx(52)
                 ));
                 rowLayout.setGravity(Gravity.CENTER);
+                if (activityDTO.getNick().equals(nick)) {
+                    rowLayout.setBackgroundColor(Color.parseColor("#8ADAB2"));
+                }
 
                 TextView nickText = generateTextView(activityDTO.getNick());
                 TextView totalPointsText = generatePointsTextView(activityDTO.getTotalPoints(), false);
@@ -326,6 +329,9 @@ public class RankingActivityTask {
                         dpToPx(52)
                 ));
                 rowLayout.setGravity(Gravity.CENTER);
+                if (activityDTO.getNick().equals(nick)) {
+                    rowLayout.setBackgroundColor(Color.parseColor("#FFB6B6"));
+                }
 
                 TextView placeText = generatePlaceTextView(idx + 1);
                 TextView nickText = generateTextView(activityDTO.getNick());
