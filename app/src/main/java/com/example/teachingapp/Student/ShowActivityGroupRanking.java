@@ -22,7 +22,7 @@ public class ShowActivityGroupRanking extends ShowActivity {
             SharedPreferences sharedPreferences = getSharedPreferences("Settings", MODE_PRIVATE);
 
             RankingActivityTask rankingTask = new RankingActivityTask(this, groupId, studentId, nick, sharedPreferences);
-            rankingTask.getGroupRanking();
+            rankingTask.startGroupRanking();
         }
 
     }

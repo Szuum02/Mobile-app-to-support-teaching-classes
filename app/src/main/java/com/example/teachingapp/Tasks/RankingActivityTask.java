@@ -36,7 +36,11 @@ import com.example.teachingapp.Student.ShowActivity;
 import com.example.teachingapp.Student.ShowActivityGroupRanking;
 import com.example.teachingapp.Student.ShowActivityPlot;
 import com.example.teachingapp.Student.ShowActivityTotalRanking;
+import com.example.teachingapp.Student.StudentMainPage;
+import com.example.teachingapp.Teacher.CheckPresence;
+import com.example.teachingapp.Teacher.ShowQR;
 import com.example.teachingapp.Teacher.TeacherMainPage;
+import com.example.teachingapp.Teacher.TeacherScanQR;
 import com.example.teachingapp.dtos.ActivityPlotDTO;
 import com.example.teachingapp.dtos.ActivityRankingDTO;
 import com.example.teachingapp.dtos.StudentDataDTO;
@@ -56,9 +60,11 @@ public class RankingActivityTask {
     private String nick;
     private SharedPreferences sharedPreferences;
     private Map<Integer, Integer> colorMap = new HashMap<>();
+    private ImageButton groupRankingButton;
     private ImageButton totalRankingButton;
     private ImageButton plotButton;
     private ImageButton presenceButton;
+    private ImageButton returnButton;
     private LinearLayout linearLayout;
 
 
@@ -69,21 +75,76 @@ public class RankingActivityTask {
         this.nick = nick;
         this.sharedPreferences = sharedPreferences;
         linearLayout = activity.findViewById(R.id.linearLayout);
-//        colorMap.put(0, R.drawable.basic_texview);
-//        colorMap.put(1, R.drawable.basic_texview);
-//        colorMap.put(2, R.drawable.brown_textview);
-//        colorMap.put(3, R.drawable.brown_textview);
-
-//        initLayout();
+        groupRankingButton = activity.findViewById(R.id.three_people_button);
+        totalRankingButton = activity.findViewById(R.id.five_people_button);
+        plotButton = activity.findViewById(R.id.plot_button);
+        presenceButton = activity.findViewById(R.id.calendar_button);
+        returnButton = activity.findViewById(R.id.return_button);
+        setupButtons();
     }
 
     public void startGroupRanking() {
         getGroupRanking();
     }
 
+    public void startTotalRanking() {
+        getTotalRanking();
+    }
+
+    private void setupButtons() {
+        groupRankingButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(activity, ShowActivityGroupRanking.class);
+                intent.putExtra("group_id", groupId);
+                intent.putExtra("student_id", studentId);
+                intent.putExtra("nick", nick);
+                activity.startActivity(intent);
+            }
+        });
+
+        totalRankingButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(activity, ShowActivityTotalRanking.class);
+                intent.putExtra("group_id", groupId);
+                intent.putExtra("student_id", studentId);
+                intent.putExtra("nick", nick);
+                activity.startActivity(intent);
+            }
+        });
+
+//        scanButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Intent intent = new Intent(activity, TeacherScanQR.class);
+//                intent.putExtra("group_id", groupId);
+//                intent.putExtra("lesson_id", lessonId);
+//                activity.startActivity(intent);
+//            }
+//        });
+//
+//        scanButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Intent intent = new Intent(activity, TeacherScanQR.class);
+//                intent.putExtra("group_id", groupId);
+//                intent.putExtra("lesson_id", lessonId);
+//                activity.startActivity(intent);
+//            }
+//        });
+        returnButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(activity, StudentMainPage.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                activity.startActivity(intent);
+            }
+        });
+    }
+
     private void initLayout() {
         TextView subjectText = activity.findViewById(R.id.subject);
-//        subjectText.setText(subject);
 
         Button returnButton = activity.findViewById(R.id.return_button);
         returnButton.setOnClickListener(new View.OnClickListener() {
@@ -148,7 +209,7 @@ public class RankingActivityTask {
         }
     }
 
-    private void getRanking() {
+    private void getTotalRanking() {
         RetrofitService retrofitService = new RetrofitService();
         ActivityApi activityApi = retrofitService.getRetrofit().create(ActivityApi.class);
 
@@ -169,28 +230,6 @@ public class RankingActivityTask {
                 });
 
     }
-
-//    public void getStudentHistory() {
-//        RetrofitService retrofitService = new RetrofitService();
-//        ActivityApi activityApi = retrofitService.getRetrofit().create(ActivityApi.class);
-//
-//        activityApi.getStudentHistory(studentId, groupId)
-//                .enqueue(new Callback<>() {
-//                    @Override
-//                    public void onResponse(@NonNull Call<List<ActivityDTO>> call,
-//                                           @NonNull Response<List<ActivityDTO>> response) {
-//                        createStudentHistoryInformation(response.body());
-//                    }
-//
-//                    @Override
-//                    public void onFailure(@NonNull Call<List<ActivityDTO>> call,
-//                                          @NonNull Throwable t) {
-//                        Toast.makeText(activity, "Server error", Toast.LENGTH_SHORT).show();
-//                        Logger.getLogger(ChooseGroup.class.getName()).log(Level.SEVERE, "Error occurred", t);
-//                    }
-//                });
-//
-//    }
 
     public void getGroupRanking() {
         RetrofitService retrofitService = new RetrofitService();
@@ -237,29 +276,8 @@ public class RankingActivityTask {
 
     private void createGroupRanking(List<ActivityRankingDTO> activityRanking) {
         if (activityRanking != null && !activityRanking.isEmpty()) {
-//            for (ActivityRankingDTO rankingDTO : activityRanking) {
-//                LinearLayout rowLayout = new LinearLayout(activity);
-//                rowLayout.setOrientation(LinearLayout.HORIZONTAL);
-//                rowLayout.setLayoutParams(new LinearLayout.LayoutParams(
-//                        LinearLayout.LayoutParams.MATCH_PARENT,
-//                        dpToPx(52)
-//                ));
-//                rowLayout.setGravity(Gravity.CENTER);
-//
-//                TextView nickText = generateTextView(rankingDTO.getNick());
-//                TextView totalPointsText = generatePointsTextView(rankingDTO.getTotalPoints(), false);
-//                TextView todayPointsText = generatePointsTextView(rankingDTO.getTodayPoints(), true);
-//
-//                rowLayout.addView(nickText);
-//                rowLayout.addView(totalPointsText);
-//                rowLayout.addView(todayPointsText);
-//            }
-
-//            TableLayout rankingTable = activity.findViewById(R.id.activity_table);
             ListIterator<ActivityRankingDTO> iterator = activityRanking.listIterator();
             while (iterator.hasNext()) {
-//                TableRow row = new TableRow(activity);
-//                row.setPadding(0, 20, 0, 20);
                 int idx = iterator.nextIndex();
                 ActivityRankingDTO activityDTO = iterator.next();
 
@@ -284,15 +302,6 @@ public class RankingActivityTask {
                 }
 
                 linearLayout.addView(rowLayout);
-
-//                int rowColor = ((activityDTO.getNick().equals(nick)) ? R.drawable.green_textview : colorMap.get(idx % 4));
-//                row.setBackground(ContextCompat.getDrawable(activity, rowColor));
-//
-//                row.addView(getTextView(activityDTO.getNick()));
-//                row.addView(getTextView((activityDTO.getTotalPoints() != null) ? activityDTO.getTotalPoints().toString() : "0"));
-//                row.addView(getTextView((activityDTO.getTodayPoints() != null) ? activityDTO.getTodayPoints().toString() : ""));
-//
-//                rankingTable.addView(row);
             }
         } else {
             Toast.makeText(activity, "Brak grup do wyświetlenia", Toast.LENGTH_SHORT).show();
@@ -301,22 +310,33 @@ public class RankingActivityTask {
 
     private void createTotalRanking(List<ActivityRankingDTO> activityRanking) {
         if (activityRanking != null && !activityRanking.isEmpty()) {
-            TableLayout rankingTable = activity.findViewById(R.id.activity_table);
             ListIterator<ActivityRankingDTO> iterator = activityRanking.listIterator();
+
             while (iterator.hasNext()) {
-                TableRow row = new TableRow(activity);
-                row.setPadding(0, 20, 0, 20);
                 int idx = iterator.nextIndex();
                 ActivityRankingDTO activityDTO = iterator.next();
 
-                int rowColor = ((activityDTO.getNick().equals(nick)) ? R.drawable.green_textview : colorMap.get(idx % 4));
-                row.setBackground(ContextCompat.getDrawable(activity, rowColor));
+                LinearLayout rowLayout = new LinearLayout(activity);
+                rowLayout.setOrientation(LinearLayout.HORIZONTAL);
+                rowLayout.setLayoutParams(new LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.MATCH_PARENT,
+                        dpToPx(52)
+                ));
+                rowLayout.setGravity(Gravity.CENTER);
 
-                row.addView(getTextView((idx + 1) + "."));
-                row.addView(getTextView(activityDTO.getNick()));
-                row.addView(getTextView((activityDTO.getTotalPoints() != null) ? activityDTO.getTotalPoints().toString() : "0"));
+                TextView placeText = generatePlaceTextView(idx + 1);
+                TextView nickText = generateTextView(activityDTO.getNick());
+                TextView totalPointsText = generatePointsTextView(activityDTO.getTotalPoints(), false);
 
-                rankingTable.addView(row);
+                rowLayout.addView(placeText);
+                rowLayout.addView(nickText);
+                rowLayout.addView(totalPointsText);
+
+                if(idx % 2 == 0) {
+                    rowLayout.setBackgroundColor(Color.parseColor("#D5D4D4"));
+                }
+
+                linearLayout.addView(rowLayout);
             }
         } else {
             Toast.makeText(activity, "Brak grup do wyświetlenia", Toast.LENGTH_SHORT).show();
@@ -422,4 +442,19 @@ public class RankingActivityTask {
         return textView;
     }
 
+    private TextView generatePlaceTextView(int place) {
+        TextView textView = new TextView(activity);
+        textView.setText(place + ".");
+
+        textView.setLayoutParams(new LinearLayout.LayoutParams(
+                0,
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                2
+        ));
+        textView.setGravity(Gravity.CENTER);
+        textView.setTypeface(ResourcesCompat.getFont(activity, R.font.poppins));
+        textView.setTextSize(15);
+        textView.setTextColor(Color.BLACK);
+        return textView;
+    }
 }
