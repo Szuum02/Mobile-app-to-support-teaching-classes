@@ -14,18 +14,17 @@ public class ShowActivityPlot extends ShowActivity {
         setContentView(R.layout.student_check_activity_plot);
         long studentId;
         long groupId;
-        String subject;
         String nick;
         Intent intent = getIntent();
         if (intent != null) {
             studentId = intent.getLongExtra("student_id", 0);
             groupId = intent.getLongExtra("group_id", 0);
-            subject = intent.getStringExtra("subject");
+//            subject = intent.getStringExtra("subject");
             nick = intent.getStringExtra("nick");
 
             SharedPreferences sharedPreferences = getSharedPreferences("Settings", MODE_PRIVATE);
 
-            RankingActivityTask rankingTask = new RankingActivityTask(this, groupId, studentId, subject, nick, sharedPreferences);
+            RankingActivityTask rankingTask = new RankingActivityTask(this, groupId, studentId, nick, sharedPreferences);
             rankingTask.getPlot();
         }
 

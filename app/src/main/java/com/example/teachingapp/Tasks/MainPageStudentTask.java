@@ -18,6 +18,7 @@ import com.example.teachingapp.SettingsActivity;
 import com.example.teachingapp.Student.StudentMainPage;
 import com.example.teachingapp.Student.StudentScanQR;
 import com.example.teachingapp.Student.StudentShowQR;
+import com.example.teachingapp.Student._StudentChooseGroup;
 import com.example.teachingapp.Teacher.AllGroups;
 import com.example.teachingapp.Teacher.ChooseAction;
 import com.example.teachingapp.Teacher.TeacherMainPage;
@@ -67,7 +68,7 @@ public class MainPageStudentTask {
         setUpHelloTextView();
         setUpSubjectTextView();
 //        setUpSettingsButton();
-//        setUpShowAllClassesTextView();
+        setUpShowAllClassesTextView();
 //        setUpWhiteRectangle();
     }
 
@@ -189,28 +190,27 @@ public class MainPageStudentTask {
         return string;
     }
     private LessonDTO findUpcomingClasses() {
-        if (studentDTO == null || studentDTO.getGroups().isEmpty()) {
+        if (studentDTO == null) {
             return null;
         }
         LocalDateTime currentDate = LocalDateTime.now();
         LocalDateTime closestDate = LocalDateTime.now().plusDays(366);
 
-//        for (List<LessonDTO> lessonList : groupDTO.) {
-//            for (LessonDTO lesson : lessonList) {
-//                LocalDateTime lessonDate  = lesson
-//                        .getDate()
-//                        .toInstant()
-//                        .atZone(ZoneId.systemDefault())
-//                        .toLocalDateTime();
-//
-//                if (lessonDate.isAfter(currentDate) && lessonDate.isBefore(closestDate)) {
-//                    closestDate = lessonDate;
-//                    upcomingLesson = lesson;
-//                }
-//            }
-//        }
-//        return upcomingLesson;
-        return null;
+        for (List<LessonDTO> lessonList : studentDTO.getLessons().values()) {
+            for (LessonDTO lesson : lessonList) {
+                LocalDateTime lessonDate  = lesson
+                        .getDate()
+                        .toInstant()
+                        .atZone(ZoneId.systemDefault())
+                        .toLocalDateTime();
+
+                if (lessonDate.isAfter(currentDate) && lessonDate.isBefore(closestDate)) {
+                    closestDate = lessonDate;
+                    upcomingLesson = lesson;
+                }
+            }
+        }
+        return upcomingLesson;
     }
 
     private StudentDTO getStudentDto() {
@@ -228,7 +228,7 @@ public class MainPageStudentTask {
         showAllClassesTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(activity, AllGroups.class);
+                Intent intent = new Intent(activity, _StudentChooseGroup.class);
                 activity.startActivity(intent);
             }
         });

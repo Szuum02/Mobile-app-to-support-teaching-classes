@@ -91,7 +91,7 @@ public class _Login extends AppCompatActivity {
             studentApi.studentLogin(user.getId()).enqueue(new Callback<StudentDTO>() {
                 @Override
                 public void onResponse(Call<StudentDTO> call, Response<StudentDTO> response) {
-                    goToStudentChooseSubject(response.body());
+                    goToStudentMainPage(response.body());
                 }
 
                 @Override
@@ -138,14 +138,15 @@ public class _Login extends AppCompatActivity {
         startActivity(intent);
     }
 
-    private void goToStudentChooseSubject(StudentDTO studentDTO) {
+    private void goToStudentMainPage(StudentDTO studentDTO) {
         Intent intent = new Intent(this, StudentMainPage.class);
-        intent.putExtra("student_id", studentDTO.getId());
-        intent.putExtra("nick", studentDTO.getNick());
 
         SharedPreferences.Editor editor = sharedPreferences.edit();
         Gson gson = new Gson();
 
+        intent.putExtra("student_id", studentDTO.getId());
+        intent.putExtra("nick", studentDTO.getNick());
+        editor.putString("lessons", gson.toJson(studentDTO.getLessons()));
         editor.putString("student_data", gson.toJson(studentDTO));
         editor.apply();
         startActivity(intent);

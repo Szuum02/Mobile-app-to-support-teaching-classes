@@ -31,7 +31,7 @@
         android:layout_marginEnd="31dp"
         android:fontFamily="@font/poppins"
         android:gravity="center|center_horizontal|center_vertical"
-        android:text="Porównaj swoje wyniki z osiągnięciami rówieśników z grupy"
+        android:text="Porównaj się ze wszystkimi "
         android:textAllCaps="false"
         android:textColor="#707070"
         android:textSize="16sp"
@@ -45,7 +45,7 @@
         android:layout_width="match_parent"
         android:layout_height="35dp"
         android:layout_marginTop="5dp"
-        android:background="#FFB6B6"
+        android:background="#8ADAB2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/description_texView">
@@ -54,20 +54,20 @@
             android:id="@+id/nickname_title"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="3"
+            android:layout_weight="2"
             android:fontFamily="@font/poppins"
             android:gravity="center"
-            android:text="Pseudonim"
+            android:text="Miejsce"
             android:textColor="#000000" />
 
         <TextView
             android:id="@+id/points_title"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="2"
+            android:layout_weight="3"
             android:fontFamily="@font/poppins"
             android:gravity="center"
-            android:text="Punkty"
+            android:text="Nick"
             android:textColor="#000000" />
 
         <TextView
@@ -77,7 +77,7 @@
             android:layout_weight="2"
             android:fontFamily="@font/poppins"
             android:gravity="center"
-            android:text="Dzisiejsze"
+            android:text="Punkty"
             android:textColor="#000000" />
 
     </LinearLayout>
@@ -116,7 +116,7 @@
             android:layout_height="50dp"
             android:layout_marginStart="10dp"
             android:layout_marginTop="7dp"
-            android:background="@drawable/_red_navigationbar_background"
+            android:background="@color/white"
             android:scaleType="center"
             android:src="@drawable/_3_people_image" />
 
@@ -126,7 +126,7 @@
             android:layout_height="50dp"
             android:layout_marginStart="10dp"
             android:layout_marginTop="7dp"
-            android:background="@color/white"
+            android:background="@drawable/_green_navigationbar_backround"
             android:scaleType="center"
             android:src="@drawable/_5_people_image" />
 
