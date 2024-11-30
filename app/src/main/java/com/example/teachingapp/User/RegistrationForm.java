@@ -195,7 +195,7 @@ public class RegistrationForm extends ShowActivity implements AdapterView.OnItem
         SharedPreferences.Editor editor = sharedPreferences.edit();
         Gson gson = new Gson();
 
-        editor.putString("groups", gson.toJson(studentDTO.getGroups()));
+        editor.putString("lessons", gson.toJson(studentDTO.getLessons()));
         editor.apply();
         startActivity(intent);
     }
