@@ -36,6 +36,7 @@ import com.example.teachingapp.Student.ShowActivity;
 import com.example.teachingapp.Student.ShowActivityGroupRanking;
 import com.example.teachingapp.Student.ShowActivityPlot;
 import com.example.teachingapp.Student.ShowActivityTotalRanking;
+import com.example.teachingapp.Student.ShowPresence;
 import com.example.teachingapp.Student.StudentMainPage;
 import com.example.teachingapp.Teacher.CheckPresence;
 import com.example.teachingapp.Teacher.ShowQR;
@@ -124,15 +125,17 @@ public class RankingActivityTask {
 //            }
 //        });
 //
-//        scanButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Intent intent = new Intent(activity, TeacherScanQR.class);
-//                intent.putExtra("group_id", groupId);
-//                intent.putExtra("lesson_id", lessonId);
-//                activity.startActivity(intent);
-//            }
-//        });
+        presenceButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(activity, ShowPresence.class);
+                intent.putExtra("group_id", groupId);
+                intent.putExtra("student_id", studentId);
+                intent.putExtra("nick", nick);
+                activity.startActivity(intent);
+            }
+        });
+
         returnButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -304,7 +307,7 @@ public class RankingActivityTask {
                 linearLayout.addView(rowLayout);
             }
         } else {
-            Toast.makeText(activity, "Brak grup do wyświetlenia", Toast.LENGTH_SHORT).show();
+            Toast.makeText(activity, "Brak aktywności do wyświetlenia", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -339,7 +342,7 @@ public class RankingActivityTask {
                 linearLayout.addView(rowLayout);
             }
         } else {
-            Toast.makeText(activity, "Brak grup do wyświetlenia", Toast.LENGTH_SHORT).show();
+            Toast.makeText(activity, "Brak aktywności do wyświetlenia", Toast.LENGTH_SHORT).show();
         }
     }
 

@@ -78,7 +78,15 @@
         android:layout_height="303dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/table_deadline_laylout" />
+        app:layout_constraintTop_toBottomOf="@+id/table_deadline_laylout">
+
+        <LinearLayout
+            android:id="@+id/linearLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+        </LinearLayout>
+    </ScrollView>
 
     <LinearLayout
         android:id="@+id/navigation_laylout"
