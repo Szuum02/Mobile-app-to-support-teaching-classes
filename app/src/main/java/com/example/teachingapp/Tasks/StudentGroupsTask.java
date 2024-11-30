@@ -16,6 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.teachingapp.R;
+import com.example.teachingapp.Student.ShowActivityGroupRanking;
 import com.example.teachingapp.Student._StudentChooseGroup;
 import com.example.teachingapp.Teacher.AllGroups;
 import com.example.teachingapp.Teacher.ChooseAction;
@@ -130,9 +131,10 @@ public class StudentGroupsTask {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(activity, ChooseAction.class);
+                Intent intent = new Intent(activity, ShowActivityGroupRanking.class);
                 intent.putExtra("group_id", lessonDTO.getGroupId());
-                intent.putExtra("lesson_id", lessonDTO.getLessonId());
+                intent.putExtra("student_id", studentDTO.getId());
+                intent.putExtra("nick", studentDTO.getNick());
                 activity.startActivity(intent);
             }
         });
