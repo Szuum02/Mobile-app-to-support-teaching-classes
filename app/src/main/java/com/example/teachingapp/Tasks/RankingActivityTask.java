@@ -60,7 +60,6 @@ public class RankingActivityTask {
     private long studentId;
     private String nick;
     private SharedPreferences sharedPreferences;
-    private Map<Integer, Integer> colorMap = new HashMap<>();
     private ImageButton groupRankingButton;
     private ImageButton totalRankingButton;
     private ImageButton plotButton;
@@ -146,72 +145,6 @@ public class RankingActivityTask {
         });
     }
 
-    private void initLayout() {
-        TextView subjectText = activity.findViewById(R.id.subject);
-
-        Button returnButton = activity.findViewById(R.id.return_button);
-        returnButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(activity, ChooseAction.class);
-//                intent.putExtra("subject", subject);
-                intent.putExtra("student_id", studentId);
-                intent.putExtra("group_id", groupId);
-                intent.putExtra("nick", nick);
-
-                activity.startActivity(intent);
-            }
-        });
-
-        Button groupRankingButton = activity.findViewById(R.id.group_button);
-        if (groupRankingButton != null) {
-            groupRankingButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Intent intent = new Intent(activity, ShowActivityGroupRanking.class);
-//                    intent.putExtra("subject", subject);
-                    intent.putExtra("student_id", studentId);
-                    intent.putExtra("group_id", groupId);
-                    intent.putExtra("nick", nick);
-
-                    activity.startActivity(intent);
-                }
-            });
-        }
-
-        Button totalRankingButton = activity.findViewById(R.id.ranking_button);
-        if (totalRankingButton != null) {
-            totalRankingButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Intent intent = new Intent(activity, ShowActivityTotalRanking.class);
-//                    intent.putExtra("subject", subject);
-                    intent.putExtra("student_id", studentId);
-                    intent.putExtra("group_id", groupId);
-                    intent.putExtra("nick", nick);
-
-                    activity.startActivity(intent);
-                }
-            });
-        }
-
-        Button plotButton = activity.findViewById(R.id.plot_button);
-        if (plotButton != null) {
-            plotButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Intent intent = new Intent(activity, ShowActivityPlot.class);
-//                    intent.putExtra("subject", subject);
-                    intent.putExtra("student_id", studentId);
-                    intent.putExtra("group_id", groupId);
-                    intent.putExtra("nick", nick);
-
-                    activity.startActivity(intent);
-                }
-            });
-        }
-    }
-
     private void getTotalRanking() {
         RetrofitService retrofitService = new RetrofitService();
         ActivityApi activityApi = retrofitService.getRetrofit().create(ActivityApi.class);
@@ -291,6 +224,11 @@ public class RankingActivityTask {
                         dpToPx(52)
                 ));
                 rowLayout.setGravity(Gravity.CENTER);
+
+                if(idx % 2 == 0) {
+                    rowLayout.setBackgroundColor(Color.parseColor("#D5D4D4"));
+                }
+
                 if (activityDTO.getNick().equals(nick)) {
                     rowLayout.setBackgroundColor(Color.parseColor("#8ADAB2"));
                 }
@@ -302,10 +240,6 @@ public class RankingActivityTask {
                 rowLayout.addView(nickText);
                 rowLayout.addView(totalPointsText);
                 rowLayout.addView(todayPointsText);
-
-                if(idx % 2 == 0) {
-                    rowLayout.setBackgroundColor(Color.parseColor("#D5D4D4"));
-                }
 
                 linearLayout.addView(rowLayout);
             }
@@ -329,6 +263,10 @@ public class RankingActivityTask {
                         dpToPx(52)
                 ));
                 rowLayout.setGravity(Gravity.CENTER);
+                if(idx % 2 == 0) {
+                    rowLayout.setBackgroundColor(Color.parseColor("#D5D4D4"));
+                }
+
                 if (activityDTO.getNick().equals(nick)) {
                     rowLayout.setBackgroundColor(Color.parseColor("#FFB6B6"));
                 }
@@ -340,10 +278,6 @@ public class RankingActivityTask {
                 rowLayout.addView(placeText);
                 rowLayout.addView(nickText);
                 rowLayout.addView(totalPointsText);
-
-                if(idx % 2 == 0) {
-                    rowLayout.setBackgroundColor(Color.parseColor("#D5D4D4"));
-                }
 
                 linearLayout.addView(rowLayout);
             }
@@ -382,22 +316,6 @@ public class RankingActivityTask {
         } else {
             Toast.makeText(activity, "Brak aktywności", Toast.LENGTH_SHORT).show();
         }
-    }
-
-    private TextView getTextView(String text) {
-        TextView textView = new TextView(activity);
-        textView.setText(text);
-        textView.setGravity(Gravity.CENTER);
-        textView.setTextSize(20);
-
-        ConstraintLayout.LayoutParams layoutParams = new ConstraintLayout.LayoutParams(
-                ConstraintLayout.LayoutParams.MATCH_PARENT,
-                ConstraintLayout.LayoutParams.WRAP_CONTENT
-        );
-
-        layoutParams.startToStart = ConstraintLayout.LayoutParams.PARENT_ID;
-        layoutParams.topToTop = ConstraintLayout.LayoutParams.PARENT_ID;
-        return textView;
     }
 
     private  DataPoint[] getDataPoint(List<ActivityPlotDTO> activities) {

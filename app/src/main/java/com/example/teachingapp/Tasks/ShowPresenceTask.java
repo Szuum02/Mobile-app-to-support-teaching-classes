@@ -44,7 +44,6 @@ public class ShowPresenceTask {
     private long studentId;
     private String nick;
     private SharedPreferences sharedPreferences;
-    private Map<PresenceType, Integer> isToColorMap = new HashMap<>();
     private ImageButton groupRankingButton;
     private ImageButton totalRankingButton;
     private ImageButton plotButton;
@@ -58,10 +57,6 @@ public class ShowPresenceTask {
         this.studentId = studentId;
         this.nick = nick;
         this.sharedPreferences = sharedPreferences;
-//        isToColorMap.put(PresenceType.N, R.drawable.red_textview_right_hand);
-//        isToColorMap.put(PresenceType.O, R.drawable.green_textview_right_hand);
-//        isToColorMap.put(PresenceType.S, R.drawable.yellow_textview_right_hand);
-//        isToColorMap.put(PresenceType.U, R.drawable.blue_textview_right_hand);
         linearLayout = activity.findViewById(R.id.linearLayout);
         groupRankingButton = activity.findViewById(R.id.three_people_button);
         totalRankingButton = activity.findViewById(R.id.five_people_button);
@@ -193,33 +188,6 @@ public class ShowPresenceTask {
             default:
                 return "-";
         }
-    }
-
-    private TextView getTextView(String text) {
-        TextView textView = new TextView(activity);
-        textView.setText(text);
-        textView.setGravity(Gravity.CENTER);
-        textView.setTextSize(20);
-
-        ConstraintLayout.LayoutParams layoutParams = new ConstraintLayout.LayoutParams(
-                ConstraintLayout.LayoutParams.MATCH_PARENT,
-                ConstraintLayout.LayoutParams.WRAP_CONTENT
-        );
-
-        layoutParams.startToStart = ConstraintLayout.LayoutParams.PARENT_ID;
-        layoutParams.topToTop = ConstraintLayout.LayoutParams.PARENT_ID;
-        return textView;
-    }
-
-    private LinearLayout preparePresenceLinearLayout() {
-        LinearLayout layout = new LinearLayout(activity);
-        layout.setLayoutParams(new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-        layout.setOrientation(LinearLayout.HORIZONTAL);
-        layout.setPadding(0, 10, 0, 10);
-        layout.setGravity(Gravity.CENTER_HORIZONTAL);
-
-        return layout;
     }
 
     public TextView generateTextView(String text) {
