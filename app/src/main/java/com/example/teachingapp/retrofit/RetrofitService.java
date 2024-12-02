@@ -13,7 +13,7 @@ public class RetrofitService {
 
     public RetrofitService() {
         //change to your IP address
-        String BASE_URL = "http://192.168.202.9:8080";
+        String BASE_URL = "http://192.168.202.11:8080";
         Gson gson = new GsonBuilder()
                 .setLenient()
                 .create();

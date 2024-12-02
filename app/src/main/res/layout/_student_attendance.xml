@@ -21,23 +21,24 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+
     <TextView
         android:id="@+id/description_texView"
         android:layout_width="333dp"
         android:layout_height="72dp"
         android:layout_marginStart="29dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="28dp"
         android:layout_marginEnd="31dp"
         android:fontFamily="@font/poppins"
         android:gravity="center|center_horizontal|center_vertical"
-        android:text="Porównaj swoje wyniki z osiągnięciami rówieśników z grupy"
+        android:text="Zweryfikuj swoją obecność"
         android:textAllCaps="false"
         android:textColor="#707070"
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/title_texView" />
-
 
     <LinearLayout
         android:id="@+id/table_deadline_laylout"
@@ -77,7 +78,15 @@
         android:layout_height="303dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/table_deadline_laylout" />
+        app:layout_constraintTop_toBottomOf="@+id/table_deadline_laylout">
+
+        <LinearLayout
+            android:id="@+id/linearLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+        </LinearLayout>
+    </ScrollView>
 
     <LinearLayout
         android:id="@+id/navigation_laylout"

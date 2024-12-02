@@ -60,6 +60,9 @@
             android:name=".Student.StudentShowQR"
             android:exported="false" />
         <activity
+            android:name=".Student._StudentChooseGroup"
+            android:exported="false" />
+        <activity
             android:name=".Student.StudentScanQR"
             android:exported="false" />
         <activity

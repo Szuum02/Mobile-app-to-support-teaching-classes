@@ -1,6 +1,7 @@
 package com.example.teachingapp.dtos;
 
 import java.util.List;
+import java.util.Map;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -13,7 +14,7 @@ public class StudentDTO {
     private final String lastname;
     private final Integer index;
     private final String nick;
-    private List<GroupDTO> groups;
+    private Map<String, List<LessonDTO>> lessons;
 
     public StudentDTO(Long id, String name, String lastname, Integer index, String nick) {
         this.id = id;
