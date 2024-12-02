@@ -44,4 +44,20 @@ public enum PresenceType {
                 return NOT_GIVEN;
         }
     }
+
+    public static String shortToLongPresenceType(PresenceType presenceType) {
+        switch (presenceType) {
+            case O:
+                return "Obecność";
+            case N:
+                return "Nieobecność";
+            case S:
+                return "Spóźnienie";
+            case U:
+                return "Usprawiedliwienie";
+            default:
+                return "Brak danych";
+        }
+    }
+
 }

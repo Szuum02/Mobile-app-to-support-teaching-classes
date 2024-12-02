@@ -158,7 +158,7 @@ public class StudentsPresenceTask {
                         LinearLayout.LayoutParams.MATCH_PARENT,
                         dpToPx(52)
                 ));
-                rowLayout.setGravity(Gravity.CENTER_VERTICAL);
+                rowLayout.setGravity(Gravity.CENTER);
 
                 if(counter% 2 == 0) {
                     rowLayout.setBackgroundColor(Color.parseColor("#D5D4D4"));
@@ -217,7 +217,8 @@ public class StudentsPresenceTask {
                 dpToPx(32),
                 dpToPx(32)
         );
-        buttonParams.setMarginEnd(dpToPx(20));
+        buttonParams.setMarginStart(dpToPx(10));
+        buttonParams.setMarginEnd(dpToPx(10));
         button.setLayoutParams(buttonParams);
         setButtonText(button, presenceType);
         button.setAutoSizeTextTypeWithDefaults(Button.AUTO_SIZE_TEXT_TYPE_UNIFORM);

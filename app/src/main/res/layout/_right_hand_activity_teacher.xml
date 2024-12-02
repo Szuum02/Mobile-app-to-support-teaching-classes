@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:layout_height="match_parent">
 
     <include layout="@layout/_background" />
 
@@ -53,8 +53,8 @@
         <TextView
             android:id="@+id/student_name_textView"
             android:layout_width="0dp"
-            android:layout_weight="39"
             android:layout_height="match_parent"
+            android:layout_weight="39"
             android:fontFamily="@font/poppins"
             android:gravity="left|center_vertical"
             android:text=" Uczeń"
@@ -63,8 +63,8 @@
         <TextView
             android:id="@+id/points_today_textView"
             android:layout_width="0dp"
-            android:layout_weight="13"
             android:layout_height="match_parent"
+            android:layout_weight="13"
             android:fontFamily="@font/poppins"
             android:gravity="left|center_vertical"
             android:text="Dzisiaj"
@@ -73,8 +73,8 @@
         <TextView
             android:id="@+id/points_sum_textView"
             android:layout_width="0dp"
-            android:layout_weight="13"
             android:layout_height="match_parent"
+            android:layout_weight="13"
             android:fontFamily="@font/poppins"
             android:gravity="center_vertical"
             android:text="Suma"
@@ -82,8 +82,8 @@
 
         <TextView
             android:layout_width="0dp"
-            android:layout_weight="32"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:layout_weight="32" />
 
     </LinearLayout>
 
@@ -99,10 +99,7 @@
             android:id="@+id/linearLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="16dp">
-        </LinearLayout>
-
+            android:orientation="vertical"></LinearLayout>
     </ScrollView>
 
     <LinearLayout

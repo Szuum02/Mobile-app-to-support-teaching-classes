@@ -114,7 +114,7 @@ public class ChooseStudentTask {
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.MATCH_PARENT
         ));
-        textView.setGravity(Gravity.CENTER_VERTICAL);
+        textView.setGravity(Gravity.CENTER);
         textView.setTypeface(ResourcesCompat.getFont(activity, R.font.poppins));
         textView.setTextSize(15);
         textView.setTextColor(Color.BLACK);

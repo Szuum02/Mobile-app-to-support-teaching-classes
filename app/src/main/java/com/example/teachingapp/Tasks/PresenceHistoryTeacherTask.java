@@ -1,100 +1,99 @@
 package com.example.teachingapp.Tasks;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
-import android.graphics.drawable.GradientDrawable;
 import android.view.Gravity;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.TableLayout;
-import android.widget.TableRow;
 import android.widget.Toast;
 
 import androidx.core.content.res.ResourcesCompat;
 
 import com.example.teachingapp.R;
 import com.example.teachingapp.Teacher.ActivityHistory;
+import com.example.teachingapp.Teacher.CheckActivity;
+import com.example.teachingapp.Teacher.CheckPresence;
 import com.example.teachingapp.Teacher.ChooseAction;
 import com.example.teachingapp.Teacher.PresenceHistory;
-import com.example.teachingapp.Teacher.TeacherMainPage;
-import com.example.teachingapp.dtos.ActivityDTO;
+import com.example.teachingapp.Teacher.ShowQR;
+import com.example.teachingapp.Teacher.TeacherScanQR;
+import com.example.teachingapp.dtos.LessonDTO;
 import com.example.teachingapp.dtos.PresenceDTO;
-import com.example.teachingapp.dtos.StudentActivityDTO;
-import com.example.teachingapp.dtos.StudentHistoryDTO;
+import com.example.teachingapp.dtos.StudentDataDTO;
 import com.example.teachingapp.dtos.StudentPresenceHistoryDTO;
 import com.example.teachingapp.enums.PresenceType;
-import com.example.teachingapp.retrofit.Api.ActivityApi;
+import com.example.teachingapp.retrofit.Api.LessonApi;
 import com.example.teachingapp.retrofit.Api.PresenceApi;
 import com.example.teachingapp.retrofit.RetrofitService;
 
-import java.util.HashMap;
-import java.util.List;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class ActivityHistoryTask {
-    private final ActivityHistory activity;
+public class PresenceHistoryTeacherTask {
+
+    private final PresenceHistory activity;
     private final Long groupId;
     private final Long studentId;
     private LinearLayout linearLayout;
-    private ImageButton presenceButton;
+    private ImageButton activityButton;
     private ImageButton plotButton;
     private ImageButton returnButton;
     private TextView descriptionTexView;
 
-    public ActivityHistoryTask(ActivityHistory activity, Long studentId, Long groupId) {
+
+    public PresenceHistoryTeacherTask(PresenceHistory activity, Long groupId, Long studentId) {
         this.activity = activity;
         this.groupId = groupId;
         this.studentId = studentId;
         this.linearLayout = activity.findViewById(R.id.linearLayout);
-        this.presenceButton = activity.findViewById(R.id.calendar_button);
+        this.activityButton = activity.findViewById(R.id.plus_minus_button);
         this.plotButton = activity.findViewById(R.id.plot_button);
         this.returnButton = activity.findViewById(R.id.return_button);
         this.descriptionTexView = activity.findViewById(R.id.description_texView);
+
     }
 
     public void startTask() {
-        getStudentActivity();
+        getStudentActivityHistory();
         setUpButtons();
     }
 
-    private void getStudentActivity() {
+    private void getStudentActivityHistory() {
         RetrofitService retrofitService = new RetrofitService();
-        ActivityApi activityApi = retrofitService.getRetrofit().create(ActivityApi.class);
-        activityApi.getStudentHistory(studentId, groupId)
-                .enqueue(new Callback<StudentHistoryDTO>() {
+        PresenceApi presenceApi = retrofitService.getRetrofit().create(PresenceApi.class);
+        presenceApi.getStudentPresences(studentId, groupId)
+                .enqueue(new Callback<StudentPresenceHistoryDTO>() {
                     @Override
-                    public void onResponse(Call<StudentHistoryDTO> call, Response<StudentHistoryDTO> response) {
+                    public void onResponse(Call<StudentPresenceHistoryDTO> call, Response<StudentPresenceHistoryDTO> response) {
                         if(response.body() != null) {
                             setUpLayout(response.body());
                         } else {
                             Toast.makeText(activity, "Nie udało się pobrać historii", Toast.LENGTH_SHORT).show();
-
                         }
                     }
 
                     @Override
-                    public void onFailure(Call<StudentHistoryDTO> call, Throwable t) {
+                    public void onFailure(Call<StudentPresenceHistoryDTO> call, Throwable t) {
                         Toast.makeText(activity, "Nie udało się pobrać historii", Toast.LENGTH_SHORT).show();
 
                     }
                 });
     }
 
-    public void setUpLayout(StudentHistoryDTO studentHistoryDTO) {
+    public void setUpLayout(StudentPresenceHistoryDTO studentPresenceHistoryDTO) {
         int counter = 0;
-        if(studentHistoryDTO.getActivities().isEmpty()){
+        if(studentPresenceHistoryDTO.getPresences().isEmpty()){
             Toast.makeText(activity, "Historia obecności jest pusta", Toast.LENGTH_SHORT).show();
         }
-        for(ActivityDTO activityDTO: studentHistoryDTO.getActivities()) {
+        for(PresenceDTO presenceDTO: studentPresenceHistoryDTO.getPresences()) {
             LinearLayout rowLayout = new LinearLayout(activity);
             rowLayout.setOrientation(LinearLayout.HORIZONTAL);
             rowLayout.setLayoutParams(new LinearLayout.LayoutParams(
@@ -106,21 +105,19 @@ public class ActivityHistoryTask {
                 rowLayout.setBackgroundColor(Color.parseColor("#D5D4D4"));
             }
             counter++;
-            rowLayout.addView(generateDateTexView(activityDTO));
-            rowLayout.addView(generateTimeTexView(activityDTO));
-            rowLayout.addView(generatePointsTexView(activityDTO));
+            rowLayout.addView(generateDateTexView(presenceDTO));
+            rowLayout.addView(generatePresenceTexView(presenceDTO));
 
             linearLayout.addView(rowLayout);
 
             descriptionTexView.setText(
                     new StringBuilder()
-                            .append(studentHistoryDTO.getName())
+                            .append(studentPresenceHistoryDTO.getName())
                             .append(" ")
-                            .append(studentHistoryDTO.getLastname())
+                            .append(studentPresenceHistoryDTO.getLastname())
                             .append(" ")
-                            .append(String.valueOf(studentHistoryDTO.getIndex())).toString()
+                            .append(String.valueOf(studentPresenceHistoryDTO.getIndex())).toString()
             );
-
 
         }
     }
@@ -130,10 +127,10 @@ public class ActivityHistoryTask {
         return Math.round(dp * density);
     }
 
-    public TextView generateDateTexView(ActivityDTO activityDTO) {
+    public TextView generateDateTexView(PresenceDTO presenceDTO) {
         TextView textView = new TextView(activity);
         textView.setText(new StringBuilder()
-                .append(activityDTO.getDate().substring(0,10)));
+                .append(presenceDTO.getDate().substring(0,10)));
         textView.setLayoutParams(new LinearLayout.LayoutParams(
                 0,
                 LinearLayout.LayoutParams.MATCH_PARENT,
@@ -146,26 +143,10 @@ public class ActivityHistoryTask {
         return textView;
     }
 
-    public TextView generateTimeTexView(ActivityDTO activityDTO) {
+    public TextView generatePresenceTexView(PresenceDTO presenceDTO) {
         TextView textView = new TextView(activity);
         textView.setText(new StringBuilder()
-                .append(activityDTO.getDate().substring(11)));
-        textView.setLayoutParams(new LinearLayout.LayoutParams(
-                0,
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                1
-        ));
-        textView.setGravity(Gravity.CENTER);
-        textView.setTypeface(ResourcesCompat.getFont(activity, R.font.poppins));
-        textView.setTextSize(15);
-        textView.setTextColor(Color.BLACK);
-        return textView;
-    }
-
-    public TextView generatePointsTexView(ActivityDTO activityDTO) {
-        TextView textView = new TextView(activity);
-        textView.setText(new StringBuilder()
-                .append(activityDTO.getPoints()));
+                .append(PresenceType.shortToLongPresenceType(presenceDTO.getPresenceType())));
         textView.setLayoutParams(new LinearLayout.LayoutParams(
                 0,
                 LinearLayout.LayoutParams.MATCH_PARENT,
@@ -179,10 +160,10 @@ public class ActivityHistoryTask {
     }
 
     public void setUpButtons() {
-        presenceButton.setOnClickListener(new View.OnClickListener() {
+        activityButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(activity, PresenceHistory.class);
+                Intent intent = new Intent(activity, ActivityHistory.class);
                 intent.putExtra("group_id", groupId);
                 intent.putExtra("student_id", studentId);
                 activity.startActivity(intent);
@@ -198,4 +179,5 @@ public class ActivityHistoryTask {
             }
         });
     }
+
 }
