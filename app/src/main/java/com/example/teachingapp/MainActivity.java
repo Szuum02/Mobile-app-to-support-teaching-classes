@@ -33,10 +33,6 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javax.jmdns.JmDNS;
-import javax.jmdns.ServiceEvent;
-import javax.jmdns.ServiceListener;
-
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -47,7 +43,6 @@ public class MainActivity extends AppCompatActivity {
     private Settings settings;
     private RetrofitService retrofitService;
     SharedPreferences sharedPreferences;
-    JmDNS jmdns;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,7 +52,6 @@ public class MainActivity extends AppCompatActivity {
 //        Button settingsButton = findViewById(R.id.settings_buttton);
 //        Switch leftHandSwitch = findViewById(R.id.lef_hand_switch);
 //        settings = new Settings(settingsButton, settingsBar, sharedPreferences, leftHandSwitch, this);
-//        MdnsServiceDiscovery.startServiceDiscovery();
 
     }
 
