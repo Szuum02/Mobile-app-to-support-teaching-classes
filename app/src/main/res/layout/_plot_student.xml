@@ -48,7 +48,7 @@
         android:background="@drawable/_white_rectangle"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/stats_button">
+        app:layout_constraintTop_toBottomOf="@+id/yes_button">
 
         <ImageButton
             android:id="@+id/three_people_button"

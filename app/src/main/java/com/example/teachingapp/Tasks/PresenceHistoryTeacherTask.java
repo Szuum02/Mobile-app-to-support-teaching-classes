@@ -44,7 +44,6 @@ public class PresenceHistoryTeacherTask {
     private final Long studentId;
     private LinearLayout linearLayout;
     private ImageButton activityButton;
-    private ImageButton plotButton;
     private ImageButton returnButton;
     private TextView descriptionTexView;
 
@@ -55,7 +54,6 @@ public class PresenceHistoryTeacherTask {
         this.studentId = studentId;
         this.linearLayout = activity.findViewById(R.id.linearLayout);
         this.activityButton = activity.findViewById(R.id.plus_minus_button);
-        this.plotButton = activity.findViewById(R.id.plot_button);
         this.returnButton = activity.findViewById(R.id.return_button);
         this.descriptionTexView = activity.findViewById(R.id.description_texView);
 

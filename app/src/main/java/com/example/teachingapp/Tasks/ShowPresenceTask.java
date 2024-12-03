@@ -46,7 +46,6 @@ public class ShowPresenceTask {
     private SharedPreferences sharedPreferences;
     private ImageButton groupRankingButton;
     private ImageButton totalRankingButton;
-    private ImageButton plotButton;
     private ImageButton presenceButton;
     private ImageButton returnButton;
     private LinearLayout linearLayout;
@@ -60,7 +59,6 @@ public class ShowPresenceTask {
         linearLayout = activity.findViewById(R.id.linearLayout);
         groupRankingButton = activity.findViewById(R.id.three_people_button);
         totalRankingButton = activity.findViewById(R.id.five_people_button);
-        plotButton = activity.findViewById(R.id.plot_button);
         presenceButton = activity.findViewById(R.id.calendar_button);
         returnButton = activity.findViewById(R.id.return_button);
         setupButtons();
