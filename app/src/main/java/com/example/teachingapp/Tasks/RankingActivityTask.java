@@ -3,26 +3,18 @@ package com.example.teachingapp.Tasks;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
-import android.os.Build;
 import android.view.Gravity;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
-import android.widget.TableLayout;
-import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.ListIterator;
-import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -31,28 +23,20 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 import com.example.teachingapp.R;
-import com.example.teachingapp.Student.ChooseAction;
 import com.example.teachingapp.Student.ShowActivity;
 import com.example.teachingapp.Student.ShowActivityGroupRanking;
-import com.example.teachingapp.Student.ShowActivityPlot;
 import com.example.teachingapp.Student.ShowActivityTotalRanking;
 import com.example.teachingapp.Student.ShowPresence;
 import com.example.teachingapp.Student.StudentMainPage;
-import com.example.teachingapp.Teacher.CheckPresence;
-import com.example.teachingapp.Teacher.ShowQR;
 import com.example.teachingapp.Teacher.TeacherMainPage;
-import com.example.teachingapp.Teacher.TeacherScanQR;
 import com.example.teachingapp.dtos.ActivityPlotDTO;
 import com.example.teachingapp.dtos.ActivityRankingDTO;
-import com.example.teachingapp.dtos.StudentDataDTO;
 import com.example.teachingapp.retrofit.Api.ActivityApi;
 import com.example.teachingapp.retrofit.RetrofitService;
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.helper.StaticLabelsFormatter;
 import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.PointsGraphSeries;
-
-import org.w3c.dom.Text;
 
 public class RankingActivityTask {
     private ShowActivity activity;
@@ -62,7 +46,6 @@ public class RankingActivityTask {
     private SharedPreferences sharedPreferences;
     private ImageButton groupRankingButton;
     private ImageButton totalRankingButton;
-    private ImageButton plotButton;
     private ImageButton presenceButton;
     private ImageButton returnButton;
     private LinearLayout linearLayout;
@@ -77,7 +60,6 @@ public class RankingActivityTask {
         linearLayout = activity.findViewById(R.id.linearLayout);
         groupRankingButton = activity.findViewById(R.id.three_people_button);
         totalRankingButton = activity.findViewById(R.id.five_people_button);
-        plotButton = activity.findViewById(R.id.plot_button);
         presenceButton = activity.findViewById(R.id.calendar_button);
         returnButton = activity.findViewById(R.id.return_button);
         setupButtons();
@@ -233,7 +215,7 @@ public class RankingActivityTask {
                     rowLayout.setBackgroundColor(Color.parseColor("#8ADAB2"));
                 }
 
-                TextView nickText = generateTextView(activityDTO.getNick());
+                TextView nickText = generateTextView(activityDTO);
                 TextView totalPointsText = generatePointsTextView(activityDTO.getTotalPoints(), false);
                 TextView todayPointsText = generatePointsTextView(activityDTO.getTodayPoints(), true);
 
@@ -272,7 +254,7 @@ public class RankingActivityTask {
                 }
 
                 TextView placeText = generatePlaceTextView(idx + 1);
-                TextView nickText = generateTextView(activityDTO.getNick());
+                TextView nickText = generateTextView(activityDTO);
                 TextView totalPointsText = generatePointsTextView(activityDTO.getTotalPoints(), false);
 
                 rowLayout.addView(placeText);
@@ -331,9 +313,13 @@ public class RankingActivityTask {
         return Math.round(dp * density);
     }
 
-    public TextView generateTextView(String nick) {
+    public TextView generateTextView(ActivityRankingDTO activityDTO) {
         TextView textView = new TextView(activity);
-        textView.setText(nick);
+        if(activityDTO.getShowInRanking() || activityDTO.getNick().equals(nick))
+            textView.setText(activityDTO.getNick());
+        else
+            textView.setText("-");
+
         textView.setLayoutParams(new LinearLayout.LayoutParams(
                 0,
                 LinearLayout.LayoutParams.MATCH_PARENT,

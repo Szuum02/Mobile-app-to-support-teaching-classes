@@ -18,7 +18,6 @@ public class StudentMainPage extends AppCompatActivity {
         setContentView(R.layout._main_page_student);
         Intent intent = getIntent();
         if (intent != null) {
-
             SharedPreferences sharedPreferences = getSharedPreferences("Settings", MODE_PRIVATE);
             MainPageStudentTask mainPageStudentTask = new MainPageStudentTask(this, sharedPreferences);
             mainPageStudentTask.startTask();

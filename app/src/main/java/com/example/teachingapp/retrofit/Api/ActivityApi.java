@@ -17,7 +17,7 @@ import retrofit2.http.Query;
 public interface ActivityApi {
 
     @GET("/activity/lessonPoints")
-    Call<List<LessonPointsDTO>> showLessonActivity(@Query("groupId") long lessonId);
+    Call<List<LessonPointsDTO>> showLessonActivity(@Query("groupId") long groupId);
 
     @POST("/activity/add")
     Call<Integer> addActivity(@Query("lessonId") long lessonId, @Query("studentId") long studentId,

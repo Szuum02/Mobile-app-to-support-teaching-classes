@@ -15,6 +15,7 @@ import android.widget.TextView;
 import com.example.teachingapp.MainActivity;
 import com.example.teachingapp.R;
 import com.example.teachingapp.SettingsActivity;
+import com.example.teachingapp.Student.SettingsActivityStudent;
 import com.example.teachingapp.Student.StudentMainPage;
 import com.example.teachingapp.Student.StudentScanQR;
 import com.example.teachingapp.Student.StudentShowQR;
@@ -44,6 +45,7 @@ public class MainPageStudentTask {
     private Button logOutButton;
     private Button showQrButton;
     private Button scanQrButton;
+    private Button settingsButton;
     private StudentDTO studentDTO;
     private LessonDTO upcomingLesson;
 
@@ -57,6 +59,7 @@ public class MainPageStudentTask {
         this.showQrButton = activity.findViewById(R.id.show_qr_button);
         this.scanQrButton = activity.findViewById(R.id.scan_qr_button);
         this.subjectTextView = activity.findViewById(R.id.subject_textView);
+        this.settingsButton = activity.findViewById(R.id.settings_button);
         this.studentDTO = getStudentDto();
         this.upcomingLesson = null;
     }
@@ -67,7 +70,7 @@ public class MainPageStudentTask {
         setUpScanQrButton();
         setUpHelloTextView();
         setUpSubjectTextView();
-//        setUpSettingsButton();
+        setUpSettingsButton();
         setUpShowAllClassesTextView();
 //        setUpWhiteRectangle();
     }
@@ -245,5 +248,16 @@ public class MainPageStudentTask {
                 }
             });
         }
+    }
+
+    public void setUpSettingsButton() {
+        settingsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(activity, SettingsActivityStudent.class);
+                intent.putExtra("student_id", studentDTO.getId());
+                activity.startActivity(intent);
+            }
+        });
     }
 }

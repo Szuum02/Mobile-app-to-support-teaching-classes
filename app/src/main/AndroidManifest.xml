@@ -54,6 +54,9 @@
             android:name=".Student.TmpStudentDefaultView"
             android:exported="false" />
         <activity
+            android:name=".Student.SettingsActivityStudent"
+            android:exported="false" />
+        <activity
             android:name=".Student.StudentMainPage"
             android:exported="false" />
         <activity

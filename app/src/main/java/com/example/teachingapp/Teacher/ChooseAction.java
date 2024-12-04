@@ -2,7 +2,6 @@ package com.example.teachingapp.Teacher;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
@@ -32,7 +31,7 @@ public class ChooseAction extends AppCompatActivity {
     }
 
     public void setUpLessonButton() {
-        lessonButton = findViewById(R.id.lesson_button);
+        lessonButton = findViewById(R.id.no_button);
         lessonButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -45,7 +44,7 @@ public class ChooseAction extends AppCompatActivity {
     }
 
     public void setUpStatsButton() {
-        statsButton = findViewById(R.id.stats_button);
+        statsButton = findViewById(R.id.yes_button);
         statsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
