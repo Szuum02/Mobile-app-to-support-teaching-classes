@@ -117,7 +117,7 @@ public class StudentsActivityTask {
     public void setUpStudentActivity() {
         RetrofitService retrofitService = new RetrofitService();
         ActivityApi activityApi = retrofitService.getRetrofit().create(ActivityApi.class);
-        activityApi.showLessonActivity(lessonId)
+        activityApi.showLessonActivity(groupId)
                 .enqueue(new Callback<List<LessonPointsDTO>>() {
                     @Override
                     public void onResponse(Call<List<LessonPointsDTO>> call, Response<List<LessonPointsDTO>> response) {
@@ -134,9 +134,13 @@ public class StudentsActivityTask {
     public void addActivityToStudent(List<LessonPointsDTO> lessonPointsList) {
         if(lessonPointsList != null && studentsMap != null) {
             for(LessonPointsDTO lessonPointsDTO : lessonPointsList) {
-                if(studentsMap.get(lessonPointsDTO.getStudentId()) != null) {
-                    studentsMap.get(lessonPointsDTO.getStudentId()).setAllPoints(lessonPointsDTO.getPoints());
+                if(studentsMap.get(lessonPointsDTO.getStudentId()) != null ) {
+                    studentsMap.get(lessonPointsDTO.getStudentId()).setAllPoints(lessonPointsDTO.getTotalPoints());
                 }
+                if(studentsMap.get(lessonPointsDTO.getStudentId()) != null && lessonPointsDTO.getTotalPoints() != 0) {
+                    studentsMap.get(lessonPointsDTO.getStudentId()).setTodayPoints(lessonPointsDTO.getTodayPoints());
+                }
+
             }
             setUpLayout();
         }
@@ -184,6 +188,10 @@ public class StudentsActivityTask {
 
     public TextView generateTodayPointsTextView(StudentDataDTO studentDataDTO) {
         TextView textView = new TextView(activity);
+        if(studentDataDTO.getTodayPoints() != null) {
+            textView.setText(String.valueOf(studentDataDTO.getTodayPoints()));
+        }
+
         textView.setLayoutParams(new LinearLayout.LayoutParams(
                 0,
                 LinearLayout.LayoutParams.MATCH_PARENT,
@@ -389,7 +397,7 @@ public class StudentsActivityTask {
                 number = Integer.valueOf(textView.getText().toString()) + value;
             }
             if (number > 0) {
-                textView.setText("+" + String.valueOf(number));
+                textView.setText(String.valueOf(number));
             } else if (number == 0) {
                 textView.setText("0");
             } else {
