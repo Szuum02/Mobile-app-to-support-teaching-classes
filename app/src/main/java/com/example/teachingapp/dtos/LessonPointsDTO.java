@@ -7,11 +7,13 @@ import lombok.Setter;
 @Setter
 public class LessonPointsDTO {
     private final Long studentId;
-    private final long points;
+    private final Long totalPoints;
+    private final Long todayPoints;
 
-    public LessonPointsDTO(Long studentId, long points) {
+    public LessonPointsDTO(Long studentId, long totalPoints, long todayPoints) {
         this.studentId = studentId;
-        this.points = points;
+        this.totalPoints = totalPoints;
+        this.todayPoints = todayPoints;
     }
 
 }
