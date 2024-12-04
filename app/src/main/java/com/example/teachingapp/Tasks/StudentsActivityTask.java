@@ -416,7 +416,7 @@ public class StudentsActivityTask {
             }
             if (number > 0) {
                 textView.setText("+" + String.valueOf(number));
-            } else if (number < 0) {
+            } else if (number <= 0) {
                 textView.setText(String.valueOf(number));
             } else {
                 textView.setText("");
