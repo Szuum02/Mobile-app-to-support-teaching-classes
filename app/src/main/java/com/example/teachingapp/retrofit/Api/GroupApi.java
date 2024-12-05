@@ -1,5 +1,7 @@
 package com.example.teachingapp.retrofit.Api;
 
+import com.example.teachingapp.dtos.ReportDTO;
+
 import java.util.List;
 
 import retrofit2.Call;
@@ -13,4 +15,7 @@ public interface GroupApi {
 
     @GET("/group/lessons/showAll")
     Call<List<Object[]>> getLessons(@Query("groupId") long groupId);
+
+    @GET("/group/generateReport")
+    Call<ReportDTO> getReportData(@Query("groupId") long groupId);
 }

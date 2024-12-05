@@ -19,6 +19,7 @@ import android.widget.Toast;
 import com.example.teachingapp.R;
 import com.example.teachingapp.Teacher.AllGroups;
 import com.example.teachingapp.Teacher.ChooseAction;
+import com.example.teachingapp.Teacher.TeacherMainPage;
 import com.example.teachingapp.dtos.LessonDTO;
 import com.example.teachingapp.dtos.TeacherDTO;
 import com.google.gson.Gson;
@@ -73,7 +74,9 @@ public class GroupsTask {
         returnButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                activity.finish();
+                Intent intent = new Intent(activity, TeacherMainPage.class);
+                intent.putExtra("teacher_id", teacherDTO.getId());
+                activity.startActivity(intent);
             }
         });
     }
