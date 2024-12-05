@@ -18,6 +18,7 @@ import androidx.core.content.res.ResourcesCompat;
 import com.example.teachingapp.R;
 import com.example.teachingapp.Teacher.ActivityHistory;
 import com.example.teachingapp.Teacher.ChooseAction;
+import com.example.teachingapp.Teacher.GenerateReport;
 import com.example.teachingapp.Teacher.PresenceHistory;
 import com.example.teachingapp.Teacher.TeacherMainPage;
 import com.example.teachingapp.dtos.ActivityDTO;
@@ -46,6 +47,7 @@ public class ActivityHistoryTask {
     private final Long studentId;
     private LinearLayout linearLayout;
     private ImageButton presenceButton;
+    private ImageButton reportButton;
     private ImageButton returnButton;
     private TextView descriptionTexView;
 
@@ -55,6 +57,7 @@ public class ActivityHistoryTask {
         this.studentId = studentId;
         this.linearLayout = activity.findViewById(R.id.linearLayout);
         this.presenceButton = activity.findViewById(R.id.calendar_button);
+        this.reportButton = activity.findViewById(R.id.report_button);
         this.returnButton = activity.findViewById(R.id.return_button);
         this.descriptionTexView = activity.findViewById(R.id.description_texView);
     }
@@ -116,7 +119,7 @@ public class ActivityHistoryTask {
                             .append(" ")
                             .append(studentHistoryDTO.getLastname())
                             .append(" ")
-                            .append(String.valueOf(studentHistoryDTO.getIndex())).toString()
+                            .append(studentHistoryDTO.getIndex()).toString()
             );
 
 
@@ -181,6 +184,16 @@ public class ActivityHistoryTask {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(activity, PresenceHistory.class);
+                intent.putExtra("group_id", groupId);
+                intent.putExtra("student_id", studentId);
+                activity.startActivity(intent);
+            }
+        });
+
+        reportButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(activity, GenerateReport.class);
                 intent.putExtra("group_id", groupId);
                 intent.putExtra("student_id", studentId);
                 activity.startActivity(intent);

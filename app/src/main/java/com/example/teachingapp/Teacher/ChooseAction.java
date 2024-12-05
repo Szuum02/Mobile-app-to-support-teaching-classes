@@ -1,5 +1,6 @@
 package com.example.teachingapp.Teacher;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -15,6 +16,7 @@ public class ChooseAction extends AppCompatActivity {
     private Button lessonButton;
     private Button statsButton;
     private Button returnButton;
+    private Context activity = this;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,7 +63,9 @@ public class ChooseAction extends AppCompatActivity {
         returnButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                finish();           }
+                Intent intent = new Intent(activity, AllGroups.class);
+                activity.startActivity(intent);
+            }
         });
     }
 }

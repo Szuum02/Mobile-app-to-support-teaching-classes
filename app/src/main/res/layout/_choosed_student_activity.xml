@@ -130,7 +130,7 @@
             android:src="@drawable/_plus_minus_icon" />
 
         <ImageButton
-            android:id="@+id/show_qr_code_button"
+            android:id="@+id/report_button"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_marginStart="10dp"

@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.os.Build;
 import android.view.Gravity;
 import android.view.View;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -15,7 +16,10 @@ import androidx.core.content.res.ResourcesCompat;
 
 import com.example.teachingapp.R;
 import com.example.teachingapp.Student.ChooseSubject;
+import com.example.teachingapp.Teacher.ActivityHistory;
+import com.example.teachingapp.Teacher.ChooseAction;
 import com.example.teachingapp.Teacher.ChooseStudent;
+import com.example.teachingapp.Teacher.GenerateReport;
 import com.example.teachingapp.Teacher.PresenceHistory;
 import com.example.teachingapp.Teacher.TeacherMainPage;
 import com.example.teachingapp.dtos.StudentDataDTO;
@@ -35,19 +39,22 @@ import retrofit2.Response;
 public class ChooseStudentTask {
 
     private final ChooseStudent activity;
-    private final Long studentId;
+    private final Long lessonId;
     private final Long groupId;
     private LinearLayout linearLayout;
+    private Button returnButton;
 
-    public ChooseStudentTask(ChooseStudent activity, Long groupId, Long studentId) {
+    public ChooseStudentTask(ChooseStudent activity, Long groupId, Long lessonId) {
         this.activity = activity;
-        this.studentId = studentId;
+        this.lessonId = lessonId;
         this.groupId = groupId;
         this.linearLayout = activity.findViewById(R.id.linearLayout);
+        returnButton = activity.findViewById(R.id.return_button);
     }
 
     public void startTask() {
         getStudentsList();
+        setUpButtons();
     }
 
     public void getStudentsList() {
@@ -150,4 +157,15 @@ public class ChooseStudentTask {
         return studentList;
     }
 
+    public void setUpButtons() {
+        returnButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(activity, ChooseAction.class);
+                intent.putExtra("group_id", groupId);
+                intent.putExtra("lesson_id", lessonId);
+                activity.startActivity(intent);
+            }
+        });
+    }
 }

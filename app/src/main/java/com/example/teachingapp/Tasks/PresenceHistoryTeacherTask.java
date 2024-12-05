@@ -17,6 +17,7 @@ import com.example.teachingapp.Teacher.ActivityHistory;
 import com.example.teachingapp.Teacher.CheckActivity;
 import com.example.teachingapp.Teacher.CheckPresence;
 import com.example.teachingapp.Teacher.ChooseAction;
+import com.example.teachingapp.Teacher.GenerateReport;
 import com.example.teachingapp.Teacher.PresenceHistory;
 import com.example.teachingapp.Teacher.ShowQR;
 import com.example.teachingapp.Teacher.TeacherScanQR;
@@ -44,6 +45,7 @@ public class PresenceHistoryTeacherTask {
     private final Long studentId;
     private LinearLayout linearLayout;
     private ImageButton activityButton;
+    private ImageButton reportButton;
     private ImageButton returnButton;
     private TextView descriptionTexView;
 
@@ -54,9 +56,9 @@ public class PresenceHistoryTeacherTask {
         this.studentId = studentId;
         this.linearLayout = activity.findViewById(R.id.linearLayout);
         this.activityButton = activity.findViewById(R.id.plus_minus_button);
+        this.reportButton = activity.findViewById(R.id.report_button);
         this.returnButton = activity.findViewById(R.id.return_button);
         this.descriptionTexView = activity.findViewById(R.id.description_texView);
-
     }
 
     public void startTask() {
@@ -162,6 +164,16 @@ public class PresenceHistoryTeacherTask {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(activity, ActivityHistory.class);
+                intent.putExtra("group_id", groupId);
+                intent.putExtra("student_id", studentId);
+                activity.startActivity(intent);
+            }
+        });
+
+        reportButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(activity, GenerateReport.class);
                 intent.putExtra("group_id", groupId);
                 intent.putExtra("student_id", studentId);
                 activity.startActivity(intent);
