@@ -167,6 +167,19 @@
             android:layout_marginStart="229dp"
             android:layout_marginTop="70dp"
             android:background="@drawable/_subjcet_image" />
+
+        <Button
+            android:id="@+id/add_lessons_button"
+            android:layout_width="346dp"
+            android:layout_height="70dp"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="301dp"
+            android:background="@drawable/_green_button_background"
+            android:fontFamily="@font/poppins_semibold"
+            android:text="Dodaj zajęcia"
+            android:textAllCaps="false"
+            android:textSize="20sp" />
+
         <Button
             android:id="@+id/log_off_button"
             android:layout_width="346dp"

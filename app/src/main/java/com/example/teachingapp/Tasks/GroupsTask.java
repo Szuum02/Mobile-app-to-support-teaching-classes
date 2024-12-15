@@ -139,6 +139,7 @@ public class GroupsTask {
                 Intent intent = new Intent(activity, ChooseAction.class);
                 intent.putExtra("group_id", lessonDTO.getGroupId());
                 intent.putExtra("lesson_id", lessonDTO.getLessonId());
+                intent.putExtra("group_code", lessonDTO.getGroupCode());
                 activity.startActivity(intent);
             }
         });

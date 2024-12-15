@@ -41,13 +41,15 @@ public class ChooseStudentTask {
     private final ChooseStudent activity;
     private final Long lessonId;
     private final Long groupId;
+    private final String groupCode;
     private LinearLayout linearLayout;
     private Button returnButton;
 
-    public ChooseStudentTask(ChooseStudent activity, Long groupId, Long lessonId) {
+    public ChooseStudentTask(ChooseStudent activity, Long groupId, Long lessonId, String groupCode) {
         this.activity = activity;
         this.lessonId = lessonId;
         this.groupId = groupId;
+        this.groupCode = groupCode;
         this.linearLayout = activity.findViewById(R.id.linearLayout);
         returnButton = activity.findViewById(R.id.return_button);
     }
@@ -132,6 +134,7 @@ public class ChooseStudentTask {
                 Intent intent = new Intent(activity, PresenceHistory.class);
                 intent.putExtra("group_id", groupId);
                 intent.putExtra("student_id", studentDataDTO.getId());
+                intent.putExtra("group_code", groupCode);
                 activity.startActivity(intent);
             }
         });
@@ -164,6 +167,7 @@ public class ChooseStudentTask {
                 Intent intent = new Intent(activity, ChooseAction.class);
                 intent.putExtra("group_id", groupId);
                 intent.putExtra("lesson_id", lessonId);
+                intent.putExtra("group_code", groupCode);
                 activity.startActivity(intent);
             }
         });

@@ -25,8 +25,8 @@ public class CheckActivity extends AppCompatActivity {
         if (intent != null) {
             Long groupId = intent.getLongExtra("group_id", 0);
             Long lessonId = intent.getLongExtra("lesson_id", 0);
-
-            StudentsActivityTask studentsActivityTask = new StudentsActivityTask(CheckActivity.this, groupId, lessonId, sharedPreferences);
+            String groupCode = intent.getStringExtra("group_code");
+            StudentsActivityTask studentsActivityTask = new StudentsActivityTask(CheckActivity.this, groupId, lessonId, groupCode, sharedPreferences);
             studentsActivityTask.startTask();
         }
 

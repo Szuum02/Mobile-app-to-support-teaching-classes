@@ -221,6 +221,8 @@ public class MainPageTeacherTask {
                 public void onClick(View view) {
                     Intent intent = new Intent(activity, ChooseAction.class);
                     intent.putExtra("group_id", upcomingLesson.getGroupId());
+                    intent.putExtra("lesson_id", upcomingLesson.getLessonId());
+                    intent.putExtra("group_code", upcomingLesson.getGroupCode());
                     activity.startActivity(intent);
                 }
             });

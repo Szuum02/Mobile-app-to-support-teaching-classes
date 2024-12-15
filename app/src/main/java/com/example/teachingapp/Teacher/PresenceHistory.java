@@ -18,8 +18,9 @@ public class PresenceHistory extends AppCompatActivity {
         setContentView(R.layout._choosed_student_presence_teacher);
         Long groupId = intent.getLongExtra("group_id", 0);
         Long studentId = intent.getLongExtra("student_id", 0);
+        String groupCode = intent.getStringExtra("group_code");
 
-        PresenceHistoryTeacherTask presenceHistoryTeacherTask = new PresenceHistoryTeacherTask(this, groupId, studentId);
+        PresenceHistoryTeacherTask presenceHistoryTeacherTask = new PresenceHistoryTeacherTask(this, groupId, studentId, groupCode);
         presenceHistoryTeacherTask.startTask();
     }
 }

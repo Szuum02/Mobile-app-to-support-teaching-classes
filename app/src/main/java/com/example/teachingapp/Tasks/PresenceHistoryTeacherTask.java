@@ -43,6 +43,7 @@ public class PresenceHistoryTeacherTask {
     private final PresenceHistory activity;
     private final Long groupId;
     private final Long studentId;
+    private final String groupCode;
     private LinearLayout linearLayout;
     private ImageButton activityButton;
     private ImageButton reportButton;
@@ -50,10 +51,11 @@ public class PresenceHistoryTeacherTask {
     private TextView descriptionTexView;
 
 
-    public PresenceHistoryTeacherTask(PresenceHistory activity, Long groupId, Long studentId) {
+    public PresenceHistoryTeacherTask(PresenceHistory activity, Long groupId, Long studentId, String groupCode) {
         this.activity = activity;
         this.groupId = groupId;
         this.studentId = studentId;
+        this.groupCode = groupCode;
         this.linearLayout = activity.findViewById(R.id.linearLayout);
         this.activityButton = activity.findViewById(R.id.plus_minus_button);
         this.reportButton = activity.findViewById(R.id.report_button);
