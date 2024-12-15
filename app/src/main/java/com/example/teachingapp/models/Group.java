@@ -9,6 +9,9 @@ import lombok.Setter;
 @Setter
 public class Group {
     private Long id;
+    private String subjectCode;
+    private Integer groupNumber;
+    private String groupCode;
     private String subject;
     private Teacher teacher;
     private Set<Lesson> lessons;
