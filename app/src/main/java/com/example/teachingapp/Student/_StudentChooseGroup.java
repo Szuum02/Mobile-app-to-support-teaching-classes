@@ -14,7 +14,7 @@ public class _StudentChooseGroup extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout._all_subjects_page);
+        setContentView(R.layout._all_student_subjects_page);
         Intent intent = getIntent();
         if (intent != null) {
 

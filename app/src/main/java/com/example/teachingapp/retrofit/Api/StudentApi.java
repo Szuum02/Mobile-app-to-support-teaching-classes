@@ -1,8 +1,8 @@
 package com.example.teachingapp.retrofit.Api;
 
+import com.example.teachingapp.dtos.LessonDTO;
 import com.example.teachingapp.dtos.ShowInRankingDTO;
 import com.example.teachingapp.dtos.StudentDTO;
-import com.example.teachingapp.models.Group;
 
 import java.util.List;
 
@@ -19,4 +19,7 @@ public interface StudentApi {
 
     @POST("student/changeShowInRanking")
     Call<ShowInRankingDTO> setShowInRanking(@Query("studentId") long studentId, @Query("showInRanking") Boolean showInRanking);
+
+    @POST("student/addGroup")
+    Call<List<LessonDTO>> addGroup(@Query("studentId") long studentId, @Query("groupCode") String groupCode);
 }
