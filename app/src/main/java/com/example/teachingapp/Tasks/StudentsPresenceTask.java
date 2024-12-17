@@ -47,6 +47,7 @@ public class StudentsPresenceTask {
     private final CheckPresence activity;
     private final Long groupId;
     private final Long lessonId;
+    private final String groupCode;
     private SharedPreferences sharedPreferences;
     private Map<Long, StudentDataDTO> studentsMap;
     private LinearLayout linearLayout;
@@ -55,10 +56,11 @@ public class StudentsPresenceTask {
     private ImageButton scanButton;
     private ImageButton returnButton;
 
-    public StudentsPresenceTask(CheckPresence activity, Long groupId, Long lessonId, SharedPreferences sharedPreferences) {
+    public StudentsPresenceTask(CheckPresence activity, Long groupId, Long lessonId, String groupCode, SharedPreferences sharedPreferences) {
         this.activity = activity;
         this.groupId = groupId;
         this.lessonId = lessonId;
+        this.groupCode = groupCode;
         this.sharedPreferences = sharedPreferences;
         this.linearLayout = activity.findViewById(R.id.linearLayout);
         this.activityButton = activity.findViewById(R.id.plus_minus_button);

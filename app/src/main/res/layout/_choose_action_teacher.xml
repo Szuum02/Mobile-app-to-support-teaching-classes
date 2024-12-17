@@ -70,6 +70,22 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/no_button" />
 
+    <TextView
+        android:id="@+id/group_code_textView"
+        android:layout_width="333dp"
+        android:layout_height="72dp"
+        android:layout_marginStart="29dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="31dp"
+        android:fontFamily="@font/poppins"
+        android:gravity="center|center_horizontal|center_vertical"
+        android:textAllCaps="false"
+        android:textColor="#707070"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/return_button" />
+
     <Button
         android:id="@+id/return_button"
         android:layout_width="346dp"

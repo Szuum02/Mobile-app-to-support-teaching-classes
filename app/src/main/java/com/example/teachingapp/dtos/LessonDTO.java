@@ -13,13 +13,15 @@ public class LessonDTO {
     private final String classroom;
     private final String topic;
     private final Long groupId;
+    private final String groupCode;
 
-    public LessonDTO(Long lessonId, Date date, String classroom, String topic, Long groupId) {
+    public LessonDTO(Long lessonId, Date date, String classroom, String topic, Long groupId, String groupCode) {
         this.lessonId = lessonId;
         this.date = date;
         this.classroom = classroom;
         this.topic = topic;
         this.groupId = groupId;
+        this.groupCode = groupCode;
     }
 
 }

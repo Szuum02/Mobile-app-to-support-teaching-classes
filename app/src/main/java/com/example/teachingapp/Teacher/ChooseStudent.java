@@ -18,8 +18,8 @@ public class ChooseStudent extends AppCompatActivity {
         if (intent != null) {
             Long groupId = intent.getLongExtra("group_id", 0);
             Long lessonId = intent.getLongExtra("lesson_id", 0);
-
-            ChooseStudentTask chooseStudentTask = new ChooseStudentTask(ChooseStudent.this, groupId, lessonId);
+            String groupCode = intent.getStringExtra("group_code");
+            ChooseStudentTask chooseStudentTask = new ChooseStudentTask(ChooseStudent.this, groupId, lessonId, groupCode);
             chooseStudentTask.startTask();
         }
 

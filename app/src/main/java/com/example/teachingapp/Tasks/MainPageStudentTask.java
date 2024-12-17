@@ -16,6 +16,7 @@ import com.example.teachingapp.MainActivity;
 import com.example.teachingapp.R;
 import com.example.teachingapp.SettingsActivity;
 import com.example.teachingapp.Student.SettingsActivityStudent;
+import com.example.teachingapp.Student.ShowActivityGroupRanking;
 import com.example.teachingapp.Student.StudentMainPage;
 import com.example.teachingapp.Student.StudentScanQR;
 import com.example.teachingapp.Student.StudentShowQR;
@@ -72,7 +73,8 @@ public class MainPageStudentTask {
         setUpSubjectTextView();
         setUpSettingsButton();
         setUpShowAllClassesTextView();
-//        setUpWhiteRectangle();
+        setUpWhiteRectangle();
+
     }
 
     private void setUpLogOutButton() {
@@ -242,8 +244,10 @@ public class MainPageStudentTask {
             whiteRectangle.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Intent intent = new Intent(activity, ChooseAction.class);
+                    Intent intent = new Intent(activity, ShowActivityGroupRanking.class);
                     intent.putExtra("group_id", upcomingLesson.getGroupId());
+                    intent.putExtra("student_id", studentDTO.getId());
+                    intent.putExtra("nick", studentDTO.getNick());
                     activity.startActivity(intent);
                 }
             });

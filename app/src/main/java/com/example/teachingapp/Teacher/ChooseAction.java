@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -13,8 +14,10 @@ import com.example.teachingapp.R;
 public class ChooseAction extends AppCompatActivity {
     private Long groupId;
     private Long lessonId;
+    private String groupCode;
     private Button lessonButton;
     private Button statsButton;
+    private TextView groupCodeTextView;
     private Button returnButton;
     private Context activity = this;
     @Override
@@ -25,10 +28,12 @@ public class ChooseAction extends AppCompatActivity {
         if (intent != null) {
             groupId = intent.getLongExtra("group_id", 0);
             lessonId = intent.getLongExtra("lesson_id", 0);
+            groupCode = intent.getStringExtra("group_code");
         }
 
         setUpLessonButton();
         setUpStatsButton();
+        setUpGroupCodeText();
         setUpReturnButton();
     }
 
@@ -40,6 +45,7 @@ public class ChooseAction extends AppCompatActivity {
                 Intent intent = new Intent(view.getContext(), CheckPresence.class);
                 intent.putExtra("group_id", groupId);
                 intent.putExtra("lesson_id", lessonId);
+                intent.putExtra("group_code", groupCode);
                 startActivity(intent);
             }
         });
@@ -53,9 +59,15 @@ public class ChooseAction extends AppCompatActivity {
                 Intent intent = new Intent(view.getContext(), ChooseStudent.class);
                 intent.putExtra("group_id", groupId);
                 intent.putExtra("lesson_id", lessonId);
+                intent.putExtra("group_code", groupCode);
                 startActivity(intent);
             }
         });
+    }
+
+    public void setUpGroupCodeText() {
+        groupCodeTextView = findViewById(R.id.group_code_textView);
+        groupCodeTextView.setText("Kod grupy: " + groupCode);
     }
 
     public void setUpReturnButton() {

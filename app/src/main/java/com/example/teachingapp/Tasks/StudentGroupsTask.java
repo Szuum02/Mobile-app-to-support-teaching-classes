@@ -11,11 +11,13 @@ import android.text.style.RelativeSizeSpan;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.teachingapp.R;
+import com.example.teachingapp.Student.AddGroup;
 import com.example.teachingapp.Student.ShowActivityGroupRanking;
 import com.example.teachingapp.Student._StudentChooseGroup;
 import com.example.teachingapp.Teacher.AllGroups;
@@ -35,6 +37,7 @@ import java.util.List;
 public class StudentGroupsTask {
     private _StudentChooseGroup activity;
     private SharedPreferences sharedPreferences;
+    private Button addGroupButton;
     private Button returnButton;
     private String chosenDate;
     private StudentDTO studentDTO;
@@ -48,6 +51,7 @@ public class StudentGroupsTask {
     public StudentGroupsTask(_StudentChooseGroup activity, SharedPreferences sharedPreferences) {
         this.activity = activity;
         this.sharedPreferences = sharedPreferences;
+        this.addGroupButton = activity.findViewById(R.id.add_group_button);
         this.returnButton = activity.findViewById(R.id.return_button);
         this.studentDTO = getStudentDto();
         this.chooseDateTextView = activity.findViewById(R.id.choose_date);
@@ -62,9 +66,22 @@ public class StudentGroupsTask {
 
     public void startTask() {
         setUpChooseDateTextView();
+        setUpAddGroupButton();
         setUpReturnButton();
         setUpShowAllClassesTexView();
         showClasses();
+    }
+
+    private void setUpAddGroupButton() {
+        addGroupButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(activity, AddGroup.class);
+                intent.putExtra("student_id", studentDTO.getId());
+                activity.startActivity(intent);
+                activity.finish();
+            }
+        });
     }
 
     private void setUpReturnButton() {
