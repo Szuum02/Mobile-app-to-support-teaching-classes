@@ -11,6 +11,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -19,6 +20,7 @@ import com.example.teachingapp.GroupMapKey;
 import com.example.teachingapp.R;
 import com.example.teachingapp.Tasks.GroupsTask;
 import com.example.teachingapp.Tasks.MainPageTeacherTask;
+import com.example.teachingapp.User._Login;
 import com.example.teachingapp.dtos.AddGroupDTO;
 import com.example.teachingapp.dtos.AddLessonDTO;
 import com.example.teachingapp.dtos.TeacherDTO;
@@ -56,6 +58,7 @@ public class TeacherMainPage extends AppCompatActivity {
     private ActivityResultLauncher<Intent> filePickerLauncher;
     private Context activity = this;
     private Long teacherId;
+    private SharedPreferences sharedPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,7 +66,7 @@ public class TeacherMainPage extends AppCompatActivity {
         setContentView(R.layout._main_page_teacher);
         Intent intent = getIntent();
         if (intent != null) {
-            SharedPreferences sharedPreferences = getSharedPreferences("Settings", MODE_PRIVATE);
+            sharedPreferences = getSharedPreferences("Settings", MODE_PRIVATE);
             teacherId = getTeacherId(sharedPreferences);
             setUpAddLessonButton();
             MainPageTeacherTask mainPageTeacherTask = new MainPageTeacherTask(this, sharedPreferences);
@@ -104,9 +107,32 @@ public class TeacherMainPage extends AppCompatActivity {
             InputStreamReader isr = new InputStreamReader(lessonsFile);
             BufferedReader bufferedReader = new BufferedReader(isr);
             getLessonsData(bufferedReader.lines().collect(Collectors.toList()));
+            updateTeacherDTO();
         } catch (FileNotFoundException e) {
             Toast.makeText(this,"Nie można odczytać pliku", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    public void updateTeacherDTO() {
+        RetrofitService retrofitService = new RetrofitService();
+        TeacherApi teacherApi = retrofitService.getRetrofit().create(TeacherApi.class);
+        teacherApi.teacherLogin(teacherId).enqueue(new Callback<TeacherDTO>() {
+            @Override
+            public void onResponse(Call<TeacherDTO> call, Response<TeacherDTO> response) {
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                Gson gson = new Gson();
+
+                editor.putString("lessons", gson.toJson(response.body().getLessons()));
+                editor.putString("teacher_data", gson.toJson(response.body()));
+                editor.apply();
+            }
+
+            @Override
+            public void onFailure(Call<TeacherDTO> call, Throwable t) {
+                Toast.makeText(activity, "Nie zaktualizowano lekcji",
+                        Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     private void getLessonsData(List<String> lines) {

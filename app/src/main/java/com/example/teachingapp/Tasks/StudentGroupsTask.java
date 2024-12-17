@@ -79,6 +79,7 @@ public class StudentGroupsTask {
                 Intent intent = new Intent(activity, AddGroup.class);
                 intent.putExtra("student_id", studentDTO.getId());
                 activity.startActivity(intent);
+                activity.finish();
             }
         });
     }

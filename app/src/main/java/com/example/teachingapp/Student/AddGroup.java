@@ -1,6 +1,7 @@
 package com.example.teachingapp.Student;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -33,8 +34,8 @@ public class AddGroup extends AppCompatActivity {
         Intent intent = getIntent();
         if (intent != null) {
             studentId = intent.getLongExtra("student_id", 0);
-
-            AddStudentToGroupTask task = new AddStudentToGroupTask(this, studentId);
+            SharedPreferences sharedPreferences = getSharedPreferences("Settings", MODE_PRIVATE);
+            AddStudentToGroupTask task = new AddStudentToGroupTask(this, studentId, sharedPreferences);
             task.startTask();
         }
     }

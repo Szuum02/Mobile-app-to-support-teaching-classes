@@ -72,7 +72,8 @@ public class MainPageStudentTask {
         setUpSubjectTextView();
         setUpSettingsButton();
         setUpShowAllClassesTextView();
-//        setUpWhiteRectangle();
+        setUpWhiteRectangle();
+
     }
 
     private void setUpLogOutButton() {

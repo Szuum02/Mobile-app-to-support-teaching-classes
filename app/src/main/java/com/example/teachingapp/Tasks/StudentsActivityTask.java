@@ -191,7 +191,11 @@ public class StudentsActivityTask {
     public TextView generateTodayPointsTextView(StudentDataDTO studentDataDTO) {
         TextView textView = new TextView(activity);
         if(studentDataDTO.getTodayPoints() != null) {
-            textView.setText(String.valueOf(studentDataDTO.getTodayPoints()));
+            if (studentDataDTO.getTodayPoints() > 0) {
+                textView.setText("+" + String.valueOf(studentDataDTO.getTodayPoints()));
+            } else {
+                textView.setText(String.valueOf(studentDataDTO.getTodayPoints()));
+            }
         }
 
         textView.setLayoutParams(new LinearLayout.LayoutParams(
