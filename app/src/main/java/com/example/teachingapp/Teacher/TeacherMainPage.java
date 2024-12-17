@@ -107,7 +107,6 @@ public class TeacherMainPage extends AppCompatActivity {
             InputStreamReader isr = new InputStreamReader(lessonsFile);
             BufferedReader bufferedReader = new BufferedReader(isr);
             getLessonsData(bufferedReader.lines().collect(Collectors.toList()));
-            updateTeacherDTO();
         } catch (FileNotFoundException e) {
             Toast.makeText(this,"Nie można odczytać pliku", Toast.LENGTH_SHORT).show();
         }
@@ -160,6 +159,8 @@ public class TeacherMainPage extends AppCompatActivity {
         }
 
         sendData(new ArrayList<>(groups.values()));
+        updateTeacherDTO();
+
     }
 
     private void sendData(List<AddGroupDTO> groups) {
