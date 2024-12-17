@@ -7,7 +7,6 @@ import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.teachingapp.R;
-import com.example.teachingapp.Tasks.GroupsTask;
 import com.example.teachingapp.Tasks.StudentGroupsTask;
 
 public class _StudentChooseGroup extends AppCompatActivity {

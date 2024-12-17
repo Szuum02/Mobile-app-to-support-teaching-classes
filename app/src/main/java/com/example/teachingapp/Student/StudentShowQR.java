@@ -8,8 +8,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.teachingapp.R;
 import com.example.teachingapp.Tasks.StudentShowQRTask;
-import com.example.teachingapp.Tasks.TeacherShowQRTask;
-import com.example.teachingapp.Teacher.ShowQR;
 
 public class StudentShowQR extends AppCompatActivity {
     private long studentId;
@@ -19,12 +17,11 @@ public class StudentShowQR extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         Intent intent = getIntent();
         setContentView(R.layout._student_qr_code);
-        SharedPreferences sharedPreferences = getSharedPreferences("Settings", MODE_PRIVATE);
 
         if (intent != null) {
             studentId = intent.getLongExtra("student_id", 0);
 
-            StudentShowQRTask studentShowQRTask = new StudentShowQRTask(this, studentId, sharedPreferences);
+            StudentShowQRTask studentShowQRTask = new StudentShowQRTask(this, studentId);
             studentShowQRTask.startTask();
         }
     }

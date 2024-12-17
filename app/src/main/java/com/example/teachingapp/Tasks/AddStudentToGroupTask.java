@@ -2,7 +2,6 @@ package com.example.teachingapp.Tasks;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -10,9 +9,7 @@ import android.widget.Toast;
 
 import com.example.teachingapp.R;
 import com.example.teachingapp.Student.AddGroup;
-import com.example.teachingapp.Student.StudentMainPage;
 import com.example.teachingapp.Student._StudentChooseGroup;
-import com.example.teachingapp.User._Login;
 import com.example.teachingapp.dtos.LessonDTO;
 import com.example.teachingapp.dtos.StudentDTO;
 import com.example.teachingapp.retrofit.Api.StudentApi;
@@ -20,7 +17,6 @@ import com.example.teachingapp.retrofit.RetrofitService;
 import com.google.gson.Gson;
 
 import java.util.List;
-
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -65,7 +61,6 @@ public class AddStudentToGroupTask {
                         }
                         Toast.makeText(activity, "Udało się dołączyć do grupy!", Toast.LENGTH_SHORT).show();
                         refreshStudentData();
-
                     }
 
                     @Override

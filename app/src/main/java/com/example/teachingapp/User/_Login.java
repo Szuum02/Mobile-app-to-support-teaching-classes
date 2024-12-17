@@ -12,7 +12,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.teachingapp.MainActivity;
 import com.example.teachingapp.R;
-import com.example.teachingapp.Student.ChooseSubject;
 import com.example.teachingapp.Student.StudentMainPage;
 import com.example.teachingapp.Teacher.TeacherMainPage;
 import com.example.teachingapp.dtos.StudentDTO;

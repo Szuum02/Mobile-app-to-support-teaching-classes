@@ -25,8 +25,7 @@ public class CheckPresence extends AppCompatActivity {
         if (intent != null) {
             Long groupId = intent.getLongExtra("group_id", 0);
             Long lessonId = intent.getLongExtra("lesson_id", 0);
-            String groupCode = intent.getStringExtra("group_code");
-            StudentsPresenceTask studentsPresenceTask = new StudentsPresenceTask(CheckPresence.this, groupId, lessonId, groupCode, sharedPreferences);
+            StudentsPresenceTask studentsPresenceTask = new StudentsPresenceTask(CheckPresence.this, groupId, lessonId, sharedPreferences);
             studentsPresenceTask.startTask();
         }
 

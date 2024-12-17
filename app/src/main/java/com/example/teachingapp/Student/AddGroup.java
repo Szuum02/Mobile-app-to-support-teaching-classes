@@ -3,25 +3,12 @@ package com.example.teachingapp.Student;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.widget.EditText;
-import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.teachingapp.R;
 import com.example.teachingapp.Tasks.AddStudentToGroupTask;
-import com.example.teachingapp.dtos.LessonDTO;
-import com.example.teachingapp.retrofit.Api.StudentApi;
-import com.example.teachingapp.retrofit.RetrofitService;
-
-import java.time.LocalDate;
-import java.util.List;
-import java.util.Map;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class AddGroup extends AppCompatActivity {
     private long studentId;

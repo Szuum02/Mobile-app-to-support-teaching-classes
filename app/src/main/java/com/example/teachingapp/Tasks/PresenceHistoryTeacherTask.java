@@ -1,7 +1,6 @@
 package com.example.teachingapp.Tasks;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.view.Gravity;
 import android.view.View;
@@ -14,25 +13,14 @@ import androidx.core.content.res.ResourcesCompat;
 
 import com.example.teachingapp.R;
 import com.example.teachingapp.Teacher.ActivityHistory;
-import com.example.teachingapp.Teacher.CheckActivity;
-import com.example.teachingapp.Teacher.CheckPresence;
 import com.example.teachingapp.Teacher.ChooseAction;
 import com.example.teachingapp.Teacher.GenerateReport;
 import com.example.teachingapp.Teacher.PresenceHistory;
-import com.example.teachingapp.Teacher.ShowQR;
-import com.example.teachingapp.Teacher.TeacherScanQR;
-import com.example.teachingapp.dtos.LessonDTO;
 import com.example.teachingapp.dtos.PresenceDTO;
-import com.example.teachingapp.dtos.StudentDataDTO;
 import com.example.teachingapp.dtos.StudentPresenceHistoryDTO;
 import com.example.teachingapp.enums.PresenceType;
-import com.example.teachingapp.retrofit.Api.LessonApi;
 import com.example.teachingapp.retrofit.Api.PresenceApi;
 import com.example.teachingapp.retrofit.RetrofitService;
-
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.util.Map;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -43,7 +31,6 @@ public class PresenceHistoryTeacherTask {
     private final PresenceHistory activity;
     private final Long groupId;
     private final Long studentId;
-    private final String groupCode;
     private LinearLayout linearLayout;
     private ImageButton activityButton;
     private ImageButton reportButton;
@@ -51,11 +38,10 @@ public class PresenceHistoryTeacherTask {
     private TextView descriptionTexView;
 
 
-    public PresenceHistoryTeacherTask(PresenceHistory activity, Long groupId, Long studentId, String groupCode) {
+    public PresenceHistoryTeacherTask(PresenceHistory activity, Long groupId, Long studentId) {
         this.activity = activity;
         this.groupId = groupId;
         this.studentId = studentId;
-        this.groupCode = groupCode;
         this.linearLayout = activity.findViewById(R.id.linearLayout);
         this.activityButton = activity.findViewById(R.id.plus_minus_button);
         this.reportButton = activity.findViewById(R.id.report_button);

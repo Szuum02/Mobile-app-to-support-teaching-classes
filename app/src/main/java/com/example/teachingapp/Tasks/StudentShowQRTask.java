@@ -1,11 +1,9 @@
 package com.example.teachingapp.Tasks;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 
 import com.example.teachingapp.R;
@@ -20,13 +18,11 @@ import com.journeyapps.barcodescanner.BarcodeEncoder;
 public class StudentShowQRTask {
     private final StudentShowQR activity;
     private final Long studentId;
-    private SharedPreferences sharedPreferences;
     private Button returnButton;
 
-    public StudentShowQRTask(StudentShowQR activity, Long studentId, SharedPreferences sharedPreferences) {
+    public StudentShowQRTask(StudentShowQR activity, Long studentId) {
         this.activity = activity;
         this.studentId = studentId;
-        this.sharedPreferences = sharedPreferences;
         this.returnButton = activity.findViewById(R.id.return_button);
     }
 

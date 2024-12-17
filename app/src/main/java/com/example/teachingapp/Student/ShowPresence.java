@@ -18,7 +18,6 @@ public class ShowPresence extends AppCompatActivity {
         if (intent != null) {
             long studentId = intent.getLongExtra("student_id", 0);
             long groupId = intent.getLongExtra("group_id", 0);
-//          String  subject = intent.getStringExtra("subject");
             String nick = intent.getStringExtra("nick");
 
             SharedPreferences sharedPreferences = getSharedPreferences("Settings", MODE_PRIVATE);

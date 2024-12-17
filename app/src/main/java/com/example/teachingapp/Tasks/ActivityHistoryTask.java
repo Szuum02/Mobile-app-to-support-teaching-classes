@@ -2,15 +2,11 @@ package com.example.teachingapp.Tasks;
 
 import android.content.Intent;
 import android.graphics.Color;
-import android.graphics.drawable.GradientDrawable;
 import android.view.Gravity;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.TableLayout;
-import android.widget.TableRow;
 import android.widget.Toast;
 
 import androidx.core.content.res.ResourcesCompat;
@@ -20,22 +16,10 @@ import com.example.teachingapp.Teacher.ActivityHistory;
 import com.example.teachingapp.Teacher.ChooseAction;
 import com.example.teachingapp.Teacher.GenerateReport;
 import com.example.teachingapp.Teacher.PresenceHistory;
-import com.example.teachingapp.Teacher.TeacherMainPage;
 import com.example.teachingapp.dtos.ActivityDTO;
-import com.example.teachingapp.dtos.PresenceDTO;
-import com.example.teachingapp.dtos.StudentActivityDTO;
 import com.example.teachingapp.dtos.StudentHistoryDTO;
-import com.example.teachingapp.dtos.StudentPresenceHistoryDTO;
-import com.example.teachingapp.enums.PresenceType;
 import com.example.teachingapp.retrofit.Api.ActivityApi;
-import com.example.teachingapp.retrofit.Api.PresenceApi;
 import com.example.teachingapp.retrofit.RetrofitService;
-
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -121,8 +105,6 @@ public class ActivityHistoryTask {
                             .append(" ")
                             .append(studentHistoryDTO.getIndex()).toString()
             );
-
-
         }
     }
 

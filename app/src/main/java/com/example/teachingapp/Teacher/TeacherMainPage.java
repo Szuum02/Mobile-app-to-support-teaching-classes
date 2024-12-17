@@ -1,7 +1,5 @@
 package com.example.teachingapp.Teacher;
 
-import static androidx.core.app.ActivityCompat.startActivityForResult;
-
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
@@ -11,21 +9,16 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
 import com.example.teachingapp.GroupMapKey;
 import com.example.teachingapp.R;
-import com.example.teachingapp.Tasks.GroupsTask;
 import com.example.teachingapp.Tasks.MainPageTeacherTask;
-import com.example.teachingapp.User._Login;
 import com.example.teachingapp.dtos.AddGroupDTO;
 import com.example.teachingapp.dtos.AddLessonDTO;
 import com.example.teachingapp.dtos.TeacherDTO;
-import com.example.teachingapp.models.Group;
-import com.example.teachingapp.models.Lesson;
 import com.example.teachingapp.retrofit.Api.TeacherApi;
 import com.example.teachingapp.retrofit.RetrofitService;
 import com.google.gson.Gson;
@@ -33,16 +26,10 @@ import com.google.gson.reflect.TypeToken;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.lang.reflect.Type;
-import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;

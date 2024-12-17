@@ -1,14 +1,10 @@
 package com.example.teachingapp.Tasks;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 
 import com.example.teachingapp.R;
 import com.example.teachingapp.Teacher.CheckActivity;
@@ -16,37 +12,26 @@ import com.example.teachingapp.Teacher.CheckPresence;
 import com.example.teachingapp.Teacher.ChooseAction;
 import com.example.teachingapp.Teacher.ShowQR;
 import com.example.teachingapp.Teacher.TeacherScanQR;
-import com.example.teachingapp.dtos.StudentDataDTO;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.MultiFormatWriter;
 import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
 import com.journeyapps.barcodescanner.BarcodeEncoder;
-import android.view.inputmethod.InputMethodManager;
-
-import java.time.LocalDateTime;
-import java.util.Map;
 
 public class TeacherShowQRTask {
     private final ShowQR activity;
     private final Long groupId;
     private final Long lessonId;
-    private SharedPreferences sharedPreferences;
     private ImageButton presenceButton;
-    private LinearLayout linearLayout;
     private ImageButton activityButton;
-    private ImageButton qrButton;
     private ImageButton scanButton;
     private ImageButton returnButton;
 
-    public TeacherShowQRTask(ShowQR activity, Long groupId, Long lessonId, SharedPreferences sharedPreferences) {
+    public TeacherShowQRTask(ShowQR activity, Long groupId, Long lessonId) {
         this.activity = activity;
         this.groupId = groupId;
         this.lessonId = lessonId;
-        this.sharedPreferences = sharedPreferences;
-        this.linearLayout = activity.findViewById(R.id.linearLayout);
         this.presenceButton = activity.findViewById(R.id.calendar_button);
-        this.qrButton = activity.findViewById(R.id.show_qr_code_button);
         this.scanButton = activity.findViewById(R.id.scan_qr_code_button);
         this.activityButton = activity.findViewById(R.id.plus_minus_button);
         this.returnButton = activity.findViewById(R.id.return_button);

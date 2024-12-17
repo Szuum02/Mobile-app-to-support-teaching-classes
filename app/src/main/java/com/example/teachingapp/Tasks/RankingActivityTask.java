@@ -29,14 +29,9 @@ import com.example.teachingapp.Student.ShowActivityTotalRanking;
 import com.example.teachingapp.Student.ShowPresence;
 import com.example.teachingapp.Student.StudentMainPage;
 import com.example.teachingapp.Teacher.TeacherMainPage;
-import com.example.teachingapp.dtos.ActivityPlotDTO;
 import com.example.teachingapp.dtos.ActivityRankingDTO;
 import com.example.teachingapp.retrofit.Api.ActivityApi;
 import com.example.teachingapp.retrofit.RetrofitService;
-import com.jjoe64.graphview.GraphView;
-import com.jjoe64.graphview.helper.StaticLabelsFormatter;
-import com.jjoe64.graphview.series.DataPoint;
-import com.jjoe64.graphview.series.PointsGraphSeries;
 
 public class RankingActivityTask {
     private ShowActivity activity;
@@ -96,16 +91,6 @@ public class RankingActivityTask {
             }
         });
 
-//        scanButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Intent intent = new Intent(activity, TeacherScanQR.class);
-//                intent.putExtra("group_id", groupId);
-//                intent.putExtra("lesson_id", lessonId);
-//                activity.startActivity(intent);
-//            }
-//        });
-//
         presenceButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -169,27 +154,6 @@ public class RankingActivityTask {
                     }
                 });
 
-    }
-
-    public void getPlot() {
-        RetrofitService retrofitService = new RetrofitService();
-        ActivityApi activityApi = retrofitService.getRetrofit().create(ActivityApi.class);
-
-        activityApi.getPlot(studentId, groupId)
-                .enqueue(new Callback<>() {
-                    @Override
-                    public void onResponse(@NonNull Call<List<ActivityPlotDTO>> call,
-                                           @NonNull Response<List<ActivityPlotDTO>> response) {
-                        createActivityPlot(response.body());
-                    }
-
-                    @Override
-                    public void onFailure(@NonNull Call<List<ActivityPlotDTO>> call,
-                                          @NonNull Throwable t) {
-                        Toast.makeText(activity, "Server error", Toast.LENGTH_SHORT).show();
-                        Logger.getLogger(TeacherMainPage.class.getName()).log(Level.SEVERE, "Error occurred", t);
-                    }
-                });
     }
 
     private void createGroupRanking(List<ActivityRankingDTO> activityRanking) {
@@ -266,46 +230,6 @@ public class RankingActivityTask {
         } else {
             Toast.makeText(activity, "Brak aktywności do wyświetlenia", Toast.LENGTH_SHORT).show();
         }
-    }
-
-    private void createActivityPlot(List<ActivityPlotDTO> activities) {
-        if (activities != null && !activities.isEmpty()) {
-            GraphView graphView = activity.findViewById(R.id.activity_plot);
-            PointsGraphSeries<DataPoint> series = new PointsGraphSeries<>(getDataPoint(activities));
-            graphView.addSeries(series);
-
-            String[] xLabels = new String[activities.size() + 2];
-
-            xLabels[0] = "0";
-            for (int i = 0; i < activities.size(); i++) {
-                xLabels[i + 1] = String.valueOf(i + 1);
-            }
-            xLabels[activities.size() + 1] = String.valueOf(activities.size() + 1);
-
-            StaticLabelsFormatter staticLabelsFormatter = new StaticLabelsFormatter(graphView);
-            staticLabelsFormatter.setHorizontalLabels(xLabels);
-            graphView.getGridLabelRenderer().setLabelFormatter(staticLabelsFormatter);
-//            graphView.getGridLabelRenderer().setNumHorizontalLabels(4);
-
-            graphView.getViewport().setMinX(0);
-            graphView.getViewport().setMaxX(activities.size() + 1);
-            graphView.getViewport().setXAxisBoundsManual(true);
-            graphView.getViewport().setScrollable(true);
-            graphView.getViewport().setScrollableY(true);
-            series.setShape(PointsGraphSeries.Shape.POINT);
-            series.setSize(20);
-            series.setColor(R.color.black);
-        } else {
-            Toast.makeText(activity, "Brak aktywności", Toast.LENGTH_SHORT).show();
-        }
-    }
-
-    private  DataPoint[] getDataPoint(List<ActivityPlotDTO> activities) {
-        DataPoint[] dataPoints = new DataPoint[activities.size()];
-        for (int i = 0; i < activities.size(); i++) {
-            dataPoints[i] = new DataPoint(i + 1, activities.get(i).getPoints());
-        }
-        return dataPoints;
     }
 
     private int dpToPx(int dp) {

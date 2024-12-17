@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Build;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
@@ -29,7 +28,6 @@ import com.example.teachingapp.enums.PresenceType;
 import com.example.teachingapp.retrofit.Api.LessonApi;
 import com.example.teachingapp.retrofit.Api.PresenceApi;
 import com.example.teachingapp.retrofit.RetrofitService;
-import com.google.gson.Gson;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -47,7 +45,6 @@ public class StudentsPresenceTask {
     private final CheckPresence activity;
     private final Long groupId;
     private final Long lessonId;
-    private final String groupCode;
     private SharedPreferences sharedPreferences;
     private Map<Long, StudentDataDTO> studentsMap;
     private LinearLayout linearLayout;
@@ -56,11 +53,10 @@ public class StudentsPresenceTask {
     private ImageButton scanButton;
     private ImageButton returnButton;
 
-    public StudentsPresenceTask(CheckPresence activity, Long groupId, Long lessonId, String groupCode, SharedPreferences sharedPreferences) {
+    public StudentsPresenceTask(CheckPresence activity, Long groupId, Long lessonId, SharedPreferences sharedPreferences) {
         this.activity = activity;
         this.groupId = groupId;
         this.lessonId = lessonId;
-        this.groupCode = groupCode;
         this.sharedPreferences = sharedPreferences;
         this.linearLayout = activity.findViewById(R.id.linearLayout);
         this.activityButton = activity.findViewById(R.id.plus_minus_button);

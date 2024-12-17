@@ -5,34 +5,25 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.view.Gravity;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
-import android.widget.TableLayout;
-import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
 
 import com.example.teachingapp.R;
-import com.example.teachingapp.Student.ChooseAction;
 import com.example.teachingapp.Student.ShowActivityGroupRanking;
 import com.example.teachingapp.Student.ShowActivityTotalRanking;
 import com.example.teachingapp.Student.ShowPresence;
 import com.example.teachingapp.Student.StudentMainPage;
-import com.example.teachingapp.dtos.ActivityRankingDTO;
 import com.example.teachingapp.dtos.PresenceDTO;
 import com.example.teachingapp.dtos.StudentPresenceHistoryDTO;
 import com.example.teachingapp.enums.PresenceType;
 import com.example.teachingapp.retrofit.Api.PresenceApi;
 import com.example.teachingapp.retrofit.RetrofitService;
 
-import java.util.HashMap;
 import java.util.ListIterator;
-import java.util.Map;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -87,16 +78,6 @@ public class ShowPresenceTask {
             }
         });
 
-//        scanButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Intent intent = new Intent(activity, TeacherScanQR.class);
-//                intent.putExtra("group_id", groupId);
-//                intent.putExtra("lesson_id", lessonId);
-//                activity.startActivity(intent);
-//            }
-//        });
-//
         presenceButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

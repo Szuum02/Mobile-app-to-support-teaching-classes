@@ -4,8 +4,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import com.example.teachingapp.R;
 import com.example.teachingapp.Tasks.RankingActivityTask;
 
@@ -18,7 +16,6 @@ public class ShowActivityTotalRanking extends ShowActivity {
         if (intent != null) {
             long studentId = intent.getLongExtra("student_id", 0);
             long groupId = intent.getLongExtra("group_id", 0);
-//            subject = intent.getStringExtra("subject");
             String nick = intent.getStringExtra("nick");
 
             SharedPreferences sharedPreferences = getSharedPreferences("Settings", MODE_PRIVATE);

@@ -11,14 +11,6 @@ public class GroupMapKey {
         this.groupCode = groupCode;
     }
 
-    public String getSubjectCode() {
-        return subjectCode;
-    }
-
-    public String getGroupCode() {
-        return groupCode;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

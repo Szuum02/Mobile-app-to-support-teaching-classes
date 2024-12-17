@@ -6,7 +6,6 @@ import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.teachingapp.Tasks.MainPageTeacherTask;
 import com.example.teachingapp.Tasks.SettingsTask;
 
 public class SettingsActivity extends AppCompatActivity {

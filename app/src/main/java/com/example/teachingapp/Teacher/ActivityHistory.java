@@ -1,15 +1,12 @@
 package com.example.teachingapp.Teacher;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.teachingapp.R;
 import com.example.teachingapp.Tasks.ActivityHistoryTask;
-import com.example.teachingapp.Tasks.StudentsActivityTask;
 
 public class ActivityHistory extends AppCompatActivity {
     Long studentId;

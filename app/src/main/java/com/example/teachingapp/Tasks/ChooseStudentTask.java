@@ -1,7 +1,6 @@
 package com.example.teachingapp.Tasks;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Build;
 import android.view.Gravity;
@@ -15,11 +14,8 @@ import androidx.annotation.NonNull;
 import androidx.core.content.res.ResourcesCompat;
 
 import com.example.teachingapp.R;
-import com.example.teachingapp.Student.ChooseSubject;
-import com.example.teachingapp.Teacher.ActivityHistory;
 import com.example.teachingapp.Teacher.ChooseAction;
 import com.example.teachingapp.Teacher.ChooseStudent;
-import com.example.teachingapp.Teacher.GenerateReport;
 import com.example.teachingapp.Teacher.PresenceHistory;
 import com.example.teachingapp.Teacher.TeacherMainPage;
 import com.example.teachingapp.dtos.StudentDataDTO;

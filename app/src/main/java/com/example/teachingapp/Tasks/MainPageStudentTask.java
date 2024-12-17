@@ -14,20 +14,14 @@ import android.widget.TextView;
 
 import com.example.teachingapp.MainActivity;
 import com.example.teachingapp.R;
-import com.example.teachingapp.SettingsActivity;
 import com.example.teachingapp.Student.SettingsActivityStudent;
 import com.example.teachingapp.Student.ShowActivityGroupRanking;
 import com.example.teachingapp.Student.StudentMainPage;
 import com.example.teachingapp.Student.StudentScanQR;
 import com.example.teachingapp.Student.StudentShowQR;
 import com.example.teachingapp.Student._StudentChooseGroup;
-import com.example.teachingapp.Teacher.AllGroups;
-import com.example.teachingapp.Teacher.ChooseAction;
-import com.example.teachingapp.Teacher.TeacherMainPage;
-import com.example.teachingapp.dtos.GroupDTO;
 import com.example.teachingapp.dtos.LessonDTO;
 import com.example.teachingapp.dtos.StudentDTO;
-import com.example.teachingapp.dtos.TeacherDTO;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 

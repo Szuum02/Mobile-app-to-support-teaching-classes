@@ -10,7 +10,6 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.teachingapp.R;
-import com.example.teachingapp.User._RegistrationForm;
 import com.example.teachingapp.User._RegistrationName;
 import com.example.teachingapp.dtos.TeacherDTO;
 import com.example.teachingapp.retrofit.Api.UserApi;

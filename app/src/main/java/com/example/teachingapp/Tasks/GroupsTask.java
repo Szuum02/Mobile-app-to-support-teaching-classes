@@ -31,7 +31,6 @@ import java.time.ZoneId;
 import java.util.Calendar;
 import java.util.List;
 
-
 public class GroupsTask {
     private static final String TAG = "FetchGroupsTask";
     private static final String ERROR_MESSAGE = "Cannot fetch groups";

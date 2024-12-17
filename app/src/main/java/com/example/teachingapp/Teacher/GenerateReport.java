@@ -2,41 +2,19 @@ package com.example.teachingapp.Teacher;
 
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Canvas;
-import android.graphics.Paint;
-import android.graphics.Typeface;
-import android.graphics.pdf.PdfDocument;
 import android.os.Bundle;
-import android.os.Environment;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
-import com.example.teachingapp.R;
 import com.example.teachingapp.Tasks.GenerateReportTask;
-import com.example.teachingapp.dtos.PresenceDTO;
-import com.example.teachingapp.dtos.ReportDTO;
-import com.example.teachingapp.dtos.StudentReportDTO;
-import com.example.teachingapp.enums.PresenceType;
-import com.example.teachingapp.retrofit.Api.GroupApi;
-import com.example.teachingapp.retrofit.RetrofitService;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 import androidx.annotation.NonNull;
 
 import static android.Manifest.permission.READ_EXTERNAL_STORAGE;
 import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
-
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.List;
 
 public class GenerateReport extends AppCompatActivity {
 

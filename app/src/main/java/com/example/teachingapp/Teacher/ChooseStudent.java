@@ -22,7 +22,5 @@ public class ChooseStudent extends AppCompatActivity {
             ChooseStudentTask chooseStudentTask = new ChooseStudentTask(ChooseStudent.this, groupId, lessonId, groupCode);
             chooseStudentTask.startTask();
         }
-
     }
-
-    }
+}

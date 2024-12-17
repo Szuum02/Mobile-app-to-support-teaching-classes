@@ -44,9 +44,6 @@
             android:exported="false"
             android:windowSoftInputMode="adjustPan"/>
         <activity
-            android:name=".User.RegistrationForm"
-            android:exported="false" />
-        <activity
             android:name=".Teacher.CheckActivity"
             android:exported="false" />
         <activity
@@ -57,9 +54,6 @@
             android:exported="false" />
         <activity
             android:name=".Teacher.ChooseAction"
-            android:exported="false" />
-        <activity
-            android:name=".Student.TmpStudentDefaultView"
             android:exported="false" />
         <activity
             android:name=".Student.SettingsActivityStudent"
@@ -86,9 +80,6 @@
             android:name=".SettingsActivity"
             android:exported="false" />
         <activity
-            android:name=".Teacher.ChooseLesson"
-            android:exported="false" />
-        <activity
             android:name=".Teacher.ShowQR"
             android:exported="false" />
         <activity
@@ -98,12 +89,6 @@
             android:name=".Teacher.PresenceHistory"
             android:exported="false" />
         <activity
-            android:name=".Student.ChooseSubject"
-            android:exported="false" />
-        <activity
-            android:name=".Student.ChooseAction"
-            android:exported="false" />
-        <activity
             android:name=".Student.ShowPresence"
             android:exported="false" />
         <activity
@@ -111,9 +96,6 @@
             android:exported="false" />
         <activity
             android:name=".Student.ShowActivityTotalRanking"
-            android:exported="false" />
-        <activity
-            android:name=".Student.ShowActivityPlot"
             android:exported="false" />
         <activity android:name=".Teacher.ActivityHistory"
             android:exported="false" />

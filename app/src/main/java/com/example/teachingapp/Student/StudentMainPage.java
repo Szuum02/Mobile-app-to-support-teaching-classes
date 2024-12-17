@@ -8,7 +8,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.teachingapp.R;
 import com.example.teachingapp.Tasks.MainPageStudentTask;
-import com.example.teachingapp.Tasks.MainPageTeacherTask;
 
 public class StudentMainPage extends AppCompatActivity {
 

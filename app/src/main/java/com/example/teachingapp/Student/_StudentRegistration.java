@@ -10,10 +10,8 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.teachingapp.R;
-import com.example.teachingapp.Teacher.TeacherMainPage;
 import com.example.teachingapp.User._RegistrationName;
 import com.example.teachingapp.dtos.StudentDTO;
-import com.example.teachingapp.dtos.TeacherDTO;
 import com.example.teachingapp.retrofit.Api.UserApi;
 import com.example.teachingapp.retrofit.RetrofitService;
 import com.google.gson.Gson;
@@ -107,7 +105,7 @@ public class _StudentRegistration extends AppCompatActivity {
         userApi.addStudent(name, lastName, nick, index, mail, password).enqueue(new Callback<StudentDTO>() {
             @Override
             public void onResponse(Call<StudentDTO> call, Response<StudentDTO> response) {
-                goToStudentChooseSubject(response.body());
+                goToStudentMainPage(response.body());
             }
 
             @Override
@@ -152,15 +150,15 @@ public class _StudentRegistration extends AppCompatActivity {
         return true;
     }
 
-    private void goToStudentChooseSubject(StudentDTO studentDTO) {
-        Intent intent = new Intent(this, ChooseSubject.class);
-        intent.putExtra("student_id", studentDTO.getId());
-        intent.putExtra("nick", studentDTO.getNick());
-
+    private void goToStudentMainPage(StudentDTO studentDTO) {
+        Intent intent = new Intent(this, StudentMainPage.class);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         Gson gson = new Gson();
 
+        intent.putExtra("student_id", studentDTO.getId());
+        intent.putExtra("nick", studentDTO.getNick());
         editor.putString("lessons", gson.toJson(studentDTO.getLessons()));
+        editor.putString("student_data", gson.toJson(studentDTO));
         editor.apply();
         startActivity(intent);
     }

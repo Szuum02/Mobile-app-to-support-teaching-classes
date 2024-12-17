@@ -109,7 +109,6 @@ public class MainPageTeacherTask {
 
         String combinedText = topic + "\n" + date + "\n" + classRoom;
 
-
         SpannableString spannableString = new SpannableString(combinedText);
 
         int topicEnd = topic.length();
