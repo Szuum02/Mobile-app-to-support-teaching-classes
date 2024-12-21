@@ -57,4 +57,14 @@ dependencies {
     implementation "androidx.cardview:cardview:1.0.0"
 
     implementation "com.jjoe64:graphview:4.2.2"
+
+    androidTestImplementation "androidx.test:runner:1.6.2"
+    androidTestImplementation "androidx.test:rules:1.6.1"
+    // Optional -- UI testing with Espresso
+    androidTestImplementation "androidx.test.espresso:espresso-core:3.6.1"
+    // Optional -- UI testing with UI Automator
+    androidTestImplementation "androidx.test.uiautomator:uiautomator:2.3.0"
+    // Optional -- UI testing with Compose
+    androidTestImplementation "androidx.compose.ui:ui-test-junit4:1.7.6"
+    androidTestImplementation 'androidx.test.espresso:espresso-intents:3.6.1'
 }
