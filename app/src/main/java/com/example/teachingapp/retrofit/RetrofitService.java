@@ -11,16 +11,20 @@ public class RetrofitService {
     @Getter
     private Retrofit retrofit;
 
+    //change to your IP address
+    private static String baseUrl = "http://192.168.202.6:8080";
+
     public RetrofitService() {
-        //change to your IP address
-        String BASE_URL = "http://192.168.202.6:8080";
         Gson gson = new GsonBuilder()
                 .setLenient()
                 .create();
         retrofit = new Retrofit.Builder()
-                .baseUrl(BASE_URL)
+                .baseUrl(baseUrl)
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .build();
     }
 
+    public static void setBaseUrl(String newBaseUrl) {
+        baseUrl = newBaseUrl;
+    }
 }

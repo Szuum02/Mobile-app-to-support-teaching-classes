@@ -83,7 +83,7 @@ public class AddStudentToGroupTask {
         });
     }
 
-    private void refreshStudentData() {
+    public void refreshStudentData() {
         RetrofitService retrofitService = new RetrofitService();
         StudentApi studentApi = retrofitService.getRetrofit().create(StudentApi.class);
         SharedPreferences.Editor editor = sharedPreferences.edit();
