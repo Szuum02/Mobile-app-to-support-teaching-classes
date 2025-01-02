@@ -156,7 +156,7 @@ public class RankingActivityTask {
 
     }
 
-    private void createGroupRanking(List<ActivityRankingDTO> activityRanking) {
+    public void createGroupRanking(List<ActivityRankingDTO> activityRanking) {
         if (activityRanking != null && !activityRanking.isEmpty()) {
             ListIterator<ActivityRankingDTO> iterator = activityRanking.listIterator();
             while (iterator.hasNext()) {
@@ -194,7 +194,7 @@ public class RankingActivityTask {
         }
     }
 
-    private void createTotalRanking(List<ActivityRankingDTO> activityRanking) {
+    public void createTotalRanking(List<ActivityRankingDTO> activityRanking) {
         if (activityRanking != null && !activityRanking.isEmpty()) {
             ListIterator<ActivityRankingDTO> iterator = activityRanking.listIterator();
 
