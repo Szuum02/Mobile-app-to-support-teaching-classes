@@ -112,7 +112,7 @@ public class RankingActivityTask {
         });
     }
 
-    private void getTotalRanking() {
+    public void getTotalRanking() {
         RetrofitService retrofitService = new RetrofitService();
         ActivityApi activityApi = retrofitService.getRetrofit().create(ActivityApi.class);
 
