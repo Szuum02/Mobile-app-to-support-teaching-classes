@@ -31,6 +31,11 @@ import java.time.ZoneId;
 import java.util.Calendar;
 import java.util.List;
 
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
 public class GroupsTask {
     private static final String TAG = "FetchGroupsTask";
     private static final String ERROR_MESSAGE = "Cannot fetch groups";
@@ -88,10 +93,10 @@ public class GroupsTask {
         }
     }
 
-    private void showChosenDateClasses() {
+    public void showChosenDateClasses() {
         linearLayout.removeAllViews();
-        List<LessonDTO> lessonList = teacherDTO.getLessons().get(chosenDate);
-        if(lessonList != null){
+        if(teacherDTO != null && teacherDTO.getLessons() != null){
+            List<LessonDTO> lessonList = teacherDTO.getLessons().get(chosenDate);
             int counter = 0;
             for (LessonDTO lesson :  lessonList) {
                     LocalDateTime lessonDate  = lesson
@@ -109,13 +114,15 @@ public class GroupsTask {
 
     }
 
-    private void showAllClasses() {
+    public void showAllClasses() {
         int counter = 0;
         linearLayout.removeAllViews();
-        for (List<LessonDTO> lessonList : teacherDTO.getLessons().values()) {
-            for (LessonDTO lesson : lessonList) {
-                linearLayout.addView(createButton(lesson, counter, lesson));
-                counter++;
+        if(teacherDTO != null && teacherDTO.getLessons() != null){
+            for (List<LessonDTO> lessonList : teacherDTO.getLessons().values()) {
+                for (LessonDTO lesson : lessonList) {
+                    linearLayout.addView(createButton(lesson, counter, lesson));
+                    counter++;
+                }
             }
         }
     }
