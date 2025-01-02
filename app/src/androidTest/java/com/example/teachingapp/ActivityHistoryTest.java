@@ -38,39 +38,47 @@ import org.junit.runner.RunWith;
 import java.util.List;
 
 @RunWith(AndroidJUnit4.class)
-public class ActivityHistoryUIActionTest {
+public class ActivityHistoryTest {
 
     @Rule
     public ActivityScenarioRule<ActivityHistory> activityScenarioRule =
             new ActivityScenarioRule<>(ActivityHistory.class);
 
-    @Before
-    public void setUp() {
-        Intents.init();
-    }
-
-
     @Test
     public void testButtonPresenceNavigation() {
+        Intents.init();
+
         onView(withId(R.id.calendar_button)).check(matches(isDisplayed()));
 
         onView(withId(R.id.calendar_button)).perform(click());
 
         intended(hasComponent(PresenceHistory.class.getName()));
+
+        Intents.release();
+
     }
 
     @Test
     public void testButtonReportNavigation() {
+        Intents.init();
+
         onView(withId(R.id.report_button)).check(matches(isDisplayed()));
 
         onView(withId(R.id.report_button)).perform(click());
 
         intended(hasComponent(GenerateReport.class.getName()));
+
+        Intents.release();
     }
 
     @Test
     public void testStudentHistoryDataDisplayed() {
+        Intents.init();
+
         onView(withId(R.id.description_texView)).check(matches(isDisplayed()));
+
+        Intents.release();
+
     }
 
     @Test
@@ -161,9 +169,5 @@ public class ActivityHistoryUIActionTest {
             assertEquals(Gravity.CENTER, textView.getGravity());
             assertEquals(39.375, textView.getTextSize(), 0.1);
         });
-    }
-    @After
-    public void tearDown() {
-        Intents.release();
     }
 }
