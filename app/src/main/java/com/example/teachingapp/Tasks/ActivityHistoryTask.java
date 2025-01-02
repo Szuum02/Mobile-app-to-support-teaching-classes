@@ -21,10 +21,12 @@ import com.example.teachingapp.dtos.StudentHistoryDTO;
 import com.example.teachingapp.retrofit.Api.ActivityApi;
 import com.example.teachingapp.retrofit.RetrofitService;
 
+import lombok.Getter;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+@Getter
 public class ActivityHistoryTask {
     private final ActivityHistory activity;
     private final Long groupId;
@@ -34,8 +36,10 @@ public class ActivityHistoryTask {
     private ImageButton reportButton;
     private ImageButton returnButton;
     private TextView descriptionTexView;
+    RetrofitService retrofitService;
 
-    public ActivityHistoryTask(ActivityHistory activity, Long studentId, Long groupId) {
+
+    public ActivityHistoryTask(ActivityHistory activity, Long studentId, Long groupId, RetrofitService retrofitService) {
         this.activity = activity;
         this.groupId = groupId;
         this.studentId = studentId;
@@ -44,6 +48,7 @@ public class ActivityHistoryTask {
         this.reportButton = activity.findViewById(R.id.report_button);
         this.returnButton = activity.findViewById(R.id.return_button);
         this.descriptionTexView = activity.findViewById(R.id.description_texView);
+        this.retrofitService = retrofitService;
     }
 
     public void startTask() {
@@ -51,8 +56,7 @@ public class ActivityHistoryTask {
         setUpButtons();
     }
 
-    private void getStudentActivity() {
-        RetrofitService retrofitService = new RetrofitService();
+    public void getStudentActivity() {
         ActivityApi activityApi = retrofitService.getRetrofit().create(ActivityApi.class);
         activityApi.getStudentHistory(studentId, groupId)
                 .enqueue(new Callback<StudentHistoryDTO>() {
@@ -62,7 +66,6 @@ public class ActivityHistoryTask {
                             setUpLayout(response.body());
                         } else {
                             Toast.makeText(activity, "Nie udało się pobrać historii", Toast.LENGTH_SHORT).show();
-
                         }
                     }
 
@@ -96,16 +99,15 @@ public class ActivityHistoryTask {
             rowLayout.addView(generatePointsTexView(activityDTO));
 
             linearLayout.addView(rowLayout);
-
-            descriptionTexView.setText(
-                    new StringBuilder()
-                            .append(studentHistoryDTO.getName())
-                            .append(" ")
-                            .append(studentHistoryDTO.getLastname())
-                            .append(" ")
-                            .append(studentHistoryDTO.getIndex()).toString()
-            );
         }
+        descriptionTexView.setText(
+                new StringBuilder()
+                        .append(studentHistoryDTO.getName())
+                        .append(" ")
+                        .append(studentHistoryDTO.getLastname())
+                        .append(" ")
+                        .append(studentHistoryDTO.getIndex()).toString()
+        );
     }
 
     private int dpToPx(int dp) {

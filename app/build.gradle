@@ -27,6 +27,9 @@ android {
         targetCompatibility JavaVersion.VERSION_1_10
     }
     buildToolsVersion '34.0.0'
+    packagingOptions {
+        exclude "META-INF/DEPENDENCIES"
+    }
 }
 
 dependencies {
@@ -67,4 +70,8 @@ dependencies {
     // Optional -- UI testing with Compose
     androidTestImplementation "androidx.compose.ui:ui-test-junit4:1.7.6"
     androidTestImplementation 'androidx.test.espresso:espresso-intents:3.6.1'
+    // https://mvnrepository.com/artifact/org.mockito/mockito-core
+    implementation group: 'org.mockito', name: 'mockito-android', version: '5.14.2'
+    // https://mvnrepository.com/artifact/org.mockito/mockito-junit-jupiter
+    testImplementation  group: 'org.mockito', name: 'mockito-junit-jupiter', version: '5.12.0'
 }

@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.teachingapp.R;
 import com.example.teachingapp.Tasks.ActivityHistoryTask;
+import com.example.teachingapp.retrofit.RetrofitService;
 
 public class ActivityHistory extends AppCompatActivity {
     Long studentId;
@@ -21,7 +22,7 @@ public class ActivityHistory extends AppCompatActivity {
             studentId = intent.getLongExtra("student_id", 0);
             groupId = intent.getLongExtra("group_id", 0);
 
-            ActivityHistoryTask activityHistoryTask = new ActivityHistoryTask(ActivityHistory.this, studentId, groupId);
+            ActivityHistoryTask activityHistoryTask = new ActivityHistoryTask(ActivityHistory.this, studentId, groupId, new RetrofitService());
             activityHistoryTask.startTask();
         }
     }
