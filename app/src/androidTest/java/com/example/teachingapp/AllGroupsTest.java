@@ -189,13 +189,4 @@ public class AllGroupsTest {
         });
     }
 
-    @Test
-    public void tmp() {
-        activityScenarioRule.getScenario().onActivity(activity -> {
-            GroupsTask groupsTask = new GroupsTask(
-                    activity, activity.getSharedPreferences("Settings", MODE_PRIVATE));
-
-
-        });
-    }
 }

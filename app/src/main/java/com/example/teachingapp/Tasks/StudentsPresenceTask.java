@@ -37,10 +37,14 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
+import lombok.Getter;
+import lombok.Setter;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+@Getter
+@Setter
 public class StudentsPresenceTask {
     private final CheckPresence activity;
     private final Long groupId;
