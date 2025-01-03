@@ -28,10 +28,12 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
+import lombok.Getter;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+@Getter
 public class ChooseStudentTask {
 
     private final ChooseStudent activity;
@@ -137,7 +139,7 @@ public class ChooseStudentTask {
         return textView;
     }
 
-    private List<StudentDataDTO> mapStudentList(List<Object[]> results) {
+    public List<StudentDataDTO> mapStudentList(List<Object[]> results) {
         List<StudentDataDTO> studentList = new ArrayList<>();
         if (results != null && !results.isEmpty()) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {

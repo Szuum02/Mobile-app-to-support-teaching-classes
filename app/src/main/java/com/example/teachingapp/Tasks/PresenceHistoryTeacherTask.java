@@ -22,10 +22,12 @@ import com.example.teachingapp.enums.PresenceType;
 import com.example.teachingapp.retrofit.Api.PresenceApi;
 import com.example.teachingapp.retrofit.RetrofitService;
 
+import lombok.Getter;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+@Getter
 public class PresenceHistoryTeacherTask {
 
     private final PresenceHistory activity;
