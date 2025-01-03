@@ -10,6 +10,7 @@ import static androidx.test.espresso.matcher.ViewMatchers.withId;
 
 import androidx.test.espresso.intent.Intents;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
+import androidx.test.ext.junit.runners.AndroidJUnit4;
 
 import com.example.teachingapp.MainActivity;
 import com.example.teachingapp.R;
@@ -20,12 +21,14 @@ import com.example.teachingapp.retrofit.RetrofitService;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
 import java.io.IOException;
 
 import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.MockWebServer;
 
+@RunWith(AndroidJUnit4.class)
 public class RegistrationFormTest {
     private MockWebServer server;
 

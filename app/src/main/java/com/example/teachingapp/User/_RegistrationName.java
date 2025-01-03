@@ -76,8 +76,8 @@ public class _RegistrationName extends AppCompatActivity {
         startActivity(intent);
     }
 
-    private boolean validateName(EditText nameText, String nameType) {
-        Pattern p = Pattern.compile("[-\\s\\p{L}]+");
+    public boolean validateName(EditText nameText, String nameType) {
+        Pattern p = Pattern.compile("[\\p{L}][-\\s\\p{L}]+");
         Matcher m = p.matcher(nameText.getText().toString());
         if (!m.matches()) {
             nameText.setError(nameType + " powinno zawierać tylko polskie znaki, spacje i -");
