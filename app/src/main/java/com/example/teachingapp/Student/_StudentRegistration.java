@@ -27,7 +27,7 @@ public class _StudentRegistration extends AppCompatActivity {
     private SharedPreferences sharedPreferences;
     private String name;
     private String lastName;
-    private final RetrofitService retrofitService = new RetrofitService();
+    private RetrofitService retrofitService;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -71,6 +71,7 @@ public class _StudentRegistration extends AppCompatActivity {
 
         if (validateEmail(mailText) && validateConfirmPassword(passwordText, confirmPasswordText)
                 && validateIndex(indexText)) {
+            retrofitService = new RetrofitService();
             UserApi userApi = retrofitService.getRetrofit().create(UserApi.class);
             userApi.checkUniqueValues(mail, index, nick).enqueue(new Callback<String>() {
                 @Override
@@ -94,13 +95,13 @@ public class _StudentRegistration extends AppCompatActivity {
 
                 @Override
                 public void onFailure(Call<String> call, Throwable t) {
-                    // todo -> handle error
                 }
             });
         }
     }
 
-    private void registerStudent(String mail, String password, int index, String nick) {
+    public void registerStudent(String mail, String password, int index, String nick) {
+        retrofitService = new RetrofitService();
         UserApi userApi = retrofitService.getRetrofit().create(UserApi.class);
         userApi.addStudent(name, lastName, nick, index, mail, password).enqueue(new Callback<StudentDTO>() {
             @Override
@@ -115,7 +116,7 @@ public class _StudentRegistration extends AppCompatActivity {
         });
     }
 
-    private boolean validateEmail(EditText loginText) {
+    public boolean validateEmail(EditText loginText) {
         Pattern p = Pattern.compile("^((?!\\.)[\\w\\-_.]*[^.])(@\\w+)(\\.\\w+(\\.\\w+)?[^.\\W])$");
         Matcher m = p.matcher(loginText.getText().toString());
         if (!m.matches()) {
@@ -125,7 +126,7 @@ public class _StudentRegistration extends AppCompatActivity {
         return true;
     }
 
-    private boolean validateConfirmPassword(EditText passwordText, EditText confirmPasswordText) {
+    public boolean validateConfirmPassword(EditText passwordText, EditText confirmPasswordText) {
         if (!passwordText.getText().toString().equals(
                 confirmPasswordText.getText().toString()
         )) {
@@ -135,12 +136,7 @@ public class _StudentRegistration extends AppCompatActivity {
         return true;
     }
 
-    // TODO -> password pattern?
-    private boolean validatePassword() {
-        return true;
-    }
-
-    private boolean validateIndex(EditText indexText) {
+    public boolean validateIndex(EditText indexText) {
         Pattern p = Pattern.compile("\\d{6}");
         Matcher m = p.matcher(indexText.getText().toString());
         if (!m.matches()) {
