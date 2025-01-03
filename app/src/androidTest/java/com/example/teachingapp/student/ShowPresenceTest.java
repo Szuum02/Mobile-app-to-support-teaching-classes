@@ -26,10 +26,15 @@ import androidx.test.ext.junit.runners.AndroidJUnit4;
 
 import com.example.teachingapp.R;
 import com.example.teachingapp.Student.ShowActivityGroupRanking;
+import com.example.teachingapp.Student.ShowActivityTotalRanking;
 import com.example.teachingapp.Student.ShowPresence;
 import com.example.teachingapp.Student.StudentMainPage;
 import com.example.teachingapp.Tasks.RankingActivityTask;
+import com.example.teachingapp.Tasks.ShowPresenceTask;
 import com.example.teachingapp.dtos.ActivityRankingDTO;
+import com.example.teachingapp.dtos.PresenceDTO;
+import com.example.teachingapp.dtos.StudentPresenceHistoryDTO;
+import com.example.teachingapp.enums.PresenceType;
 import com.example.teachingapp.retrofit.RetrofitService;
 
 import org.junit.Before;
@@ -46,7 +51,7 @@ import okhttp3.mockwebserver.MockWebServer;
 import okhttp3.mockwebserver.RecordedRequest;
 
 @RunWith(AndroidJUnit4.class)
-public class ShowActivityTotalRanking {
+public class ShowPresenceTest {
     private MockWebServer server;
 
     @Before
@@ -58,8 +63,8 @@ public class ShowActivityTotalRanking {
     }
 
     @Rule
-    public ActivityScenarioRule<com.example.teachingapp.Student.ShowActivityTotalRanking> activityScenarioRule =
-            new ActivityScenarioRule<>(com.example.teachingapp.Student.ShowActivityTotalRanking.class);
+    public ActivityScenarioRule<ShowPresence> activityScenarioRule =
+            new ActivityScenarioRule<>(ShowPresence.class);
 
     @Test
     public void testGroupRankingButton() {
@@ -110,14 +115,14 @@ public class ShowActivityTotalRanking {
     }
 
     @Test
-    public void testTotalRankingApiCall() {
+    public void testPresenceApiCall() {
         SharedPreferences sharedPreferences = Mockito.mock(SharedPreferences.class);
         SharedPreferences.Editor editor = Mockito.mock(SharedPreferences.Editor.class);
         when(sharedPreferences.edit()).thenReturn(editor);
 
         activityScenarioRule.getScenario().onActivity(activity -> {
-            RankingActivityTask task = new RankingActivityTask(activity, 1L, 1L, "nick", sharedPreferences);
-            task.getTotalRanking();
+            ShowPresenceTask task = new ShowPresenceTask(activity, 1L, 1L, "nick", sharedPreferences);
+            task.findAndShowPresences();
 
             RecordedRequest request = null;
             try {
@@ -126,46 +131,50 @@ public class ShowActivityTotalRanking {
                 throw new RuntimeException(e);
             }
             assertEquals(
-                    "/activity/ranking?groupId=1",
+                    "/presence/student/get?studentId=1&groupId=1",
                     request.getPath());
             assertEquals("GET", request.getMethod());
         });
     }
 
     @Test
-    public void testTotalRankingTable() {
+    public void testPresenceTable() {
         SharedPreferences sharedPreferences = Mockito.mock(SharedPreferences.class);
         SharedPreferences.Editor editor = Mockito.mock(SharedPreferences.Editor.class);
         when(sharedPreferences.edit()).thenReturn(editor);
 
-        List<ActivityRankingDTO> activityRankingDTOS = List.of(
-                new ActivityRankingDTO(1L, "nick1", true, 5L),
-                new ActivityRankingDTO(2L, "nick2", true, 4L),
-                new ActivityRankingDTO(3L, "nick3", false, 3L),
-                new ActivityRankingDTO(4L, "nick4", true, 2L)
-        );
-
+        StudentPresenceHistoryDTO presenceHistory = getPresencesHistory();
         activityScenarioRule.getScenario().onActivity(activity -> {
-            RankingActivityTask task = new RankingActivityTask(activity, 1L, 2L, "nick2", sharedPreferences);
-            task.createTotalRanking(activityRankingDTOS);
+            ShowPresenceTask task = new ShowPresenceTask(activity, 1L, 1L, "nick", sharedPreferences);
+            task.showPresences(presenceHistory);
 
             LinearLayout linearLayout = activity.findViewById(R.id.linearLayout);
 
             assertThat(linearLayout.getChildCount(), is(4));
-            for (int i = 0; i < 4; i++) {
-                ActivityRankingDTO activityRankingDTO = activityRankingDTOS.get(i);
-                LinearLayout rowLayout = (LinearLayout) linearLayout.getChildAt(i);
-                testRow(rowLayout, i + 1, activityRankingDTO.getShowInRanking(), activityRankingDTO.getTotalPoints(), activityRankingDTO.getTodayPoints());
-            }
-            assertThat(((ColorDrawable) linearLayout.getChildAt(1).getBackground()).getColor(), is(Color.parseColor("#FFB6B6")));
+            testRow((LinearLayout) linearLayout.getChildAt(0), "2024-12-4", "Obecność");
+            testRow((LinearLayout) linearLayout.getChildAt(1), "2024-12-3", "Usprawiedliwienie");
+            testRow((LinearLayout) linearLayout.getChildAt(2), "2024-12-2", "Spóźnienie");
+            testRow((LinearLayout) linearLayout.getChildAt(3), "2024-12-1", "Nieobecność");
         });
     }
 
-    private void testRow(LinearLayout row, int i, boolean showInRanking, Long totalPoints, Long todayPoints) {
-        assertThat(row.getChildCount(), is(3));
+    private StudentPresenceHistoryDTO getPresencesHistory() {
+        List<PresenceDTO> presenceDTOS = List.of(
+                new PresenceDTO("2024-12-4T15:00:00", PresenceType.O),
+                new PresenceDTO("2024-12-3T15:00:00", PresenceType.U),
+                new PresenceDTO("2024-12-2T15:00:00", PresenceType.S),
+                new PresenceDTO("2024-12-1T15:00:00", PresenceType.N)
+        );
+
+        return new StudentPresenceHistoryDTO("name", "lastname", 1, presenceDTOS);
+    }
+
+    private void testRow(LinearLayout row, String date, String presence) {
+        assertThat(row.getChildCount(), is(2));
         assertThat(row.getGravity(), is(Gravity.CENTER));
-        assertThat(((TextView) row.getChildAt(0)).getText(), is(i + "."));
-        assertThat(((TextView) row.getChildAt(1)).getText(), is(showInRanking ? "nick" + i : "-"));
-        assertThat(((TextView) row.getChildAt(2)).getText(), is(totalPoints.toString()));
+        assertThat(((TextView) row.getChildAt(0)).getText(), is(date));
+        assertThat(((TextView) row.getChildAt(1)).getText(), is(presence));
+        assertThat(((TextView) row.getChildAt(0)).getGravity(), is(Gravity.CENTER));
+        assertThat(((TextView) row.getChildAt(1)).getGravity(), is(Gravity.CENTER));
     }
 }

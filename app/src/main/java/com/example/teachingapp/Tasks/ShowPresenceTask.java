@@ -112,14 +112,13 @@ public class ShowPresenceTask {
 
                     @Override
                     public void onFailure(Call<StudentPresenceHistoryDTO> call, Throwable t) {
-                        int x = 0;
-                        // TODO -> handle error
+
                     }
                 });
 
     }
 
-    private void showPresences(StudentPresenceHistoryDTO presencesHistory) {
+    public void showPresences(StudentPresenceHistoryDTO presencesHistory) {
         if (presencesHistory != null &&!presencesHistory.getPresences().isEmpty()) {
             ListIterator<PresenceDTO> iterator = presencesHistory.getPresences().listIterator();
             while (iterator.hasNext()) {
