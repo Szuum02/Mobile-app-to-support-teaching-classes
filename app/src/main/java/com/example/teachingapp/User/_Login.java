@@ -32,7 +32,7 @@ import retrofit2.Response;
 
 public class _Login extends AppCompatActivity {
     private SharedPreferences sharedPreferences;
-    private final RetrofitService retrofitService = new RetrofitService();
+    private RetrofitService retrofitService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +48,7 @@ public class _Login extends AppCompatActivity {
         EditText loginText = findViewById(R.id.mail);
         EditText passwordText = findViewById(R.id.password);
 
+        retrofitService = new RetrofitService();
         UserApi userApi = retrofitService.getRetrofit().create(UserApi.class);
 
         String login = loginText.getText().toString();
@@ -79,11 +80,13 @@ public class _Login extends AppCompatActivity {
         startActivity(intent);
     }
 
-    private void tryLogin(UserDTO user) {
+    public void tryLogin(UserDTO user) {
         if (user.getId() == null) {
             Toast.makeText(_Login.this, "Wrong mail", Toast.LENGTH_SHORT).show();
             return;
         }
+        retrofitService = new RetrofitService();
+
         if (user.isStudent()) {
             StudentApi studentApi = retrofitService.getRetrofit().create(StudentApi.class);
 
