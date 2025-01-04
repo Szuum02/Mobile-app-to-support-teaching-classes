@@ -169,7 +169,7 @@ public class MainPageStudentTask {
         return spannableString;
     }
 
-    private String getDateFromData(LessonDTO upcomingLesson) {
+    public String getDateFromData(LessonDTO upcomingLesson) {
         LocalDateTime localDateTime = upcomingLesson.getDate()
                 .toInstant()
                 .atZone(ZoneId.systemDefault())
@@ -182,13 +182,14 @@ public class MainPageStudentTask {
                 + ":" + addZeroToString(String.valueOf(localDateTime.getMinute()));
     }
 
-    private String addZeroToString(String string) {
+    public String addZeroToString(String string) {
         if(string.length() < 2){
             return "0" + string;
         }
         return string;
     }
-    private LessonDTO findUpcomingClasses() {
+
+    public LessonDTO findUpcomingClasses() {
         if (studentDTO == null) {
             return null;
         }
