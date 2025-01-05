@@ -1,20 +1,17 @@
-package com.example.teachingapp;
+package com.example.teachingapp.teacher;
 
 import static android.content.Context.MODE_PRIVATE;
-
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.is;
 
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
-import com.example.teachingapp.Tasks.GroupsTask;
-import com.example.teachingapp.Tasks.StudentsActivityTask;
-import com.example.teachingapp.Teacher.AllGroups;
-import com.example.teachingapp.Teacher.CheckActivity;
-import com.example.teachingapp.dtos.LessonPointsDTO;
+import com.example.teachingapp.Tasks.StudentsPresenceTask;
+import com.example.teachingapp.Teacher.CheckPresence;
+import com.example.teachingapp.dtos.LessonPresenceDTO;
 import com.example.teachingapp.dtos.StudentDataDTO;
+import com.example.teachingapp.enums.PresenceType;
 
 import org.junit.Rule;
 import org.junit.Test;
@@ -25,18 +22,18 @@ import java.util.List;
 import java.util.Map;
 
 @RunWith(AndroidJUnit4.class)
-public class CheckActivityTest {
+public class CheckPresenceTest {
 
     @Rule
-    public ActivityScenarioRule<CheckActivity> activityScenarioRule =
-            new ActivityScenarioRule<>(CheckActivity.class);
+    public ActivityScenarioRule<CheckPresence> activityScenarioRule =
+            new ActivityScenarioRule<>(CheckPresence.class);
 
     @Test
     public void testAddStudentsToList_correctStudentsMap() {
         activityScenarioRule.getScenario().onActivity(activity -> {
-            StudentsActivityTask studentsActivityTask = new StudentsActivityTask(activity,
-                    1,
-                    1,
+            StudentsPresenceTask studentsPresenceTask = new StudentsPresenceTask(activity,
+                    1L,
+                    1L,
                     activity.getSharedPreferences("Settings", MODE_PRIVATE)
             );
 
@@ -44,83 +41,78 @@ public class CheckActivityTest {
             students.add(new Object[]{1.0, "John", "Doe", 12345.0});
             students.add(new Object[]{2.0, "Jane", "Smith", 67890.0});
 
-            studentsActivityTask.addStudentsToList(students);
-            Map<Long,StudentDataDTO> result = Map.of(
+            studentsPresenceTask.addStudentsToList(students);
+            Map<Long, StudentDataDTO> result = Map.of(
                     1L,
                     new StudentDataDTO(1L, "John", "Doe", 12345L),
                     2L,
                     new StudentDataDTO(2L, "Jane", "Smith", 67890L)
             );
 
-            assertThat(studentsActivityTask.getStudentsMap(), equalTo(result));
+            assertThat(studentsPresenceTask.getStudentsMap(), equalTo(result));
         });
     }
 
     @Test
     public void testAddStudentsToList_emptyStudentsMap() {
         activityScenarioRule.getScenario().onActivity(activity -> {
-            StudentsActivityTask studentsActivityTask = new StudentsActivityTask(activity,
-                    1,
-                    1,
+            StudentsPresenceTask studentsPresenceTask = new StudentsPresenceTask(activity,
+                    1L,
+                    1L,
                     activity.getSharedPreferences("Settings", MODE_PRIVATE)
             );
 
-            List<Object[]> students = new ArrayList<>();;
+            List<Object[]> students = new ArrayList<>();
 
-            studentsActivityTask.addStudentsToList(students);
-            Map<Long,StudentDataDTO> result = null;
+            studentsPresenceTask.addStudentsToList(students);
 
-            assertThat(studentsActivityTask.getStudentsMap(), equalTo(result));
+            assertThat(studentsPresenceTask.getStudentsMap(), equalTo(null));
         });
     }
 
     @Test
     public void testAddStudentsToList_nullStudentsMap() {
         activityScenarioRule.getScenario().onActivity(activity -> {
-            StudentsActivityTask studentsActivityTask = new StudentsActivityTask(activity,
-                    1,
-                    1,
+            StudentsPresenceTask studentsPresenceTask = new StudentsPresenceTask(activity,
+                    1L,
+                    1L,
                     activity.getSharedPreferences("Settings", MODE_PRIVATE)
             );
 
             List<Object[]> students = null;
 
-            studentsActivityTask.addStudentsToList(students);
-            Map<Long,StudentDataDTO> result = null;
+            studentsPresenceTask.addStudentsToList(students);
 
-            assertThat(studentsActivityTask.getStudentsMap(), equalTo(result));
+            assertThat(studentsPresenceTask.getStudentsMap(), equalTo(null));
         });
     }
 
     @Test
-    public void testAddActivityToStudent_correctActivityList() {
+    public void testAddAPresenceToStudent_correctActivityList() {
         activityScenarioRule.getScenario().onActivity(activity -> {
-            StudentsActivityTask studentsActivityTask = new StudentsActivityTask(activity,
-                    1,
-                    1,
+            StudentsPresenceTask studentsPresenceTask = new StudentsPresenceTask(activity,
+                    1L,
+                    1L,
                     activity.getSharedPreferences("Settings", MODE_PRIVATE)
             );
-
             List<Object[]> students = new ArrayList<>();
             students.add(new Object[]{1.0, "John", "Doe", 12345.0});
             students.add(new Object[]{2.0, "Jane", "Smith", 67890.0});
 
-            List<LessonPointsDTO> lessonPointsList = List.of(
-                    new LessonPointsDTO(1L, 1, 1),
-                    new LessonPointsDTO(2L,2,2),
-                    new LessonPointsDTO(3L,2,2)
+            List<LessonPresenceDTO> lessonPresence = List.of(
+                    new LessonPresenceDTO(1L, PresenceType.N),
+                    new LessonPresenceDTO(2L, PresenceType.O),
+                    new LessonPresenceDTO(3L, PresenceType.S)
             );
 
-            studentsActivityTask.addStudentsToList(students);
-            studentsActivityTask.addActivityToStudent(lessonPointsList);
+            studentsPresenceTask.addStudentsToList(students);
+            studentsPresenceTask.addPresenceToStudent(lessonPresence);
 
             StudentDataDTO student1 = new StudentDataDTO(1L, "John", "Doe", 12345L);
             StudentDataDTO student2 = new StudentDataDTO(2L, "Jane", "Smith", 67890L);
 
-            student1.setTodayPoints(1L);
-            student1.setAllPoints(1L);
-            student2.setAllPoints(2L);
-            student2.setTodayPoints(2L);
+            student1.setPresence(PresenceType.N);
+            student2.setPresence(PresenceType.O);
 
             Map<Long,StudentDataDTO> result = Map.of(
                     1L,
@@ -129,7 +121,7 @@ public class CheckActivityTest {
                     student2
             );
 
-            assertThat(studentsActivityTask.getStudentsMap(), equalTo(result));
+            assertThat(studentsPresenceTask.getStudentsMap(), equalTo(result));
         });
     }
 }

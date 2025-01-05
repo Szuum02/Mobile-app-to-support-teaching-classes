@@ -1,4 +1,4 @@
-package com.example.teachingapp;
+package com.example.teachingapp.teacher;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
@@ -6,12 +6,9 @@ import static org.hamcrest.Matchers.is;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
-import com.example.teachingapp.Tasks.ChooseStudentTask;
 import com.example.teachingapp.Tasks.PresenceHistoryTeacherTask;
-import com.example.teachingapp.Teacher.ChooseStudent;
 import com.example.teachingapp.Teacher.PresenceHistory;
 import com.example.teachingapp.dtos.PresenceDTO;
-import com.example.teachingapp.dtos.StudentDataDTO;
 import com.example.teachingapp.dtos.StudentPresenceHistoryDTO;
 import com.example.teachingapp.enums.PresenceType;
 

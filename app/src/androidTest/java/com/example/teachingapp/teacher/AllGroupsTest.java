@@ -1,4 +1,4 @@
-package com.example.teachingapp;
+package com.example.teachingapp.teacher;
 
 import static android.content.Context.MODE_PRIVATE;
 import static org.hamcrest.MatcherAssert.assertThat;

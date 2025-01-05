@@ -1,4 +1,4 @@
-package com.example.teachingapp;
+package com.example.teachingapp.teacher;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
@@ -7,15 +7,9 @@ import static org.hamcrest.Matchers.is;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
-import com.example.teachingapp.Tasks.ActivityHistoryTask;
 import com.example.teachingapp.Tasks.ChooseStudentTask;
-import com.example.teachingapp.Teacher.ActivityHistory;
-import com.example.teachingapp.Teacher.CheckActivity;
 import com.example.teachingapp.Teacher.ChooseStudent;
-import com.example.teachingapp.dtos.ActivityDTO;
 import com.example.teachingapp.dtos.StudentDataDTO;
-import com.example.teachingapp.dtos.StudentHistoryDTO;
-import com.example.teachingapp.retrofit.RetrofitService;
 
 import org.junit.Rule;
 import org.junit.Test;
@@ -23,7 +17,6 @@ import org.junit.runner.RunWith;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 @RunWith(AndroidJUnit4.class)
 public class ChooseStudentTest {

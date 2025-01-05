@@ -1,4 +1,4 @@
-package com.example.teachingapp;
+package com.example.teachingapp.teacher;
 
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
@@ -17,20 +17,19 @@ import android.view.Gravity;
 import android.widget.TextView;
 
 import androidx.test.espresso.intent.Intents;
+import androidx.test.espresso.matcher.ViewMatchers;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
+import com.example.teachingapp.R;
 import com.example.teachingapp.Tasks.ActivityHistoryTask;
 import com.example.teachingapp.Teacher.ActivityHistory;
-import com.example.teachingapp.Teacher.ChooseAction;
 import com.example.teachingapp.Teacher.GenerateReport;
 import com.example.teachingapp.Teacher.PresenceHistory;
 import com.example.teachingapp.dtos.ActivityDTO;
 import com.example.teachingapp.dtos.StudentHistoryDTO;
 import com.example.teachingapp.retrofit.RetrofitService;
 
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -48,7 +47,7 @@ public class ActivityHistoryTest {
     public void testButtonPresenceNavigation() {
         Intents.init();
 
-        onView(withId(R.id.calendar_button)).check(matches(isDisplayed()));
+        onView(ViewMatchers.withId(R.id.calendar_button)).check(matches(isDisplayed()));
 
         onView(withId(R.id.calendar_button)).perform(click());
 
