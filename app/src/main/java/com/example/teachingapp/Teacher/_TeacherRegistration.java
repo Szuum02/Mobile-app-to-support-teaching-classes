@@ -27,7 +27,7 @@ public class _TeacherRegistration extends AppCompatActivity {
     private SharedPreferences sharedPreferences;
     private String name;
     private String lastName;
-    private RetrofitService retrofitService = new RetrofitService();
+    private RetrofitService retrofitService;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -63,6 +63,7 @@ public class _TeacherRegistration extends AppCompatActivity {
         String password = passwordText.getText().toString();
 
         if (validateEmail(mailText) && validateConfirmPassword(passwordText, confirmPasswordText)) {
+            retrofitService = new RetrofitService();
             UserApi userApi = retrofitService.getRetrofit().create(UserApi.class);
             userApi.checkUniqueMail(mail).enqueue(new Callback<Boolean>() {
                 @Override
@@ -82,7 +83,8 @@ public class _TeacherRegistration extends AppCompatActivity {
         }
     }
 
-    private void registerTeacher(String mail, String password) {
+    public void registerTeacher(String mail, String password) {
+        retrofitService = new RetrofitService();
         UserApi userApi = retrofitService.getRetrofit().create(UserApi.class);
         userApi.addTeacher(name, lastName, mail, password).enqueue(new Callback<TeacherDTO>() {
             @Override
@@ -97,7 +99,7 @@ public class _TeacherRegistration extends AppCompatActivity {
         });
     }
 
-    private boolean validateEmail(EditText loginText) {
+    public boolean validateEmail(EditText loginText) {
         Pattern p = Pattern.compile("^((?!\\.)[\\w\\-_.]*[^.])(@\\w+)(\\.\\w+(\\.\\w+)?[^.\\W])$");
         Matcher m = p.matcher(loginText.getText().toString());
         if (!m.matches()) {
@@ -107,18 +109,13 @@ public class _TeacherRegistration extends AppCompatActivity {
         return true;
     }
 
-    private boolean validateConfirmPassword(EditText passwordText, EditText confirmPasswordText) {
+    public boolean validateConfirmPassword(EditText passwordText, EditText confirmPasswordText) {
         if (!passwordText.getText().toString().equals(
                 confirmPasswordText.getText().toString()
         )) {
             confirmPasswordText.setError("Hasła są różne");
             return false;
         }
-        return true;
-    }
-
-    // TODO -> password pattern?
-    private boolean validatePassword() {
         return true;
     }
 
